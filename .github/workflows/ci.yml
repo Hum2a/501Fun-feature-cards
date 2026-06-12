@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
 
 concurrency:
@@ -23,14 +23,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Agent rules mirror check
+        run: npm run rules:sync:check
+
       - name: Typecheck
         run: npm run typecheck
 
       - name: Lint
         run: npm run lint
 
-      - name: Unit tests + coverage
+      - name: Unit + contract tests + coverage
         run: npm run coverage
+
+      - name: Property-based schema fuzz
+        run: npm run test:fuzz
+
+      - name: npm audit (high+)
+        run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Build
         run: npm run build
@@ -39,7 +49,7 @@ jobs:
         run: npm run size
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Accessibility tests (axe)
         run: npm run test:a11y
@@ -47,8 +57,6 @@ jobs:
       - name: End-to-end tests
         run: npm run test:e2e
 
-      # Visual baselines are generated on Windows; rendering differs per
-      # platform, so CI checks layout via e2e and skips pixel comparison.
       - name: Visual tests (layout only on Linux)
         run: npx playwright test tests/visual --ignore-snapshots
 
@@ -67,3 +75,26 @@ jobs:
           name: coverage
           path: coverage/
           retention-days: 14
+
+  webkit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - run: npm run test:e2e -- --project=webkit
+
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run test:bench
