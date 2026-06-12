@@ -1,0 +1,464 @@
+/*!
+ * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * Copyright © 2026 Humza Butt. All rights reserved.
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *
+ * This file is part of feature-cards, licensed under the GNU Affero
+ * General Public License v3.0 only. See LICENSE for full terms.
+ */
+import { getAdapter } from './adapters/index.js';
+import {
+  safeParseFeatureCardsData,
+  type Card,
+  type FeatureCardsData,
+  type Trend,
+  type ValidationIssue,
+} from './schema.js';
+import { adoptStyles } from './styles.js';
+import { applyWatermark, PROVENANCE } from './watermark.js';
+
+/**
+ * `<feature-cards>` — a CMS-agnostic, accessible, responsive feature-card
+ * section rendered in Shadow DOM.
+ *
+ * ## Data sources (highest precedence first)
+ * 1. The {@link FeatureCardsElement.data | `data` property} set from JS.
+ * 2. An inline `<script type="application/json">` child element.
+ * 3. The `src` attribute — JSON is fetched and run through the adapter
+ *    named by the `adapter` attribute (default `generic`).
+ * 4. Light-DOM `<a>` children — progressively enhanced. Without JavaScript
+ *    (or before upgrade) those links render and work as-is.
+ *
+ * ## Attributes
+ * - `src` — URL of a JSON endpoint.
+ * - `adapter` — `generic` | `wordpress` | `contentful` | `sanity`.
+ * - `columns` — caps the number of grid tracks (1–6); otherwise auto-fit.
+ * - `heading` — section heading text (overrides the data's `heading`).
+ * - `heading-level` — heading level for the section heading, 1–6
+ *   (default 2). Card titles render one level deeper.
+ * - `theme` — named token set: `brand-blue` | `brand-green` | `brand-amber`.
+ *
+ * ## Events (all bubble and are composed)
+ * - `featurecards:ready` — fired after a successful render;
+ *   `detail: { count: number }`.
+ * - `featurecards:error` — fired when data is invalid or fetching fails;
+ *   `detail: { issues: ValidationIssue[] }`. The component fails safe:
+ *   existing light-DOM content keeps rendering, nothing is destroyed.
+ * - `featurecards:cardclick` — fired when a card is activated;
+ *   `detail: { id: string; card: Card }`.
+ *
+ * ## Slots
+ * - *(default)* — fallback content shown before data resolves or when data
+ *   is invalid; this is the progressive-enhancement path.
+ * - `heading` — replaces the generated section heading.
+ *
+ * ## Styling
+ * See `src/styles.ts` for the full `--fc-*` custom-property token table and
+ * the `::part()` hooks (`section`, `heading`, `grid`, `card`, `link`,
+ * `eyebrow`, `title`, `description`, `figure`, `value`, `label`, `media`,
+ * `cta`).
+ */
+export class FeatureCardsElement extends HTMLElement {
+  /** Attributes that trigger {@link attributeChangedCallback}. */
+  static get observedAttributes(): string[] {
+    return ['src', 'adapter', 'columns', 'heading', 'heading-level'];
+  }
+
+  #shadow: ShadowRoot;
+  #explicitData: FeatureCardsData | undefined;
+  #renderedData: FeatureCardsData | undefined;
+  #abort: AbortController | undefined;
+  #stylesAdopted = false;
+
+  constructor() {
+    super();
+    this.#shadow = this.attachShadow({ mode: 'open' });
+  }
+
+  /**
+   * Validated data driving the current render, or `undefined` when nothing
+   * has rendered yet. Setting this property takes precedence over every
+   * other data source.
+   */
+  get data(): FeatureCardsData | undefined {
+    return this.#renderedData;
+  }
+
+  set data(value: FeatureCardsData | undefined) {
+    this.#explicitData = value;
+    if (value !== undefined && this.isConnected) {
+      this.#processData(value);
+    }
+  }
+
+  /** Inert provenance record for this build (see `src/watermark.ts`). */
+  get provenance(): typeof PROVENANCE {
+    return PROVENANCE;
+  }
+
+  connectedCallback(): void {
+    if (!this.#stylesAdopted) {
+      adoptStyles(this.#shadow);
+      this.#stylesAdopted = true;
+    }
+    if (this.#shadow.querySelector('slot') === null && this.#renderedData === undefined) {
+      // Pre-data state: surface light-DOM children (the no-JS fallback).
+      this.#shadow.append(document.createElement('slot'));
+    }
+    this.#applyColumns();
+    void this.#resolveData();
+  }
+
+  disconnectedCallback(): void {
+    this.#abort?.abort();
+  }
+
+  attributeChangedCallback(
+    name: string,
+    oldValue: string | null,
+    newValue: string | null,
+  ): void {
+    if (!this.isConnected || oldValue === newValue) {
+      return;
+    }
+    switch (name) {
+      case 'src':
+      case 'adapter':
+        void this.#resolveData();
+        break;
+      case 'columns':
+        this.#applyColumns();
+        break;
+      case 'heading':
+      case 'heading-level':
+        if (this.#renderedData) {
+          this.#render(this.#renderedData);
+        }
+        break;
+      default: {
+        const exhaustive: never = name as never;
+        void exhaustive;
+      }
+    }
+  }
+
+  /** Resolve the data sources in documented precedence order. */
+  async #resolveData(): Promise<void> {
+    if (this.#explicitData !== undefined) {
+      this.#processData(this.#explicitData);
+      return;
+    }
+
+    const inline = [...this.children].find(
+      (child): child is HTMLScriptElement =>
+        child.tagName === 'SCRIPT' && child.getAttribute('type') === 'application/json',
+    );
+    if (inline?.textContent) {
+      try {
+        const parsed: unknown = JSON.parse(inline.textContent);
+        this.#processData(getAdapter('generic')(parsed));
+      } catch (error) {
+        this.#emitError([{ path: 'inline-json', message: String(error) }]);
+      }
+      return;
+    }
+
+    const src = this.getAttribute('src');
+    if (src) {
+      await this.#loadFromSrc(src);
+      return;
+    }
+
+    const lightDomData = this.#parseLightDomLinks();
+    if (lightDomData) {
+      this.#processData(lightDomData);
+    }
+    // No source at all: stay in the slot/fallback state and wait for the
+    // `data` property or an attribute change.
+  }
+
+  /** Fetch JSON from `src` and reshape it with the configured adapter. */
+  async #loadFromSrc(src: string): Promise<void> {
+    this.#abort?.abort();
+    const controller = new AbortController();
+    this.#abort = controller;
+    try {
+      const response = await fetch(src, { signal: controller.signal });
+      if (!response.ok) {
+        throw new Error(`request failed with HTTP ${response.status}`);
+      }
+      const payload: unknown = await response.json();
+      const adapter = getAdapter(this.getAttribute('adapter'));
+      this.#processData(adapter(payload));
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
+      this.#emitError([{ path: 'src', message: String(error) }]);
+    }
+  }
+
+  /**
+   * Build canonical data from plain light-DOM `<a>` children, the
+   * progressive-enhancement path. Supported per-anchor data attributes:
+   * `data-eyebrow`, `data-description`, `data-figure-value`,
+   * `data-figure-label`, `data-theme`.
+   */
+  #parseLightDomLinks(): FeatureCardsData | undefined {
+    const anchors = [...this.children].filter(
+      (child): child is HTMLAnchorElement => child.tagName === 'A',
+    );
+    if (anchors.length === 0) {
+      return undefined;
+    }
+    const cards: Card[] = anchors.map((anchor, index) => {
+      const title = anchor.dataset.title ?? anchor.textContent?.trim() ?? '';
+      return {
+        id: anchor.id || `card-${index + 1}`,
+        title,
+        ...(anchor.dataset.eyebrow ? { eyebrow: anchor.dataset.eyebrow } : {}),
+        ...(anchor.dataset.description
+          ? { description: anchor.dataset.description }
+          : {}),
+        ...(anchor.dataset.figureValue && anchor.dataset.figureLabel
+          ? {
+              figure: {
+                value: anchor.dataset.figureValue,
+                label: anchor.dataset.figureLabel,
+              },
+            }
+          : {}),
+        cta: { label: title, href: anchor.getAttribute('href') ?? '#' },
+        ...(anchor.dataset.theme ? { theme: anchor.dataset.theme } : {}),
+      };
+    });
+    return { cards };
+  }
+
+  /** Validate, then render or fail safe. */
+  #processData(input: unknown): void {
+    const result = safeParseFeatureCardsData(input);
+    if (!result.ok) {
+      this.#emitError(result.issues);
+      return;
+    }
+    this.#render(result.data);
+  }
+
+  /** Replace the shadow content with the rendered card section. */
+  #render(data: FeatureCardsData): void {
+    this.#renderedData = data;
+
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.setAttribute('part', 'section');
+
+    const headingLevel = this.#headingLevel();
+    const headingText = this.getAttribute('heading') ?? data.heading;
+    const headingSlot = document.createElement('slot');
+    headingSlot.name = 'heading';
+    if (headingText) {
+      const heading = document.createElement(`h${headingLevel}`);
+      heading.className = 'heading';
+      heading.setAttribute('part', 'heading');
+      heading.textContent = headingText;
+      headingSlot.append(heading);
+    }
+    section.append(headingSlot);
+
+    const grid = document.createElement('ul');
+    grid.className = 'grid';
+    grid.setAttribute('part', 'grid');
+    // list-style:none strips list semantics in some engines; restore it.
+    grid.setAttribute('role', 'list');
+    for (const card of data.cards) {
+      grid.append(this.#renderCard(card, Math.min(headingLevel + 1, 6)));
+    }
+    section.append(grid);
+
+    for (const node of [...this.#shadow.children]) {
+      if (node.tagName !== 'STYLE') {
+        node.remove();
+      }
+    }
+    this.#shadow.append(section);
+    applyWatermark(this.#shadow, FeatureCardsElement);
+
+    this.dispatchEvent(
+      new CustomEvent('featurecards:ready', {
+        bubbles: true,
+        composed: true,
+        detail: { count: data.cards.length },
+      }),
+    );
+  }
+
+  /** Render one card as a list item wrapping a single full-area link. */
+  #renderCard(card: Card, titleLevel: number): HTMLLIElement {
+    const item = document.createElement('li');
+    item.className = 'card';
+    item.setAttribute('part', 'card');
+    if (card.theme) {
+      item.dataset.theme = card.theme;
+    }
+
+    const link = document.createElement('a');
+    link.className = 'link';
+    link.setAttribute('part', 'link');
+    link.href = card.cta?.href ?? '#';
+    link.dataset.cardId = card.id;
+    if (card.cta?.ariaLabel) {
+      link.setAttribute('aria-label', card.cta.ariaLabel);
+    }
+    link.addEventListener('click', () => {
+      this.dispatchEvent(
+        new CustomEvent('featurecards:cardclick', {
+          bubbles: true,
+          composed: true,
+          detail: { id: card.id, card },
+        }),
+      );
+    });
+
+    if (card.media) {
+      const media = document.createElement('figure');
+      media.className = 'media';
+      media.setAttribute('part', 'media');
+      if ('src' in card.media) {
+        const img = document.createElement('img');
+        img.src = card.media.src;
+        img.alt = card.media.alt;
+        img.loading = 'lazy';
+        if (card.media.alt === '') {
+          img.setAttribute('aria-hidden', 'true');
+        }
+        media.append(img);
+      } else {
+        const icon = document.createElement('span');
+        icon.className = 'icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = card.media.icon;
+        media.append(icon);
+      }
+      link.append(media);
+    }
+
+    if (card.eyebrow) {
+      const eyebrow = document.createElement('p');
+      eyebrow.className = 'eyebrow';
+      eyebrow.setAttribute('part', 'eyebrow');
+      eyebrow.textContent = card.eyebrow;
+      link.append(eyebrow);
+    }
+
+    const title = document.createElement(`h${titleLevel}`);
+    title.className = 'title';
+    title.setAttribute('part', 'title');
+    title.textContent = card.title;
+    link.append(title);
+
+    if (card.figure) {
+      const figure = document.createElement('p');
+      figure.className = 'figure';
+      figure.setAttribute('part', 'figure');
+
+      const value = document.createElement('span');
+      value.className = 'figure-value';
+      value.setAttribute('part', 'value');
+      value.textContent = card.figure.value;
+
+      const label = document.createElement('span');
+      label.className = 'figure-label';
+      label.setAttribute('part', 'label');
+      label.textContent = card.figure.label;
+
+      figure.append(value, label);
+
+      if (card.figure.trend) {
+        const trend = document.createElement('span');
+        trend.className = 'visually-hidden';
+        trend.textContent = ` (${describeTrend(card.figure.trend)})`;
+        figure.append(trend);
+      }
+      link.append(figure);
+    }
+
+    if (card.description) {
+      const description = document.createElement('p');
+      description.className = 'description';
+      description.setAttribute('part', 'description');
+      description.textContent = card.description;
+      link.append(description);
+    }
+
+    if (card.cta) {
+      const cta = document.createElement('span');
+      cta.className = 'cta';
+      cta.setAttribute('part', 'cta');
+      cta.textContent = card.cta.label;
+      link.append(cta);
+    }
+
+    item.append(link);
+    return item;
+  }
+
+  /** Fail safe: emit structured issues, keep the fallback slot rendering. */
+  #emitError(issues: ValidationIssue[]): void {
+    this.dispatchEvent(
+      new CustomEvent('featurecards:error', {
+        bubbles: true,
+        composed: true,
+        detail: { issues },
+      }),
+    );
+  }
+
+  /** Parse `heading-level`, clamped to 1–6, default 2. */
+  #headingLevel(): number {
+    const raw = Number.parseInt(this.getAttribute('heading-level') ?? '2', 10);
+    return Number.isNaN(raw) ? 2 : Math.min(Math.max(raw, 1), 6);
+  }
+
+  /** Mirror the `columns` attribute into the `--fc-cols` CSS variable. */
+  #applyColumns(): void {
+    const raw = Number.parseInt(this.getAttribute('columns') ?? '', 10);
+    if (Number.isNaN(raw)) {
+      this.style.removeProperty('--fc-cols');
+    } else {
+      this.style.setProperty('--fc-cols', String(Math.min(Math.max(raw, 1), 6)));
+    }
+  }
+}
+
+/** Screen-reader-friendly description of a figure's trend. */
+function describeTrend(trend: Trend): string {
+  switch (trend) {
+    case 'up':
+      return 'increased';
+    case 'down':
+      return 'decreased';
+    case 'flat':
+      return 'steady';
+    default: {
+      const exhaustive: never = trend;
+      return exhaustive;
+    }
+  }
+}
+
+/**
+ * Register `<feature-cards>` exactly once. Safe to call repeatedly and
+ * safe when another copy of the library registered the element first.
+ */
+export function defineFeatureCards(): void {
+  if (!customElements.get('feature-cards')) {
+    customElements.define('feature-cards', FeatureCardsElement);
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'feature-cards': FeatureCardsElement;
+  }
+}

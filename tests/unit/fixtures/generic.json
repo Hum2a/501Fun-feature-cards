@@ -1,0 +1,20 @@
+{
+  "heading": "Generic payload",
+  "cards": [
+    {
+      "title": "Card without an id",
+      "description": "The generic adapter fills in a stable fallback id.",
+      "cta": { "label": "Learn more", "href": "/learn-more" }
+    },
+    {
+      "id": "explicit-id",
+      "eyebrow": "Kicker",
+      "title": "Card with everything",
+      "description": "Already matches the canonical shape.",
+      "figure": { "value": "42", "label": "answers provided", "trend": "up" },
+      "media": { "src": "https://example.com/img.png", "alt": "A chart trending upward" },
+      "cta": { "label": "Details", "href": "/details" },
+      "theme": "brand-green"
+    }
+  ]
+}

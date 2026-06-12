@@ -1,0 +1,30 @@
+[
+  {
+    "id": 101,
+    "link": "https://example.com/why-quality-matters/",
+    "title": { "rendered": "Why <em>quality</em> matters" },
+    "excerpt": {
+      "rendered": "<p>Quality compounds. Here&#8217;s how we measure it.</p>\n"
+    },
+    "_embedded": {
+      "wp:featuredmedia": [
+        {
+          "source_url": "https://example.com/wp-content/uploads/quality.jpg",
+          "alt_text": "Inspector reviewing a checklist"
+        }
+      ]
+    },
+    "acf": {
+      "eyebrow": "Quality",
+      "stat_value": "99.9%",
+      "stat_label": "defect-free deliveries",
+      "theme": "brand-blue"
+    }
+  },
+  {
+    "id": 102,
+    "link": "https://example.com/shipping-speed/",
+    "title": { "rendered": "Shipping at speed" },
+    "excerpt": { "rendered": "<p>From order to door in record time.</p>\n" }
+  }
+]

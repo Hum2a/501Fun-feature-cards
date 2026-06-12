@@ -1,0 +1,18 @@
+---
+description: Styling and theming conventions
+globs: src/styles.ts
+---
+
+# Styling
+
+- Theming is a public API: **CSS custom properties** (the `--fc-*` token
+  layer) and `::part()` hooks only. Consumers never need to pierce internals.
+- No hard-coded colours outside the token layer; tokens use `light-dark()`
+  for adaptive colour schemes.
+- Responsive behaviour comes from the **container**, not the viewport:
+  `container-type: inline-size` on the host plus `@container` queries.
+- Layout uses CSS Grid `repeat(auto-fit, minmax(...))`; the `columns`
+  attribute only caps the track count.
+- Fluid type via `clamp()`.
+- All motion is wrapped in `@media (prefers-reduced-motion: no-preference)`
+  or disabled under `reduce`.

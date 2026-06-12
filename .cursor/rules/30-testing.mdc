@@ -1,0 +1,18 @@
+---
+description: Testing conventions
+globs: tests/**
+---
+
+# Testing
+
+- Every public behaviour gets a unit test (Vitest + happy-dom) in
+  `tests/unit/`: schema validation, each adapter, data-source precedence,
+  events, registration guard, fail-safe behaviour on bad data.
+- Accessibility is verified with axe-core via Playwright in `tests/a11y/` —
+  assertions must require **zero** violations.
+- User-facing flows (render, keyboard navigation, activation, container
+  resize) are covered with Playwright in `tests/e2e/`.
+- Visual baselines for the rendered component live in `tests/visual/`;
+  regenerate intentionally with `--update-snapshots`, never casually.
+- Tests must be deterministic: no real network, no timing races; use
+  fixtures under `tests/unit/fixtures/`.

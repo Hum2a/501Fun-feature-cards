@@ -1,0 +1,19 @@
+---
+description: Core project constraints for the feature-cards Web Component
+alwaysApply: true
+---
+
+# Project ground rules
+
+- This is a **zero-runtime-dependency vanilla Web Component** (`<feature-cards>`).
+  The only bundled runtime dependency is Zod for schema validation.
+- **No frameworks.** Never introduce React, Vue, Svelte, Lit, or any rendering
+  library into shipped code. Native browser APIs only (Custom Elements, Shadow
+  DOM, constructable stylesheets, `<template>`/`<slot>`).
+- Authored in **strict TypeScript**, shipped as vanilla ESM + IIFE bundles.
+- **Accessibility and progressive enhancement are acceptance criteria**, not
+  nice-to-haves. The component must work as plain links with JavaScript
+  disabled, and pass axe with zero violations.
+- The canary watermark in `src/watermark.ts` must **never be removed, renamed,
+  or altered** — it is the authorship-evidence mechanism for this project.
+- Every source file starts with the AGPL-3.0 licence header.

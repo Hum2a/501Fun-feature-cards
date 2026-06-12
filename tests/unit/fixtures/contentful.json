@@ -1,0 +1,34 @@
+{
+  "sys": { "type": "Array" },
+  "total": 2,
+  "items": [
+    {
+      "sys": { "id": "5KsDBWseXY6QegucYAoacS" },
+      "fields": {
+        "eyebrow": "Platform",
+        "title": "One platform, every channel",
+        "description": "Publish to web, app, and kiosk from a single content model.",
+        "statValue": "12+",
+        "statLabel": "channels supported",
+        "ctaLabel": "Explore the platform",
+        "ctaUrl": "https://example.com/platform",
+        "theme": "brand-green",
+        "image": {
+          "fields": {
+            "file": { "url": "//images.ctfassets.net/space/platform.png" },
+            "description": "Diagram of one content model feeding many channels"
+          }
+        }
+      }
+    },
+    {
+      "sys": { "id": "1a2b3c4d5e" },
+      "fields": {
+        "title": "Editors love it",
+        "description": "A clean editing experience your content team will actually enjoy.",
+        "ctaLabel": "See editor tour",
+        "ctaUrl": "https://example.com/editor"
+      }
+    }
+  ]
+}

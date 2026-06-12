@@ -1,0 +1,204 @@
+/*!
+ * @humza/feature-cards demo styles
+ * Copyright © 2026 Humza Butt. All rights reserved.
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+:root {
+  color-scheme: light dark;
+  --page-bg: light-dark(#f6f8fb, #0d141d);
+  --page-fg: light-dark(#16202b, #e8edf2);
+  --page-muted: light-dark(#51606f, #9aa7b4);
+  --page-accent: light-dark(#2563eb, #7aa2ff);
+  --page-card: light-dark(#ffffff, #1a2330);
+  --page-border: light-dark(#e3e8ee, #2c3a4b);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  background: var(--page-bg);
+  color: var(--page-fg);
+  line-height: 1.6;
+}
+
+.hero {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 6rem) 1.5rem 2rem;
+  text-align: center;
+}
+
+.hero-eyebrow {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--page-accent);
+}
+
+.hero h1 {
+  margin: 0.5rem 0;
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.hero-sub {
+  margin: 0 auto;
+  max-width: 38rem;
+  color: var(--page-muted);
+  font-size: 1.1rem;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.hero-badges span {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--page-border);
+  border-radius: 999px;
+  background: var(--page-card);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.block {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+
+.block > h2 {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  margin: 0 0 0.25rem;
+}
+
+.block-note {
+  margin: 0 0 1.25rem;
+  max-width: 44rem;
+  color: var(--page-muted);
+}
+
+.block-note code {
+  background: var(--page-card);
+  border: 1px solid var(--page-border);
+  border-radius: 0.3rem;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.88em;
+}
+
+.before-after {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.25rem;
+}
+
+.before-after > div {
+  background: var(--page-card);
+  border: 1px solid var(--page-border);
+  border-radius: 0.875rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.before-after h3 {
+  margin: 0 0 0.5rem;
+}
+
+.before-after p {
+  margin: 0;
+  color: var(--page-muted);
+}
+
+.playground {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: end;
+  background: var(--page-card);
+  border: 1px solid var(--page-border);
+  border-radius: 0.875rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.playground label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.playground button {
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--page-border);
+  border-radius: 0.5rem;
+  background: var(--page-bg);
+  color: var(--page-fg);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.playground button:focus-visible,
+.playground input:focus-visible {
+  outline: 3px solid var(--page-accent);
+  outline-offset: 2px;
+}
+
+.resizable {
+  min-width: 18rem;
+  max-width: 100%;
+  padding: 1rem;
+  border: 2px dashed var(--page-border);
+  border-radius: 0.875rem;
+}
+
+.footer {
+  border-top: 1px solid var(--page-border);
+  padding: 2rem 1.5rem 3rem;
+  text-align: center;
+  color: var(--page-muted);
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: var(--page-accent);
+}
+
+/* Pre-upgrade light-DOM links: keep them presentable without JS. */
+feature-cards:not(:defined) {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+feature-cards:not(:defined) a {
+  display: block;
+  padding: 1.25rem 1.5rem;
+  background: var(--page-card);
+  border: 1px solid var(--page-border);
+  border-radius: 0.875rem;
+  color: inherit;
+  font-weight: 600;
+}

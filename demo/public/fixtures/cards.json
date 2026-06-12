@@ -1,0 +1,32 @@
+{
+  "heading": "Fetched from the mock CMS",
+  "cards": [
+    {
+      "id": "cms-uptime",
+      "eyebrow": "Reliability",
+      "title": "Always on",
+      "description": "Multi-region failover keeps your storefront available around the clock.",
+      "figure": { "value": "99.99%", "label": "uptime last 12 months", "trend": "up" },
+      "cta": { "label": "Read the SLA", "href": "#sla" },
+      "theme": "brand-blue"
+    },
+    {
+      "id": "cms-editors",
+      "eyebrow": "Authoring",
+      "title": "Editors love it",
+      "description": "Change a CMS entry and the cards re-render — no designer round-trip.",
+      "figure": { "value": "0", "label": "code changes per copy edit", "trend": "flat" },
+      "cta": { "label": "See the workflow", "href": "#workflow" },
+      "theme": "brand-green"
+    },
+    {
+      "id": "cms-adapters",
+      "eyebrow": "Portability",
+      "title": "Bring any CMS",
+      "description": "WordPress, Contentful, Sanity, or anything else — one tiny adapter each.",
+      "figure": { "value": "4", "label": "adapters built in", "trend": "up" },
+      "cta": { "label": "Browse adapters", "href": "#adapters" },
+      "theme": "brand-amber"
+    }
+  ]
+}

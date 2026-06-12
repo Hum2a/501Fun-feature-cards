@@ -1,0 +1,25 @@
+{
+  "ms": 12,
+  "query": "*[_type == 'featureCard']{...}",
+  "result": [
+    {
+      "_id": "card-uptime",
+      "eyebrow": "Reliability",
+      "title": "Always on",
+      "description": "Multi-region failover keeps your storefront available around the clock.",
+      "stat": { "value": "99.99%", "label": "uptime last 12 months", "trend": "up" },
+      "image": {
+        "asset": { "url": "https://cdn.sanity.io/images/space/uptime.png" },
+        "alt": "Status dashboard showing all systems operational"
+      },
+      "cta": { "label": "Read the SLA", "href": "https://example.com/sla" },
+      "theme": "brand-amber"
+    },
+    {
+      "_id": "card-support",
+      "title": "Humans on call",
+      "description": "Real engineers answer within minutes, day or night.",
+      "cta": { "label": "Meet the team", "href": "https://example.com/support" }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# Default owner for everything in the repo.
+* @humza
+
+# The watermark and licensing files require explicit owner review.
+/src/watermark.ts @humza
+/LICENSE @humza
+/NOTICE @humza
+/COPYRIGHT @humza

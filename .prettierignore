@@ -1,0 +1,10 @@
+dist/
+coverage/
+playwright-report/
+test-results/
+node_modules/
+.wrangler/
+LICENSE
+*.md
+package-lock.json
+tests/visual/**/*-snapshots/

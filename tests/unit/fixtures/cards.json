@@ -1,0 +1,32 @@
+{
+  "heading": "Why teams choose us",
+  "cards": [
+    {
+      "id": "satisfaction",
+      "eyebrow": "Customer love",
+      "title": "Satisfaction that sticks",
+      "description": "Our support team resolves issues fast and follows up until you're genuinely happy — not just ticket-closed happy.",
+      "figure": { "value": "97%", "label": "customer satisfaction", "trend": "up" },
+      "cta": { "label": "Read customer stories", "href": "/customers" },
+      "theme": "brand-blue"
+    },
+    {
+      "id": "growth",
+      "eyebrow": "Proven results",
+      "title": "Growth you can measure",
+      "description": "Clients see compounding returns within the first quarter, tracked in a dashboard you can audit any time.",
+      "figure": { "value": "3.2x", "label": "average first-year ROI", "trend": "up" },
+      "cta": { "label": "See the numbers", "href": "/results" },
+      "theme": "brand-green"
+    },
+    {
+      "id": "speed",
+      "eyebrow": "No waiting around",
+      "title": "Onboarding in days, not months",
+      "description": "A dedicated specialist gets you live fast, with migrations handled for you end to end.",
+      "figure": { "value": "5 days", "label": "median time to launch", "trend": "flat" },
+      "cta": { "label": "Start onboarding", "href": "/onboarding" },
+      "theme": "brand-amber"
+    }
+  ]
+}

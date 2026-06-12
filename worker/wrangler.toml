@@ -1,0 +1,22 @@
+# Mock CMS Worker for the <feature-cards> demo.
+# © 2026 Humza Butt — AGPL-3.0-only
+name = "feature-cards-cms"
+main = "index.ts"
+compatibility_date = "2026-06-01"
+
+[dev]
+port = 8787
+
+[vars]
+CORS_ORIGIN = "*"
+
+[env.preview]
+name = "feature-cards-cms-preview"
+[env.preview.vars]
+CORS_ORIGIN = "*"
+
+[env.production]
+name = "feature-cards-cms"
+[env.production.vars]
+# Lock CORS to the deployed Pages origin in production.
+CORS_ORIGIN = "https://feature-cards.pages.dev"

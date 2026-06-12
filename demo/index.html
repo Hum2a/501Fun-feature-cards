@@ -1,0 +1,253 @@
+<!doctype html>
+<!--
+  @humza/feature-cards demo
+  Copyright © 2026 Humza Butt. All rights reserved.
+  SPDX-License-Identifier: AGPL-3.0-only
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Demo of <feature-cards>: a CMS-agnostic, accessible, responsive Web Component."
+    />
+    <title>&lt;feature-cards&gt; — CMS-agnostic feature cards Web Component</title>
+    <link rel="stylesheet" href="/demo.css" />
+    <script type="module" src="/main.ts"></script>
+  </head>
+  <body>
+    <header class="hero">
+      <p class="hero-eyebrow">A Web Component, not a widget</p>
+      <h1>&lt;feature-cards&gt;</h1>
+      <p class="hero-sub">
+        One custom element replaces three hard-coded card images — accessible, responsive,
+        themable, and CMS-agnostic. Drop it into WordPress, Contentful, Sanity, or plain
+        HTML with minimal adjustment.
+      </p>
+      <p class="hero-badges">
+        <span>Zero framework deps</span>
+        <span>Shadow DOM</span>
+        <span>Container queries</span>
+        <span>AGPL-3.0</span>
+      </p>
+    </header>
+
+    <main>
+      <section class="block" aria-labelledby="mode-1-title">
+        <h2 id="mode-1-title">1 · Declarative inline JSON</h2>
+        <p class="block-note">
+          The three original 501-style coloured cards, authored as a JSON child of the
+          element. No JavaScript wiring needed.
+        </p>
+        <feature-cards id="inline-instance" heading-level="3">
+          <script type="application/json">
+            {
+              "heading": "Why teams choose us",
+              "cards": [
+                {
+                  "id": "satisfaction",
+                  "eyebrow": "Customer love",
+                  "title": "Satisfaction that sticks",
+                  "description": "Our support team resolves issues fast and follows up until you're genuinely happy — not just ticket-closed happy.",
+                  "figure": {
+                    "value": "97%",
+                    "label": "customer satisfaction",
+                    "trend": "up"
+                  },
+                  "cta": { "label": "Read customer stories", "href": "#customers" },
+                  "theme": "brand-blue"
+                },
+                {
+                  "id": "growth",
+                  "eyebrow": "Proven results",
+                  "title": "Growth you can measure",
+                  "description": "Clients see compounding returns within the first quarter, tracked in a dashboard you can audit any time.",
+                  "figure": {
+                    "value": "3.2x",
+                    "label": "average first-year ROI",
+                    "trend": "up"
+                  },
+                  "cta": { "label": "See the numbers", "href": "#results" },
+                  "theme": "brand-green"
+                },
+                {
+                  "id": "speed",
+                  "eyebrow": "No waiting around",
+                  "title": "Onboarding in days, not months",
+                  "description": "A dedicated specialist gets you live fast, with migrations handled for you end to end.",
+                  "figure": {
+                    "value": "5 days",
+                    "label": "median time to launch",
+                    "trend": "flat"
+                  },
+                  "cta": { "label": "Start onboarding", "href": "#onboarding" },
+                  "theme": "brand-amber"
+                }
+              ]
+            }
+          </script>
+        </feature-cards>
+      </section>
+
+      <section class="block" aria-labelledby="mode-2-title">
+        <h2 id="mode-2-title">2 · Progressive enhancement</h2>
+        <p class="block-note">
+          Plain light-DOM links that work with JavaScript disabled — the component
+          upgrades them into full cards when it loads.
+        </p>
+        <feature-cards
+          id="light-dom-instance"
+          heading="From plain links"
+          heading-level="3"
+        >
+          <a
+            id="docs"
+            href="#docs"
+            data-eyebrow="Guides"
+            data-description="Everything you need to integrate in an afternoon."
+            data-theme="brand-blue"
+            >Read the documentation</a
+          >
+          <a
+            id="api"
+            href="#api"
+            data-eyebrow="Reference"
+            data-description="Attributes, properties, events, parts, and tokens."
+            data-theme="brand-green"
+            >Explore the API</a
+          >
+          <a
+            id="community"
+            href="#community"
+            data-eyebrow="Help"
+            data-description="Questions answered by the people who built it."
+            data-theme="brand-amber"
+            >Join the community</a
+          >
+        </feature-cards>
+      </section>
+
+      <section class="block" aria-labelledby="mode-3-title">
+        <h2 id="mode-3-title">3 · Fetched from a headless CMS</h2>
+        <p class="block-note">
+          This instance fetches JSON over HTTP — locally from the mock Cloudflare Worker
+          (<code>npm run serve:cms</code>), with a static fixture as fallback — and maps
+          it through an adapter. Swap <code>adapter="generic"</code> for
+          <code>wordpress</code>, <code>contentful</code>, or <code>sanity</code> and
+          point <code>src</code> at your CMS: that is the whole migration.
+        </p>
+        <feature-cards
+          id="cms-instance"
+          adapter="generic"
+          heading-level="3"
+        ></feature-cards>
+      </section>
+
+      <section class="block" aria-labelledby="before-after-title">
+        <h2 id="before-after-title">Before / after</h2>
+        <div class="before-after">
+          <div>
+            <h3>Before</h3>
+            <p>
+              Three static card <em>images</em> baked into the page: invisible to screen
+              readers, unreadable on small screens, and a designer round-trip for every
+              copy change.
+            </p>
+          </div>
+          <div>
+            <h3>After</h3>
+            <p>
+              One element, real text. Content editors change a CMS entry; the cards
+              re-render. Screen readers get headings, links, and stat context. The grid
+              reflows to its container, not the viewport.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" aria-labelledby="playground-title">
+        <h2 id="playground-title">Theming playground</h2>
+        <p class="block-note">
+          Theming is just CSS custom properties — move the sliders and watch the first
+          section restyle live. No internals touched.
+        </p>
+        <form class="playground" id="playground">
+          <label>
+            Accent
+            <input type="color" name="--fc-accent" value="#2563eb" />
+          </label>
+          <label>
+            Card background
+            <input type="color" name="--fc-card-bg" value="#ffffff" />
+          </label>
+          <label>
+            Corner radius
+            <input
+              type="range"
+              name="--fc-radius"
+              min="0"
+              max="32"
+              value="14"
+              data-unit="px"
+            />
+          </label>
+          <label>
+            Card min width
+            <input
+              type="range"
+              name="--fc-card-min"
+              min="180"
+              max="420"
+              value="256"
+              data-unit="px"
+            />
+          </label>
+          <button type="reset">Reset</button>
+        </form>
+      </section>
+
+      <section class="block resize-block" aria-labelledby="resize-title">
+        <h2 id="resize-title">Container-driven responsiveness</h2>
+        <p class="block-note">
+          Drag the handle — the component responds to its <em>container</em>, not the
+          viewport.
+        </p>
+        <div class="resizable" id="resizable">
+          <!-- No section heading here, so card titles render at level 2+1 = h3,
+               nesting correctly under this block's h2. -->
+          <feature-cards id="resizable-instance" heading-level="2">
+            <script type="application/json">
+              {
+                "cards": [
+                  {
+                    "id": "r1",
+                    "title": "I reflow",
+                    "figure": { "value": "100%", "label": "container aware" },
+                    "cta": { "label": "Container queries", "href": "#cq" },
+                    "theme": "brand-blue"
+                  },
+                  {
+                    "id": "r2",
+                    "title": "Me too",
+                    "figure": { "value": "0", "label": "media queries used" },
+                    "cta": { "label": "Grid auto-fit", "href": "#grid" },
+                    "theme": "brand-green"
+                  }
+                ]
+              }
+            </script>
+          </feature-cards>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        © 2026 Humza Butt · Licensed
+        <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL-3.0-only</a>
+        · <a href="https://github.com/humza/feature-cards">Source</a>
+      </p>
+    </footer>
+  </body>
+</html>

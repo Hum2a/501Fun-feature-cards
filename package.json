@@ -1,0 +1,103 @@
+{
+  "name": "@humza/feature-cards",
+  "version": "1.0.0",
+  "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "author": "Humza Butt <Humzab1711@hotmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/humza/feature-cards.git"
+  },
+  "homepage": "https://github.com/humza/feature-cards#readme",
+  "bugs": {
+    "url": "https://github.com/humza/feature-cards/issues"
+  },
+  "keywords": [
+    "web-component",
+    "custom-element",
+    "feature-cards",
+    "cms-agnostic",
+    "accessible",
+    "shadow-dom"
+  ],
+  "sideEffects": false,
+  "main": "./dist/feature-cards.js",
+  "module": "./dist/feature-cards.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/feature-cards.js",
+      "default": "./dist/feature-cards.js"
+    },
+    "./iife": "./dist/feature-cards.iife.js"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "NOTICE",
+    "COPYRIGHT",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite --config vite.demo.config.ts",
+    "build": "npm run clean && vite build && tsc -p tsconfig.build.json && vite build --config vite.demo.config.ts",
+    "preview": "vite preview --config vite.demo.config.ts",
+    "serve:cms": "wrangler dev --config worker/wrangler.toml",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:a11y": "playwright test tests/a11y",
+    "test:e2e": "playwright test tests/e2e",
+    "test:visual": "playwright test tests/visual",
+    "test:ci": "npm run typecheck && npm run coverage && npm run test:a11y && npm run test:e2e && npm run test:visual",
+    "coverage": "vitest run --coverage",
+    "size": "node scripts/size.mjs",
+    "analyze": "vite build --mode analyze",
+    "canary:verify": "node scripts/canary.mjs",
+    "deploy": "wrangler pages deploy dist/demo --project-name feature-cards && wrangler deploy --config worker/wrangler.toml",
+    "deploy:preview": "wrangler pages deploy dist/demo --project-name feature-cards --branch preview",
+    "release": "changeset version && changeset publish",
+    "check": "npm run typecheck && npm run lint && npm run test:ci && npm run size",
+    "clean": "node scripts/clean.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "banner": "node scripts/banner.mjs",
+    "stats": "node scripts/stats.mjs",
+    "ascii": "node scripts/ascii.mjs",
+    "whoami": "node scripts/whoami.mjs",
+    "coffee": "node scripts/coffee.mjs",
+    "ship-it": "node scripts/ship-it.mjs",
+    "party": "node scripts/party.mjs",
+    "postinstall": "node scripts/banner.mjs --quiet",
+    "prepublishOnly": "npm run check"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@changesets/cli": "^2.27.10",
+    "@eslint/js": "^9.17.0",
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "happy-dom": "^15.11.7",
+    "prettier": "^3.4.2",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.99.0"
+  }
+}
