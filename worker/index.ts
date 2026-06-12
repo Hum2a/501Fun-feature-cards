@@ -10,8 +10,10 @@
 /**
  * Mock headless-CMS endpoint for the `<feature-cards>` demo.
  * Serves card JSON at GET /api/cards with CORS + cache headers, simulating
- * what a real CMS delivery API would return.
+ * what a real CMS delivery API would return. OpenAPI at GET /openapi.json.
  */
+
+import openApiSpec from '../docs/openapi/cms-api.json';
 
 interface Env {
   /** Origin allowed by CORS; "*" by default for the public demo. */
@@ -68,6 +70,15 @@ export default {
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(env) });
+    }
+
+    if (url.pathname === '/openapi.json' && request.method === 'GET') {
+      return new Response(JSON.stringify(openApiSpec, null, 2), {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          ...corsHeaders(env),
+        },
+      });
     }
 
     if (url.pathname === '/api/cards' && request.method === 'GET') {

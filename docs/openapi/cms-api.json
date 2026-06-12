@@ -1,0 +1,100 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "feature-cards mock CMS API",
+    "version": "1.0.1",
+    "description": "OpenAPI contract for the mock Cloudflare Worker CMS used by the feature-cards demo.",
+    "license": { "name": "AGPL-3.0-only" }
+  },
+  "servers": [
+    { "url": "https://cms.501fun.humza-butt.space", "description": "Production mock CMS" },
+    { "url": "http://localhost:8787", "description": "Local wrangler dev" }
+  ],
+  "paths": {
+    "/api/cards": {
+      "get": {
+        "operationId": "getCards",
+        "summary": "Fetch canonical feature card payload",
+        "responses": {
+          "200": {
+            "description": "Card section JSON matching the feature-cards canonical schema",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FeatureCardsData" }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": { "type": "string" },
+                "example": "public, max-age=60, stale-while-revalidate=300"
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "summary": "CORS preflight",
+        "responses": { "204": { "description": "No content" } }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "operationId": "getOpenApi",
+        "summary": "This OpenAPI document",
+        "responses": {
+          "200": {
+            "description": "OpenAPI 3.1 JSON",
+            "content": { "application/json": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FeatureCardsData": {
+        "type": "object",
+        "required": ["cards"],
+        "properties": {
+          "heading": { "type": "string" },
+          "cards": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/components/schemas/Card" }
+          }
+        }
+      },
+      "Card": {
+        "type": "object",
+        "required": ["id", "title"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "eyebrow": { "type": "string" },
+          "title": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "figure": { "$ref": "#/components/schemas/Figure" },
+          "cta": { "$ref": "#/components/schemas/Cta" },
+          "theme": { "type": "string" }
+        }
+      },
+      "Figure": {
+        "type": "object",
+        "required": ["value", "label"],
+        "properties": {
+          "value": { "type": "string" },
+          "label": { "type": "string" },
+          "trend": { "type": "string", "enum": ["up", "down", "flat"] }
+        }
+      },
+      "Cta": {
+        "type": "object",
+        "required": ["label", "href"],
+        "properties": {
+          "label": { "type": "string" },
+          "href": { "type": "string" },
+          "ariaLabel": { "type": "string" }
+        }
+      }
+    }
+  }
+}
