@@ -41,7 +41,9 @@ schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
 | `npm run check` | The everything gate: typecheck + lint + tests + size |
 | `npm run size` | Bundle size vs budget |
 | `npm run canary:verify -- <url>` | Scan a URL for the authorship markers |
-| `npm run doctor` | Verify the local toolchain |
+| `npm run stats` | Repo stats summary (files, LOC snapshot, bundle size) |
+| `npm run loc` | Full lines-of-code report (terminal) |
+| `npm run loc:report` | Write `docs/loc-report.md` |
 | `npm run release -- --patch` | Bump version, update CHANGELOG, create git tag |
 | `npm run release:package` | Build, test, and publish to npm (tagged HEAD) |
 
