@@ -46,6 +46,18 @@ schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
 | `npm run loc:report` | Write `docs/loc-report.md` |
 | `npm run release -- --patch` | Bump version, update CHANGELOG, create git tag |
 | `npm run release:package` | Build, test, and publish to npm (tagged HEAD) |
+| `npm run rules:sync` | Mirror `.cursor/rules/` → `.claude/rules/` and `.agents/rules/` |
+| `npm run rules:sync:check` | Fail if agent rule mirrors are stale (CI) |
+
+## Agent rules
+
+Cursor rules live in `.cursor/rules/` (source of truth). After editing them,
+run `npm run rules:sync` to replicate the same guidance into:
+
+- `.claude/rules/` — Claude Code / Claude agent sessions
+- `.agents/rules/` — other agent tooling that reads a parallel rules dir
+
+Do not edit the mirrored `.md` files directly — they are regenerated.
 
 ## Environment files
 

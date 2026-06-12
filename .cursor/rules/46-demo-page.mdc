@@ -1,0 +1,47 @@
+---
+description: Demo landing page structure and UX conventions
+globs: demo/**
+alwaysApply: false
+---
+
+# Demo page conventions
+
+## Structure
+
+- `demo/index.html` — semantic sections only; no inline styles. Each mode gets
+  a numbered `.block` with `aria-labelledby` pointing at its `<h2>`.
+- `demo/demo.css` — all page chrome. Component appearance stays in Shadow DOM
+  (`src/styles.ts`); do not style `.card` / shadow internals from the demo.
+- `demo/main.ts` — wiring only (CMS endpoint, playground, resize readout,
+  event logging). No DOM templating.
+
+## Required UX affordances
+
+- **Skip link** to `#main-content` as the first focusable element.
+- **CMS status pill** (`#cms-status`, `role="status"`, `aria-live="polite"`)
+  updated on `featurecards:ready` / `featurecards:error`.
+- **Playground** (`#playground`) drives `#playground-instance` via CSS custom
+  properties — not `#inline-instance` (those cards have fixed per-card themes).
+- **Resize readout** (`#resize-readout`) fed by `ResizeObserver` on `#resizable`.
+  Resize handle lives in CSS (`resize: horizontal`); show a corner affordance.
+
+## Copy & content
+
+- Section notes (`.block-note`) explain *why*, not just *what*. Use `<code>` for
+  attributes, npm scripts, and adapter names.
+- Light-DOM demo links use `data-eyebrow`, `data-description`, `data-theme`,
+  and distinct `data-cta` labels.
+- Meta `fc-cms-endpoint` points at production; dev defers to
+  `VITE_FC_CMS_ENDPOINT` in `demo/main.ts`.
+
+## CMS wiring
+
+- Set `src` once — do not probe-fetch before the component fetches. On error,
+  retry with `/fixtures/cards.json` and update the status pill to `fallback`.
+
+## Do not
+
+- Add framework CSS or component libraries to the demo.
+- Hide loading/error states behind console-only logging.
+- Break the five demo instances' card counts (3 + 3 + 3 + 2 playground + 2
+  resizable) without updating e2e tests.

@@ -94,6 +94,8 @@
     "coffee": "node scripts/coffee.mjs",
     "ship-it": "node scripts/ship-it.mjs",
     "party": "node scripts/party.mjs",
+    "rules:sync": "node scripts/sync-agent-rules.mjs",
+    "rules:sync:check": "node scripts/sync-agent-rules.mjs --check",
     "postinstall": "node scripts/banner.mjs --quiet",
     "prepublishOnly": "npm run build:lib"
   },
