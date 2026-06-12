@@ -212,15 +212,28 @@ push to `main`. Host settings live in [`config/site.json`](config/site.json).
    - **Account → Cloudflare Pages → Edit**
    - **Zone → Workers Routes → Edit** (for `humza-butt.space` — binds `/api/*` to the Worker)
 
-On merge to `main`, CI builds the demo, deploys to the `feature-cards` Pages
-project, attaches the custom domain, and deploys the Worker with route
-`501fun.humza-butt.space/api/*`. PRs still get `*.pages.dev` preview URLs.
+On merge to `master` (production branch in `config/site.json`), CI builds the
+demo, deploys to the `feature-cards` Pages project, attaches the custom domain
+via `scripts/attach-pages-domain.mjs` (Wrangler has no `pages domain add`
+command), and deploys the Worker with route `501fun.humza-butt.space/api/*`.
+PRs still get `*.pages.dev` preview URLs.
 
 ### Manual deploy
 
+Put `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in `.env`, then:
+
 ```sh
-npm run build
-npm run deploy
+npm run deploy              # build + Pages + domain + Worker
+npm run deploy:domain       # attach custom domain only
+npm run deploy:domain:dry   # preview the domain API call
+```
+
+If Pages deployed but domain/Worker failed partway through, run the remaining
+steps:
+
+```sh
+npm run deploy:domain
+npx wrangler deploy --config worker/wrangler.toml --env production
 ```
 
 Verify after deploy:

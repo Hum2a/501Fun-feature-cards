@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
 
 concurrency:
@@ -33,6 +33,7 @@ jobs:
           echo "host=$(node -p "require('./config/site.json').host")" >> "$GITHUB_OUTPUT"
           echo "pages=$(node -p "require('./config/site.json').pagesProject")" >> "$GITHUB_OUTPUT"
           echo "origin=$(node -p "require('./config/site.json').origin")" >> "$GITHUB_OUTPUT"
+          echo "branch=$(node -p "require('./config/site.json').productionBranch")" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: npm ci
@@ -49,21 +50,15 @@ jobs:
           command: >-
             pages deploy dist/demo
             --project-name=${{ steps.site.outputs.pages }}
-            --branch=${{ github.head_ref || 'main' }}
+            --branch=${{ github.event_name == 'pull_request' && github.head_ref || steps.site.outputs.branch }}
 
       - name: Attach custom domain to Pages (production)
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == format('refs/heads/{0}', steps.site.outputs.branch)
         continue-on-error: true
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
-          command: >-
-            pages domain add ${{ steps.site.outputs.pages }}
-            ${{ steps.site.outputs.host }}
+        run: node scripts/attach-pages-domain.mjs
 
       - name: Deploy mock CMS Worker (production)
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == format('refs/heads/{0}', steps.site.outputs.branch)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
@@ -78,8 +73,8 @@ jobs:
             const preview = '${{ steps.pages.outputs.deployment-url }}';
             const production = '${{ steps.site.outputs.origin }}';
             const body = preview
-              ? `**Preview:** ${preview}\n\n**Production (on merge to \`main\`):** ${production}`
-              : `**Production (on merge to \`main\`):** ${production}`;
+              ? `**Preview:** ${preview}\n\n**Production (on merge to \`${{ steps.site.outputs.branch }}\`):** ${production}`
+              : `**Production (on merge to \`${{ steps.site.outputs.branch }}\`):** ${production}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
