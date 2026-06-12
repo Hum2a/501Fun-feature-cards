@@ -11,28 +11,9 @@
 //   CLOUDFLARE_ACCOUNT_ID=... CLOUDFLARE_API_TOKEN=... node scripts/attach-pages-domain.mjs
 //   npm run deploy:domain
 
-import { readFileSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-
-const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
-
-/** Load root `.env` into process.env when vars are not already set. */
-function loadDotEnv() {
-  const path = join(ROOT, '.env');
-  if (!existsSync(path)) return;
-  for (const line of readFileSync(path, 'utf8').split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const eq = trimmed.indexOf('=');
-    if (eq === -1) continue;
-    const key = trimmed.slice(0, eq).trim();
-    const value = trimmed.slice(eq + 1).trim();
-    if (key && process.env[key] === undefined) {
-      process.env[key] = value;
-    }
-  }
-}
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { loadDotEnv, ROOT } from './load-env.mjs';
 
 loadDotEnv();
 

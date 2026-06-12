@@ -207,10 +207,12 @@ push to `main`. Host settings live in [`config/site.json`](config/site.json).
 1. **DNS** — In Cloudflare, ensure `501fun.humza-butt.space` is on your
    `humza-butt.space` zone (you said this is already done).
 2. **GitHub secrets** — `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
-3. **API token permissions** — in addition to Pages + Workers Scripts Edit:
-   - **Account → Workers Scripts → Edit**
+3. **API token permissions** — your token needs:
    - **Account → Cloudflare Pages → Edit**
-   - **Zone → Workers Routes → Edit** (for `humza-butt.space` — binds `/api/*` to the Worker)
+   - **Account → Workers Scripts → Edit**
+   - **Zone → Workers Routes → Edit** on `humza-butt.space` *(required for `/api/*` routing — without this the Worker uploads but route binding fails with auth error 10000)*
+
+   Local deploys load these from `.env` via `scripts/run-wrangler.mjs` — do **not** rely on `wrangler login` OAuth for deploys.
 
 On merge to `master` (production branch in `config/site.json`), CI builds the
 demo, deploys to the `feature-cards` Pages project, attaches the custom domain
@@ -225,6 +227,7 @@ Put `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in `.env`, then:
 ```sh
 npm run deploy              # build + Pages + domain + Worker
 npm run deploy:domain       # attach custom domain only
+npm run deploy:worker       # deploy CMS Worker only (uses .env token)
 npm run deploy:domain:dry   # preview the domain API call
 ```
 
@@ -233,7 +236,7 @@ steps:
 
 ```sh
 npm run deploy:domain
-npx wrangler deploy --config worker/wrangler.toml --env production
+npm run deploy:worker
 ```
 
 Verify after deploy:
