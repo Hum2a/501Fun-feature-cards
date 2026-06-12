@@ -22,6 +22,7 @@
     "shadow-dom"
   ],
   "sideEffects": false,
+  "customElements": "custom-elements.json",
   "main": "./dist/feature-cards.js",
   "module": "./dist/feature-cards.js",
   "types": "./dist/types/index.d.ts",
@@ -31,9 +32,23 @@
       "import": "./dist/feature-cards.js",
       "default": "./dist/feature-cards.js"
     },
-    "./iife": "./dist/feature-cards.iife.js"
+    "./iife": "./dist/feature-cards.iife.js",
+    "./react": {
+      "types": "./dist/types/react/index.d.ts",
+      "import": "./dist/react.js",
+      "default": "./dist/react.js"
+    }
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   },
   "files": [
+    "custom-elements.json",
     "dist",
     "LICENSE",
     "NOTICE",
@@ -48,7 +63,7 @@
   },
   "scripts": {
     "dev": "vite --config vite.demo.config.ts",
-    "build:lib": "vite build && tsc -p tsconfig.build.json",
+    "build:lib": "vite build && vite build --config vite.react.config.ts && tsc -p tsconfig.build.json",
     "build": "npm run clean && npm run build:lib && vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts",
     "serve:cms": "node scripts/run-wrangler.mjs dev --config worker/wrangler.toml",
@@ -59,10 +74,14 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:unit": "vitest run tests/unit",
+    "test:fuzz": "vitest run tests/unit/schema.fuzz.test.ts",
+    "test:contracts": "vitest run tests/contracts",
+    "test:bench": "vitest bench --run",
+    "test:browser": "npm run build:lib && web-test-runner",
     "test:a11y": "playwright test tests/a11y",
     "test:e2e": "playwright test tests/e2e",
     "test:visual": "playwright test tests/visual",
-    "test:ci": "npm run typecheck && npm run coverage && npm run test:a11y && npm run test:e2e && npm run test:visual",
+    "test:ci": "npm run typecheck && npm run coverage && npm run test:fuzz && npm run test:contracts && npm run test:a11y && npm run test:e2e && npm run test:visual",
     "coverage": "vitest run --coverage",
     "size": "node scripts/size.mjs",
     "analyze": "vite build --mode analyze",
@@ -96,6 +115,10 @@
     "party": "node scripts/party.mjs",
     "rules:sync": "node scripts/sync-agent-rules.mjs",
     "rules:sync:check": "node scripts/sync-agent-rules.mjs --check",
+    "docs:api": "typedoc",
+    "cem": "node scripts/generate-cem.mjs",
+    "sri": "node scripts/generate-sri.mjs",
+    "validate:cms": "node scripts/validate-cms-json.mjs",
     "postinstall": "node scripts/banner.mjs --quiet",
     "prepublishOnly": "npm run build:lib"
   },
@@ -107,12 +130,19 @@
     "@eslint/js": "^9.17.0",
     "@playwright/test": "^1.49.1",
     "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
     "@vitest/coverage-v8": "^2.1.8",
+    "@web/test-runner": "^0.20.2",
+    "@web/test-runner-playwright": "^0.11.1",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
+    "fast-check": "^3.23.2",
     "happy-dom": "^15.11.7",
+    "msw": "^2.7.0",
     "prettier": "^3.4.2",
+    "react": "^19.0.0",
     "rollup-plugin-visualizer": "^5.14.0",
+    "typedoc": "^0.27.5",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1",
     "vite": "^6.0.5",
