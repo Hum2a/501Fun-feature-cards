@@ -1,6 +1,6 @@
 {
   "name": "@humza/feature-cards",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -40,12 +40,16 @@
     "COPYRIGHT",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "dev": "vite --config vite.demo.config.ts",
-    "build": "npm run clean && vite build && tsc -p tsconfig.build.json && vite build --config vite.demo.config.ts",
+    "build:lib": "vite build && tsc -p tsconfig.build.json",
+    "build": "npm run clean && npm run build:lib && vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts",
     "serve:cms": "wrangler dev --config worker/wrangler.toml",
     "typecheck": "tsc --noEmit",
@@ -65,7 +69,11 @@
     "canary:verify": "node scripts/canary.mjs",
     "deploy": "wrangler pages deploy dist/demo --project-name feature-cards && wrangler deploy --config worker/wrangler.toml",
     "deploy:preview": "wrangler pages deploy dist/demo --project-name feature-cards --branch preview",
-    "release": "changeset version && changeset publish",
+    "release": "node scripts/run-release.mjs",
+    "release:current": "node scripts/run-release.mjs --current",
+    "release:package": "node scripts/publish-package.mjs",
+    "release:package:dry": "node scripts/publish-package.mjs --dry-run",
+    "release:full": "node scripts/run-release.mjs --patch --publish",
     "check": "npm run typecheck && npm run lint && npm run test:ci && npm run size",
     "clean": "node scripts/clean.mjs",
     "doctor": "node scripts/doctor.mjs",
@@ -77,14 +85,13 @@
     "ship-it": "node scripts/ship-it.mjs",
     "party": "node scripts/party.mjs",
     "postinstall": "node scripts/banner.mjs --quiet",
-    "prepublishOnly": "npm run check"
+    "prepublishOnly": "npm run build:lib"
   },
   "dependencies": {
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
-    "@changesets/cli": "^2.27.10",
     "@eslint/js": "^9.17.0",
     "@playwright/test": "^1.49.1",
     "@types/node": "^22.10.2",
