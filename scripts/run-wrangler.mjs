@@ -12,8 +12,7 @@
 //   npm run deploy:worker
 
 import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 import { loadDotEnv, ROOT } from './load-env.mjs';
 
 loadDotEnv();
