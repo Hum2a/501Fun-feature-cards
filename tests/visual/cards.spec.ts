@@ -8,6 +8,10 @@
  */
 import { expect, test, type Page } from '@playwright/test';
 
+test.beforeEach(({ browserName }) => {
+  test.skip(browserName !== 'chromium', 'Visual baselines are pinned to Chromium on Windows');
+});
+
 async function waitForInline(page: Page): Promise<void> {
   await page.waitForFunction(() => {
     const el = document.querySelector('#inline-instance');
