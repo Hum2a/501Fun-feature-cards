@@ -194,13 +194,13 @@ Stable `v*.*.*` tags pushed to GitHub trigger CI to publish
 
 **Production:** [https://501fun.humza-butt.space](https://501fun.humza-butt.space)
 
-The demo (Pages) and mock CMS (Worker at `/api/cards`) deploy from CI on
+The demo (Pages) and mock CMS (Worker on `cms.501fun.humza-butt.space`) deploy from CI on
 push to `main`. Host settings live in [`config/site.json`](config/site.json).
 
 | What | Where |
 | --- | --- |
 | Demo (Pages) | `https://501fun.humza-butt.space` |
-| Mock CMS (Worker) | `https://501fun.humza-butt.space/api/cards` |
+| Mock CMS (Worker) | `https://cms.501fun.humza-butt.space/api/cards` |
 
 ### One-time setup
 
@@ -210,14 +210,14 @@ push to `main`. Host settings live in [`config/site.json`](config/site.json).
 3. **API token permissions** — your token needs:
    - **Account → Cloudflare Pages → Edit**
    - **Account → Workers Scripts → Edit**
-   - **Zone → Workers Routes → Edit** on `humza-butt.space` *(required for `/api/*` routing — without this the Worker uploads but route binding fails with auth error 10000)*
+   - **Account → Workers Domains → Edit** *(for the CMS custom domain — Wrangler sets this up on deploy)*
 
    Local deploys load these from `.env` via `scripts/run-wrangler.mjs` — do **not** rely on `wrangler login` OAuth for deploys.
 
 On merge to `master` (production branch in `config/site.json`), CI builds the
 demo, deploys to the `feature-cards` Pages project, attaches the custom domain
 via `scripts/attach-pages-domain.mjs` (Wrangler has no `pages domain add`
-command), and deploys the Worker with route `501fun.humza-butt.space/api/*`.
+command), and deploys the CMS Worker with custom domain `cms.501fun.humza-butt.space`.
 PRs still get `*.pages.dev` preview URLs.
 
 ### Manual deploy

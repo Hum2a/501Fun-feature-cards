@@ -1,8 +1,10 @@
 {
   "host": "501fun.humza-butt.space",
+  "cmsHost": "cms.501fun.humza-butt.space",
   "zone": "humza-butt.space",
+  "zoneId": "8ed59933eb4cccf0bcce870dc8a6d0bc",
   "origin": "https://501fun.humza-butt.space",
-  "cmsEndpoint": "https://501fun.humza-butt.space/api/cards",
+  "cmsEndpoint": "https://cms.501fun.humza-butt.space/api/cards",
   "pagesProject": "feature-cards",
   "productionBranch": "master",
   "workerName": "feature-cards-cms"

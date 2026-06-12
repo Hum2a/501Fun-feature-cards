@@ -1,8 +1,8 @@
 # Mock CMS Worker for the <feature-cards> demo.
 # © 2026 Humza Butt — AGPL-3.0-only
 #
-# Production host: config/site.json → 501fun.humza-butt.space
-# Worker handles /api/* on that host; Pages serves everything else.
+# Production: config/site.json → cms.501fun.humza-butt.space (mock CMS)
+# Pages serves the demo at 501fun.humza-butt.space; CMS is on a Worker custom domain.
 
 name = "feature-cards-cms"
 main = "index.ts"
@@ -25,6 +25,5 @@ name = "feature-cards-cms"
 [env.production.vars]
 CORS_ORIGIN = "https://501fun.humza-butt.space"
 
-[[env.production.routes]]
-pattern = "501fun.humza-butt.space/api/*"
-zone_name = "humza-butt.space"
+# Custom domain is attached after deploy via scripts/attach-worker-domain.mjs
+# (Wrangler route binding needs Zone → Workers Routes → Edit on the token).
