@@ -6,6 +6,7 @@
   "origin": "https://501fun.humza-butt.space",
   "cmsEndpoint": "https://cms.501fun.humza-butt.space/api/cards",
   "pagesProject": "feature-cards",
+  "pagesSubdomain": "feature-cards.pages.dev",
   "productionBranch": "master",
   "workerName": "feature-cards-cms"
 }

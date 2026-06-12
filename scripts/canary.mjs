@@ -68,7 +68,23 @@ async function fetchText(target) {
 
 console.log(`\nScanning ${bold(url)} for feature-cards authorship markers…\n`);
 
-const page = await fetchText(url);
+let page;
+try {
+  page = await fetchText(url);
+} catch (err) {
+  const cause = err?.cause ?? err;
+  if (cause?.code === 'ENOTFOUND') {
+    console.error(
+      red(`DNS lookup failed for ${cause.hostname ?? url} — the hostname does not resolve yet.`),
+    );
+    console.error(
+      '\nIf this is your production demo, run `npm run deploy:domain` and ensure a CNAME exists:\n' +
+        '  501fun → feature-cards.pages.dev (proxied) in the humza-butt.space zone.\n',
+    );
+    process.exit(2);
+  }
+  throw err;
+}
 if (!page.ok) {
   console.error(red(`Fetch failed: HTTP ${page.status}`));
   process.exit(2);

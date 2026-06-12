@@ -210,8 +210,7 @@ push to `main`. Host settings live in [`config/site.json`](config/site.json).
 3. **API token permissions** — your token needs:
    - **Account → Cloudflare Pages → Edit**
    - **Account → Workers Scripts → Edit**
-
-   Zone **Workers Routes → Edit** is *not* required — the CMS custom domain is attached via `scripts/attach-worker-domain.mjs` after upload.
+   - **Zone → DNS → Edit** on `humza-butt.space` *(creates the Pages CNAME — without it the domain stays “pending” and DNS won’t resolve)*
 
    Local deploys load these from `.env` via `scripts/run-wrangler.mjs` — do **not** rely on `wrangler login` OAuth for deploys.
 
