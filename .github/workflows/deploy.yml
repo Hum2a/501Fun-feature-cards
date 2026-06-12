@@ -16,6 +16,9 @@ jobs:
       contents: read
       deployments: write
       pull-requests: write
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -23,6 +26,13 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      - name: Read site config
+        id: site
+        run: |
+          echo "host=$(node -p "require('./config/site.json').host")" >> "$GITHUB_OUTPUT"
+          echo "pages=$(node -p "require('./config/site.json').pagesProject")" >> "$GITHUB_OUTPUT"
+          echo "origin=$(node -p "require('./config/site.json').origin")" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: npm ci
@@ -34,31 +44,45 @@ jobs:
         id: pages
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           command: >-
             pages deploy dist/demo
-            --project-name=feature-cards
+            --project-name=${{ steps.site.outputs.pages }}
             --branch=${{ github.head_ref || 'main' }}
 
-      - name: Deploy mock CMS Worker
+      - name: Attach custom domain to Pages (production)
+        if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages domain add ${{ steps.site.outputs.pages }}
+            ${{ steps.site.outputs.host }}
+
+      - name: Deploy mock CMS Worker (production)
         if: github.ref == 'refs/heads/main'
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --config worker/wrangler.toml --env production
 
-      - name: Comment preview URL on PR
+      - name: Comment deployment URL on PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
-            const url = '${{ steps.pages.outputs.deployment-url }}';
-            if (!url) return;
+            const preview = '${{ steps.pages.outputs.deployment-url }}';
+            const production = '${{ steps.site.outputs.origin }}';
+            const body = preview
+              ? `**Preview:** ${preview}\n\n**Production (on merge to \`main\`):** ${production}`
+              : `**Production (on merge to \`main\`):** ${production}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `Preview deployment: ${url}`,
+              body,
             });

@@ -1,5 +1,9 @@
 # Mock CMS Worker for the <feature-cards> demo.
 # © 2026 Humza Butt — AGPL-3.0-only
+#
+# Production host: config/site.json → 501fun.humza-butt.space
+# Worker handles /api/* on that host; Pages serves everything else.
+
 name = "feature-cards-cms"
 main = "index.ts"
 compatibility_date = "2026-06-01"
@@ -17,6 +21,10 @@ CORS_ORIGIN = "*"
 
 [env.production]
 name = "feature-cards-cms"
+
 [env.production.vars]
-# Lock CORS to the deployed Pages origin in production.
-CORS_ORIGIN = "https://feature-cards.pages.dev"
+CORS_ORIGIN = "https://501fun.humza-butt.space"
+
+[[env.production.routes]]
+pattern = "501fun.humza-butt.space/api/*"
+zone_name = "humza-butt.space"

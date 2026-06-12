@@ -1,0 +1,8 @@
+{
+  "host": "501fun.humza-butt.space",
+  "zone": "humza-butt.space",
+  "origin": "https://501fun.humza-butt.space",
+  "cmsEndpoint": "https://501fun.humza-butt.space/api/cards",
+  "pagesProject": "feature-cards",
+  "workerName": "feature-cards-cms"
+}

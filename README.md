@@ -3,8 +3,11 @@
 [![CI](https://github.com/humza/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/humza/feature-cards/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~22%20KiB-brightgreen.svg)](scripts/size.mjs)
+[![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
 **Package version:** `1.0.1`
+
+**Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)
 
 **One accessible, responsive, CMS-agnostic Web Component that replaces
 hard-coded feature-card images.** Native browser APIs only — Shadow DOM,
@@ -189,16 +192,42 @@ Stable `v*.*.*` tags pushed to GitHub trigger CI to publish
 
 ## Deployment
 
-The demo deploys to **Cloudflare Pages**, the mock CMS to **Cloudflare
-Workers**, both from CI (`.github/workflows/deploy.yml`):
+**Production:** [https://501fun.humza-butt.space](https://501fun.humza-butt.space)
 
-1. Create a Pages project named `feature-cards` (build command
-   `npm run build`, output dir `dist/demo`).
-2. Add repo secrets `CLOUDFLARE_API_TOKEN` (Pages + Workers edit scope) and
-   `CLOUDFLARE_ACCOUNT_ID`.
-3. Merges to `main` deploy production; PRs get preview deployments with the
-   URL commented on the PR. Optionally map a custom domain to the Pages
-   project.
+The demo (Pages) and mock CMS (Worker at `/api/cards`) deploy from CI on
+push to `main`. Host settings live in [`config/site.json`](config/site.json).
+
+| What | Where |
+| --- | --- |
+| Demo (Pages) | `https://501fun.humza-butt.space` |
+| Mock CMS (Worker) | `https://501fun.humza-butt.space/api/cards` |
+
+### One-time setup
+
+1. **DNS** — In Cloudflare, ensure `501fun.humza-butt.space` is on your
+   `humza-butt.space` zone (you said this is already done).
+2. **GitHub secrets** — `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+3. **API token permissions** — in addition to Pages + Workers Scripts Edit:
+   - **Account → Workers Scripts → Edit**
+   - **Account → Cloudflare Pages → Edit**
+   - **Zone → Workers Routes → Edit** (for `humza-butt.space` — binds `/api/*` to the Worker)
+
+On merge to `main`, CI builds the demo, deploys to the `feature-cards` Pages
+project, attaches the custom domain, and deploys the Worker with route
+`501fun.humza-butt.space/api/*`. PRs still get `*.pages.dev` preview URLs.
+
+### Manual deploy
+
+```sh
+npm run build
+npm run deploy
+```
+
+Verify after deploy:
+
+```sh
+npm run canary:verify -- https://501fun.humza-butt.space
+```
 
 ## Licence
 

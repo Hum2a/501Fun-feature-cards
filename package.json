@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/humza/feature-cards.git"
   },
-  "homepage": "https://github.com/humza/feature-cards#readme",
+  "homepage": "https://501fun.humza-butt.space",
   "bugs": {
     "url": "https://github.com/humza/feature-cards/issues"
   },
@@ -67,7 +67,7 @@
     "size": "node scripts/size.mjs",
     "analyze": "vite build --mode analyze",
     "canary:verify": "node scripts/canary.mjs",
-    "deploy": "wrangler pages deploy dist/demo --project-name feature-cards && wrangler deploy --config worker/wrangler.toml",
+    "deploy": "npm run build && wrangler pages deploy dist/demo --project-name=feature-cards && wrangler pages domain add feature-cards 501fun.humza-butt.space && wrangler deploy --config worker/wrangler.toml --env production",
     "deploy:preview": "wrangler pages deploy dist/demo --project-name feature-cards --branch preview",
     "release": "node scripts/run-release.mjs",
     "release:current": "node scripts/run-release.mjs --current",
