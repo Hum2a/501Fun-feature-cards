@@ -182,6 +182,9 @@ export class FeatureCardsElement extends HTMLElement {
     this.#abort?.abort();
     const controller = new AbortController();
     this.#abort = controller;
+    if (this.#renderedData === undefined && this.#hasFallbackContent() === false) {
+      this.#showStatus('loading');
+    }
     try {
       const response = await fetch(src, { signal: controller.signal });
       if (!response.ok) {
@@ -202,7 +205,7 @@ export class FeatureCardsElement extends HTMLElement {
    * Build canonical data from plain light-DOM `<a>` children, the
    * progressive-enhancement path. Supported per-anchor data attributes:
    * `data-eyebrow`, `data-description`, `data-figure-value`,
-   * `data-figure-label`, `data-theme`.
+   * `data-figure-label`, `data-theme`, `data-cta`.
    */
   #parseLightDomLinks(): FeatureCardsData | undefined {
     const anchors = [...this.children].filter(
@@ -213,6 +216,8 @@ export class FeatureCardsElement extends HTMLElement {
     }
     const cards: Card[] = anchors.map((anchor, index) => {
       const title = anchor.dataset.title ?? anchor.textContent?.trim() ?? '';
+      const href = anchor.getAttribute('href') ?? '#';
+      const ctaLabel = anchor.dataset.cta?.trim();
       return {
         id: anchor.id || `card-${index + 1}`,
         title,
@@ -228,7 +233,11 @@ export class FeatureCardsElement extends HTMLElement {
               },
             }
           : {}),
-        cta: { label: title, href: anchor.getAttribute('href') ?? '#' },
+        ...(ctaLabel
+          ? { cta: { label: ctaLabel, href } }
+          : href !== '#'
+            ? { cta: { label: title, href } }
+            : {}),
         ...(anchor.dataset.theme ? { theme: anchor.dataset.theme } : {}),
       };
     });
@@ -391,7 +400,7 @@ export class FeatureCardsElement extends HTMLElement {
       link.append(description);
     }
 
-    if (card.cta) {
+    if (card.cta?.label && card.cta.label !== card.title) {
       const cta = document.createElement('span');
       cta.className = 'cta';
       cta.setAttribute('part', 'cta');
@@ -403,7 +412,7 @@ export class FeatureCardsElement extends HTMLElement {
     return item;
   }
 
-  /** Fail safe: emit structured issues, keep the fallback slot rendering. */
+  /** Fail safe: emit structured issues, keep fallback content when present. */
   #emitError(issues: ValidationIssue[]): void {
     this.dispatchEvent(
       new CustomEvent('featurecards:error', {
@@ -412,6 +421,48 @@ export class FeatureCardsElement extends HTMLElement {
         detail: { issues },
       }),
     );
+    if (this.#renderedData === undefined && this.#hasFallbackContent() === false) {
+      this.#showStatus('error', issues[0]?.message);
+    }
+  }
+
+  /** Whether light-DOM or inline JSON fallback content is available. */
+  #hasFallbackContent(): boolean {
+    const hasInlineJson = [...this.children].some(
+      (child) =>
+        child.tagName === 'SCRIPT' && child.getAttribute('type') === 'application/json',
+    );
+    const hasLightDomLinks = [...this.children].some((child) => child.tagName === 'A');
+    return hasInlineJson || hasLightDomLinks;
+  }
+
+  /** Render a loading or error placeholder while fetching remote data. */
+  #showStatus(kind: 'loading' | 'error', message = ''): void {
+    const panel = document.createElement('div');
+    panel.className = `state state-${kind}`;
+    panel.setAttribute('part', 'state');
+    panel.setAttribute('role', kind === 'loading' ? 'status' : 'alert');
+    panel.setAttribute('aria-live', kind === 'loading' ? 'polite' : 'assertive');
+
+    const title = document.createElement('p');
+    title.className = 'state-title';
+    title.textContent = kind === 'loading' ? 'Loading cards…' : 'Could not load cards';
+
+    panel.append(title);
+
+    if (kind === 'error' && message) {
+      const detail = document.createElement('p');
+      detail.className = 'state-detail';
+      detail.textContent = message;
+      panel.append(detail);
+    }
+
+    for (const node of [...this.#shadow.children]) {
+      if (node.tagName !== 'STYLE') {
+        node.remove();
+      }
+    }
+    this.#shadow.append(panel);
   }
 
   /** Parse `heading-level`, clamped to 1–6, default 2. */

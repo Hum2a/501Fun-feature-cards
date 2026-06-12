@@ -18,6 +18,8 @@
     <script type="module" src="/main.ts"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to demo content</a>
+
     <header class="hero">
       <p class="hero-eyebrow">A Web Component, not a widget</p>
       <h1>&lt;feature-cards&gt;</h1>
@@ -34,7 +36,7 @@
       </p>
     </header>
 
-    <main>
+    <main id="main-content">
       <section class="block" aria-labelledby="mode-1-title">
         <h2 id="mode-1-title">1 · Declarative inline JSON</h2>
         <p class="block-note">
@@ -108,6 +110,7 @@
             data-eyebrow="Guides"
             data-description="Everything you need to integrate in an afternoon."
             data-theme="brand-blue"
+            data-cta="Open the docs"
             >Read the documentation</a
           >
           <a
@@ -116,6 +119,7 @@
             data-eyebrow="Reference"
             data-description="Attributes, properties, events, parts, and tokens."
             data-theme="brand-green"
+            data-cta="Browse the API"
             >Explore the API</a
           >
           <a
@@ -124,6 +128,7 @@
             data-eyebrow="Help"
             data-description="Questions answered by the people who built it."
             data-theme="brand-amber"
+            data-cta="Get involved"
             >Join the community</a
           >
         </feature-cards>
@@ -137,6 +142,9 @@
           it through an adapter. Swap <code>adapter="generic"</code> for
           <code>wordpress</code>, <code>contentful</code>, or <code>sanity</code> and
           point <code>src</code> at your CMS: that is the whole migration.
+        </p>
+        <p class="cms-status" id="cms-status" role="status" aria-live="polite">
+          Connecting to the mock CMS…
         </p>
         <feature-cards
           id="cms-instance"
@@ -170,8 +178,8 @@
       <section class="block" aria-labelledby="playground-title">
         <h2 id="playground-title">Theming playground</h2>
         <p class="block-note">
-          Theming is just CSS custom properties — move the sliders and watch the first
-          section restyle live. No internals touched.
+          Theming is just CSS custom properties — tweak the controls and watch the
+          preview cards restyle live. No internals touched.
         </p>
         <form class="playground" id="playground">
           <label>
@@ -191,7 +199,9 @@
               max="32"
               value="14"
               data-unit="px"
+              aria-describedby="radius-out"
             />
+            <output id="radius-out" for="playground">14px</output>
           </label>
           <label>
             Card min width
@@ -202,17 +212,46 @@
               max="420"
               value="256"
               data-unit="px"
+              aria-describedby="min-out"
             />
+            <output id="min-out" for="playground">256px</output>
           </label>
           <button type="reset">Reset</button>
         </form>
+        <feature-cards id="playground-instance" heading="Live preview" heading-level="3">
+          <script type="application/json">
+            {
+              "cards": [
+                {
+                  "id": "play-1",
+                  "eyebrow": "Token driven",
+                  "title": "Accent & background",
+                  "description": "These cards have no built-in theme — every control maps directly to a --fc-* variable.",
+                  "figure": { "value": "12", "label": "public tokens" },
+                  "cta": { "label": "See styles.ts", "href": "#tokens" }
+                },
+                {
+                  "id": "play-2",
+                  "eyebrow": "Container aware",
+                  "title": "Radius & min width",
+                  "description": "Resize the card minimum or corner radius and the grid reflows within its container.",
+                  "figure": { "value": "auto-fit", "label": "grid tracks" },
+                  "cta": { "label": "Try the sliders", "href": "#playground" }
+                }
+              ]
+            }
+          </script>
+        </feature-cards>
       </section>
 
       <section class="block resize-block" aria-labelledby="resize-title">
         <h2 id="resize-title">Container-driven responsiveness</h2>
         <p class="block-note">
-          Drag the handle — the component responds to its <em>container</em>, not the
-          viewport.
+          Drag the bottom-right corner — the component responds to its <em>container</em>,
+          not the viewport.
+        </p>
+        <p class="resize-readout" id="resize-readout" aria-live="polite">
+          Container width: measuring…
         </p>
         <div class="resizable" id="resizable">
           <!-- No section heading here, so card titles render at level 2+1 = h3,
