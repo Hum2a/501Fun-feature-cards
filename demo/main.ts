@@ -8,7 +8,8 @@
  */
 import '@src/index.js';
 
-const LOCAL_CMS = 'http://localhost:8787/api/cards';
+const LOCAL_CMS =
+  import.meta.env.VITE_FC_CMS_ENDPOINT ?? 'http://localhost:8787/api/cards';
 const FALLBACK = '/fixtures/cards.json';
 
 /**

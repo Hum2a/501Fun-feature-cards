@@ -45,6 +45,15 @@ schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
 | `npm run release -- --patch` | Bump version, update CHANGELOG, create git tag |
 | `npm run release:package` | Build, test, and publish to npm (tagged HEAD) |
 
+## Environment files
+
+| File | Purpose |
+| --- | --- |
+| `.env` | Local dev (gitignored). Copy from `.env.example`. `VITE_*` vars reach the demo. |
+| `.env.example` | Committed template for root env vars |
+| `worker/.dev.vars` | Wrangler local overrides (gitignored). Copy from `worker/.dev.vars.example`. |
+| `worker/.dev.vars.example` | Committed template — sets `CORS_ORIGIN` for `npm run serve:cms` |
+
 ## Definition of done for a change
 
 - `npm run check` passes locally.

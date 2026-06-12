@@ -18,6 +18,8 @@ below keep it that way.
 git clone https://github.com/humza/feature-cards
 cd feature-cards
 npm install
+cp .env.example .env                        # optional: local demo/tooling vars
+cp worker/.dev.vars.example worker/.dev.vars  # optional: Worker CORS for local CMS
 npm run doctor   # verify your toolchain
 npm run dev      # demo at http://localhost:5173
 ```
