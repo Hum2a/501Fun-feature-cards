@@ -1,0 +1,11 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts", "src/create-feature-cards.ts", "src/errors.ts"],
+  "out": "docs/api",
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "name": "@humza/feature-cards API",
+  "includeVersion": true,
+  "sort": ["source-order"]
+}
