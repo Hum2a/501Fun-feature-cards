@@ -9,6 +9,8 @@
 import { defineFeatureCards } from './feature-cards.js';
 
 export { FeatureCardsElement, defineFeatureCards } from './feature-cards.js';
+export { createFeatureCards } from './create-feature-cards.js';
+export type { CreateFeatureCardsOptions } from './create-feature-cards.js';
 export { buildProblemDetail } from './errors.js';
 export type {
   FeatureCardsErrorDetail,
