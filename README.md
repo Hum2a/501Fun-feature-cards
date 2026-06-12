@@ -4,7 +4,7 @@
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~22%20KiB-brightgreen.svg)](scripts/size.mjs)
 
-**Package version:** `1.0.0`
+**Package version:** `1.0.1`
 
 **One accessible, responsive, CMS-agnostic Web Component that replaces
 hard-coded feature-card images.** Native browser APIs only — Shadow DOM,
