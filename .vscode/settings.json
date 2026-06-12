@@ -1,10 +1,3 @@
 {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
-  "eslint.useFlatConfig": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "files.eol": "\n"
+  "html.customData": [".vscode/html-custom-data.json"]
 }

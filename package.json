@@ -63,7 +63,7 @@
   },
   "scripts": {
     "dev": "vite --config vite.demo.config.ts",
-    "build:lib": "vite build && vite build --config vite.react.config.ts && tsc -p tsconfig.build.json",
+    "build:lib": "vite build && vite build --config vite.react.config.ts && tsc -p tsconfig.build.json && node scripts/generate-cem.mjs",
     "build": "npm run clean && npm run build:lib && vite build --config vite.demo.config.ts",
     "preview": "vite preview --config vite.demo.config.ts",
     "serve:cms": "node scripts/run-wrangler.mjs dev --config worker/wrangler.toml",
