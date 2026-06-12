@@ -1,0 +1,30 @@
+﻿# Dependencies & build output
+node_modules/
+dist/
+coverage/
+.wrangler/
+worker/.wrangler/
+
+# Test artefacts
+playwright-report/
+test-results/
+tests/visual/**/*-snapshots/
+
+# Large generated / vendor blobs
+*.map
+LICENSE
+
+# Logs & OS noise
+*.log
+.DS_Store
+Thumbs.db
+
+# Secrets (never index)
+.env
+.env.local
+.env.*.local
+.dev.vars
+worker/.dev.vars
+
+# Lock files (low signal for AI context)
+package-lock.json
