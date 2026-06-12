@@ -12,47 +12,95 @@ const LOCAL_CMS =
   import.meta.env.VITE_FC_CMS_ENDPOINT ?? 'http://localhost:8787/api/cards';
 const FALLBACK = '/fixtures/cards.json';
 
+type CmsState = 'loading' | 'ready' | 'fallback' | 'error';
+
+/** Update the CMS section status pill. */
+function setCmsStatus(
+  el: HTMLElement | null,
+  state: CmsState,
+  detail = '',
+): void {
+  if (!el) {
+    return;
+  }
+  el.dataset.state = state;
+  const messages: Record<CmsState, string> = {
+    loading: detail || 'Connecting to the mock CMS…',
+    ready: detail ? `Loaded from ${detail}` : 'Loaded from the mock CMS',
+    fallback: 'Live CMS unavailable — showing bundled fixture',
+    error: 'Could not load cards — check the console for details',
+  };
+  el.textContent = messages[state];
+}
+
 /**
- * Point the third instance at the mock Worker when it's running locally,
- * otherwise fall back to the bundled static fixture so the demo always
- * renders (including on the deployed Pages site, where the Worker URL can
- * be configured via a meta tag).
+ * Point the CMS instance at the mock Worker (dev) or production endpoint,
+ * falling back to the bundled fixture on error — one fetch, no probe.
  */
-async function wireCmsInstance(): Promise<void> {
+function wireCmsInstance(): void {
   const instance = document.querySelector('#cms-instance');
+  const status = document.querySelector<HTMLElement>('#cms-status');
   if (!instance) {
     return;
   }
+
   const configured = document
     .querySelector('meta[name="fc-cms-endpoint"]')
     ?.getAttribute('content');
-  const candidates = [configured, LOCAL_CMS].filter(
-    (url): url is string => typeof url === 'string' && url.length > 0,
-  );
-  for (const url of candidates) {
-    try {
-      const probe = await fetch(url, {
-        method: 'GET',
-        signal: AbortSignal.timeout(1500),
-      });
-      if (probe.ok) {
-        instance.setAttribute('src', url);
-        return;
-      }
-    } catch {
-      // Worker not running at this URL — try the next candidate.
+  const primary = import.meta.env.DEV
+    ? LOCAL_CMS
+    : (configured ?? FALLBACK);
+
+  setCmsStatus(status, 'loading');
+
+  let triedFallback = false;
+
+  instance.addEventListener('featurecards:ready', () => {
+    const src = instance.getAttribute('src') ?? '';
+    if (src.includes('fixtures')) {
+      setCmsStatus(status, triedFallback ? 'fallback' : 'ready', 'static fixture');
+      return;
     }
-  }
-  instance.setAttribute('src', FALLBACK);
+    setCmsStatus(status, 'ready', shortenUrl(src));
+  });
+
+  instance.addEventListener('featurecards:error', () => {
+    if (!triedFallback && instance.getAttribute('src') !== FALLBACK) {
+      triedFallback = true;
+      setCmsStatus(status, 'loading', 'Trying bundled fallback…');
+      instance.setAttribute('src', FALLBACK);
+      return;
+    }
+    setCmsStatus(status, 'error');
+  });
+
+  instance.setAttribute('src', primary);
 }
 
 /** Live CSS-custom-property controls for the theming playground. */
 function wirePlayground(): void {
   const form = document.querySelector<HTMLFormElement>('#playground');
-  const target = document.querySelector<HTMLElement>('#inline-instance');
+  const target = document.querySelector<HTMLElement>('#playground-instance');
   if (!form || !target) {
     return;
   }
+
+  const rangeOutputs: Array<[string, string]> = [
+    ['--fc-radius', 'radius-out'],
+    ['--fc-card-min', 'min-out'],
+  ];
+
+  const syncOutput = (input: HTMLInputElement): void => {
+    const pair = rangeOutputs.find(([name]) => name === input.name);
+    if (!pair) {
+      return;
+    }
+    const output = document.getElementById(pair[1]);
+    if (output) {
+      output.textContent = `${input.value}${input.dataset.unit ?? ''}`;
+    }
+  };
+
   form.addEventListener('input', (event) => {
     const input = event.target;
     if (!(input instanceof HTMLInputElement)) {
@@ -60,23 +108,39 @@ function wirePlayground(): void {
     }
     const unit = input.dataset.unit ?? '';
     target.style.setProperty(input.name, `${input.value}${unit}`);
+    syncOutput(input);
   });
+
   form.addEventListener('reset', () => {
-    for (const input of form.querySelectorAll<HTMLInputElement>('input')) {
-      target.style.removeProperty(input.name);
-    }
+    requestAnimationFrame(() => {
+      for (const input of form.querySelectorAll<HTMLInputElement>('input')) {
+        target.style.removeProperty(input.name);
+        syncOutput(input);
+      }
+    });
   });
+
+  for (const input of form.querySelectorAll<HTMLInputElement>('input[type="range"]')) {
+    syncOutput(input);
+  }
 }
 
-/** Drag-to-resize wrapper proving container-query behaviour. */
+/** Show live container width while the resizable wrapper is dragged. */
 function wireResizable(): void {
   const box = document.querySelector<HTMLElement>('#resizable');
-  if (!box) {
+  const readout = document.querySelector<HTMLElement>('#resize-readout');
+  if (!box || !readout) {
     return;
   }
-  // CSS resize handles the interaction; nothing else needed.
-  box.style.resize = 'horizontal';
-  box.style.overflow = 'auto';
+
+  const update = (): void => {
+    const width = Math.round(box.getBoundingClientRect().width);
+    readout.textContent = `Container width: ${width}px`;
+  };
+
+  update();
+  const observer = new ResizeObserver(update);
+  observer.observe(box);
 }
 
 /** Log component events so the console shows the public event API. */
@@ -92,7 +156,17 @@ function wireEventLogging(): void {
   });
 }
 
-void wireCmsInstance();
+/** Shorten a URL for the status pill. */
+function shortenUrl(url: string): string {
+  try {
+    const { hostname, pathname } = new URL(url);
+    return `${hostname}${pathname === '/' ? '' : pathname}`;
+  } catch {
+    return url;
+  }
+}
+
+wireCmsInstance();
 wirePlayground();
 wireResizable();
 wireEventLogging();

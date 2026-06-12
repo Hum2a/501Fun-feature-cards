@@ -33,7 +33,7 @@
  *
  * Shadow-piercing hooks (`::part()`): `section`, `heading`, `grid`, `card`,
  * `link`, `eyebrow`, `title`, `description`, `figure`, `value`, `label`,
- * `media`, `cta`.
+ * `media`, `cta`, `state`.
  */
 export const componentCss = /* css */ `
 :host {
@@ -108,7 +108,7 @@ export const componentCss = /* css */ `
 .link {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.625rem;
   flex: 1;
   padding: var(--fc-pad);
   border-radius: inherit;
@@ -190,6 +190,76 @@ export const componentCss = /* css */ `
 
 .cta::after {
   content: ' \\2192';
+  transition: transform var(--fc-transition);
+}
+
+.link:hover .cta::after,
+.link:focus-visible .cta::after {
+  transform: translateX(2px);
+}
+
+.state {
+  display: grid;
+  gap: 0.35rem;
+  padding: clamp(1rem, 3cqi, 1.5rem);
+  border: 1px dashed var(--fc-card-border);
+  border-radius: var(--fc-radius);
+  background: color-mix(in srgb, var(--fc-card-bg) 88%, var(--fc-accent));
+  color: var(--fc-muted);
+}
+
+.state-title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--fc-fg);
+}
+
+.state-detail {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.state-loading .state-title::after {
+  content: '';
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: 0.35rem;
+  border-radius: 50%;
+  background: var(--fc-accent);
+  vertical-align: 0.05em;
+  animation: fc-pulse 1.2s ease-in-out infinite;
+}
+
+.state-error {
+  border-style: solid;
+  background: color-mix(in srgb, var(--fc-card-bg) 82%, #b91c1c);
+}
+
+@keyframes fc-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .state-loading .state-title::after {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .link:hover .cta::after,
+  .link:focus-visible .cta::after {
+    transform: none;
+  }
 }
 
 .visually-hidden {
@@ -216,6 +286,10 @@ export const componentCss = /* css */ `
   .card:has(.link:focus-visible) {
     transform: translateY(-3px);
     box-shadow: var(--fc-shadow-hover);
+  }
+
+  .card:has(.link:active) {
+    transform: translateY(-1px);
   }
 }
 
