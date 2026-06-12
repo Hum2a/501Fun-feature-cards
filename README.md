@@ -210,14 +210,15 @@ push to `main`. Host settings live in [`config/site.json`](config/site.json).
 3. **API token permissions** — your token needs:
    - **Account → Cloudflare Pages → Edit**
    - **Account → Workers Scripts → Edit**
-   - **Account → Workers Domains → Edit** *(for the CMS custom domain — Wrangler sets this up on deploy)*
+
+   Zone **Workers Routes → Edit** is *not* required — the CMS custom domain is attached via `scripts/attach-worker-domain.mjs` after upload.
 
    Local deploys load these from `.env` via `scripts/run-wrangler.mjs` — do **not** rely on `wrangler login` OAuth for deploys.
 
 On merge to `master` (production branch in `config/site.json`), CI builds the
-demo, deploys to the `feature-cards` Pages project, attaches the custom domain
-via `scripts/attach-pages-domain.mjs` (Wrangler has no `pages domain add`
-command), and deploys the CMS Worker with custom domain `cms.501fun.humza-butt.space`.
+demo, deploys to the `feature-cards` Pages project, attaches the Pages custom domain
+via `scripts/attach-pages-domain.mjs`, uploads the CMS Worker, then attaches
+`cms.501fun.humza-butt.space` via `scripts/attach-worker-domain.mjs`.
 PRs still get `*.pages.dev` preview URLs.
 
 ### Manual deploy
@@ -227,8 +228,10 @@ Put `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in `.env`, then:
 ```sh
 npm run deploy              # build + Pages + domain + Worker
 npm run deploy:domain       # attach custom domain only
-npm run deploy:worker       # deploy CMS Worker only (uses .env token)
-npm run deploy:domain:dry   # preview the domain API call
+npm run deploy:worker       # upload CMS Worker + attach cms.* domain
+npm run deploy:worker:domain # attach cms.* domain only
+npm run deploy:domain:dry   # preview the Pages domain API call
+npm run deploy:worker:domain:dry
 ```
 
 If Pages deployed but domain/Worker failed partway through, run the remaining
