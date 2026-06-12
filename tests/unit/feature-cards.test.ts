@@ -211,6 +211,7 @@ describe('fail-safe behaviour', () => {
     expect(onError).toHaveBeenCalledOnce();
     const detail = (onError.mock.calls[0]![0] as CustomEvent).detail;
     expect(detail.issues.length).toBeGreaterThan(0);
+    expect(detail.problem?.type).toContain('validation-failed');
     // Light DOM is untouched and still slotted.
     expect(el.querySelector('a')?.getAttribute('href')).toBe('/keep-me');
   });
