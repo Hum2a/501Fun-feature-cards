@@ -7,6 +7,7 @@
  * General Public License v3.0 only. See LICENSE for full terms.
  */
 import '@src/index.js';
+import { safeParseFeatureCardsData } from '@src/schema.js';
 
 const LOCAL_CMS =
   import.meta.env.VITE_FC_CMS_ENDPOINT ?? 'http://localhost:8787/api/cards';
@@ -143,6 +144,58 @@ function wireResizable(): void {
   observer.observe(box);
 }
 
+/** Interactive schema validator + live preview. */
+function wireSchemaPlayground(): void {
+  const textarea = document.querySelector<HTMLTextAreaElement>('#schema-input');
+  const output = document.querySelector<HTMLElement>('#schema-validation');
+  const instance = document.querySelector<HTMLElement>('#schema-instance') as
+    | (HTMLElement & { data?: unknown })
+    | null;
+
+  if (!textarea || !output || !instance) {
+    return;
+  }
+
+  const sample = {
+    heading: 'Schema preview',
+    cards: [
+      {
+        id: 'schema-1',
+        eyebrow: 'Live validation',
+        title: 'Edit the JSON',
+        description: 'Issues appear instantly using the same Zod schema as production.',
+        figure: { value: '1', label: 'canonical schema' },
+        cta: { label: 'Read schema.ts', href: '#schema' },
+      },
+    ],
+  };
+
+  textarea.value = JSON.stringify(sample, null, 2);
+
+  const render = (): void => {
+    try {
+      const parsed: unknown = JSON.parse(textarea.value);
+      const result = safeParseFeatureCardsData(parsed);
+      if (!result.ok) {
+        output.dataset.state = 'error';
+        output.textContent = result.issues
+          .map((issue) => `${issue.path || '(root)'}: ${issue.message}`)
+          .join('\n');
+        return;
+      }
+      output.dataset.state = 'ok';
+      output.textContent = `Valid — ${result.data.cards.length} card(s)`;
+      instance.data = result.data;
+    } catch (error) {
+      output.dataset.state = 'error';
+      output.textContent = error instanceof Error ? error.message : String(error);
+    }
+  };
+
+  textarea.addEventListener('input', render);
+  render();
+}
+
 /** Log component events so the console shows the public event API. */
 function wireEventLogging(): void {
   document.addEventListener('featurecards:ready', (event) => {
@@ -168,5 +221,6 @@ function shortenUrl(url: string): string {
 
 wireCmsInstance();
 wirePlayground();
+wireSchemaPlayground();
 wireResizable();
 wireEventLogging();

@@ -329,6 +329,56 @@ main {
   outline-offset: 2px;
 }
 
+.schema-playground {
+  display: grid;
+  gap: 1rem;
+}
+
+.schema-editor {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.schema-playground textarea {
+  width: 100%;
+  min-height: 14rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--page-border);
+  border-radius: 0.875rem;
+  background: var(--page-card);
+  color: var(--page-fg);
+  font-family: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.schema-playground textarea:focus-visible {
+  outline: 3px solid var(--page-accent);
+  outline-offset: 2px;
+}
+
+#schema-validation {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.65rem;
+  background: var(--page-card);
+  border: 1px solid var(--page-border);
+  font-family: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+}
+
+#schema-validation[data-state='ok'] {
+  color: light-dark(#047857, #5fd4ab);
+  border-color: light-dark(#a7f3d0, #1d5c47);
+}
+
+#schema-validation[data-state='error'] {
+  color: light-dark(#b91c1c, #fca5a5);
+  border-color: light-dark(#fecaca, #7f1d1d);
+}
+
 .resize-readout {
   margin: 0 0 0.75rem;
   font-size: 0.85rem;
