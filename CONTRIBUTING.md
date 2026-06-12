@@ -30,8 +30,38 @@ npm run dev      # demo at http://localhost:5173
    `npm run test:a11y` green and update visual baselines intentionally
    (`npx playwright test tests/visual --update-snapshots`).
 3. Update the README API table and JSDoc for any public API change.
-4. Add a changeset (`npx changeset`) describing the change for the
-   changelog.
+
+## Releasing
+
+Releases are managed with `scripts/release.sh` (Git Bash on Windows, bash
+elsewhere). Conventional commits feed the generated `CHANGELOG.md` entries.
+
+```sh
+# See the latest tag vs current commit
+npm run release:current
+
+# Patch release: bump version, update CHANGELOG, commit, tag, push
+npm run release -- --patch
+
+# Minor / major
+npm run release -- --minor
+npm run release -- --major
+
+# Tag + publish to npm in one step
+npm run release -- --patch --publish
+
+# Publish an existing tag (HEAD must match the tag)
+npm run release:package
+npm run release:package:dry   # dry-run only
+```
+
+Pushing a stable `v*.*.*` tag triggers CI to publish `@humza/feature-cards`
+to npm and create a GitHub Release. Set the `NPM_TOKEN` secret in the repo
+for automated publishes.
+
+Pre-release tags (`--name beta` → `v1.1.0-beta`) create a GitHub
+pre-release but are **not** auto-published to npm unless you run
+`npm run release:package -- --allow-prerelease` locally.
 
 ## Commit style
 

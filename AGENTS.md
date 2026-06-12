@@ -42,6 +42,8 @@ schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
 | `npm run size` | Bundle size vs budget |
 | `npm run canary:verify -- <url>` | Scan a URL for the authorship markers |
 | `npm run doctor` | Verify the local toolchain |
+| `npm run release -- --patch` | Bump version, update CHANGELOG, create git tag |
+| `npm run release:package` | Build, test, and publish to npm (tagged HEAD) |
 
 ## Definition of done for a change
 

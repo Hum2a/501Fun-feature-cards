@@ -1,0 +1,8 @@
+# Copy to `worker/.dev.vars` for local Wrangler dev (`npm run serve:cms`):
+#   cp worker/.dev.vars.example worker/.dev.vars
+#
+# These override [vars] in wrangler.toml during `wrangler dev` only.
+# Production values live in wrangler.toml / the Cloudflare dashboard.
+
+# Allow the Vite demo origin to fetch /api/cards during local development
+CORS_ORIGIN=http://localhost:5173

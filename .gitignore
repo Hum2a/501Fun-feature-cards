@@ -8,4 +8,9 @@ dist/stats.html
 *.log
 .DS_Store
 .env
-.env.*
+.env.local
+.env.*.local
+!.env.example
+.dev.vars
+worker/.dev.vars
+!worker/.dev.vars.example

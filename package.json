@@ -1,6 +1,6 @@
 {
   "name": "@humza/feature-cards",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -73,6 +73,7 @@
     "release:current": "node scripts/run-release.mjs --current",
     "release:package": "node scripts/publish-package.mjs",
     "release:package:dry": "node scripts/publish-package.mjs --dry-run",
+    "release:dry-run": "node scripts/run-release.mjs --dry-run --patch",
     "release:full": "node scripts/run-release.mjs --patch --publish",
     "check": "npm run typecheck && npm run lint && npm run test:ci && npm run size",
     "clean": "node scripts/clean.mjs",

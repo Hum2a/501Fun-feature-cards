@@ -2,16 +2,21 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    tags:
+      - 'v*'
 
-concurrency: release-${{ github.ref }}
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
-  release:
+  publish-npm:
+    name: Publish to npm
     runs-on: ubuntu-latest
+    # Stable tags only — pre-releases (v1.0.0-beta) are tagged but not auto-published
+    if: ${{ !contains(github.ref_name, '-') }}
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -27,10 +32,52 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create release PR or publish
-        uses: changesets/action@v1
-        with:
-          publish: npm run release
+      - name: Verify tag matches package.json
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "v${VERSION}" != "$TAG" ]; then
+            echo "Tag $TAG does not match package.json version $VERSION"
+            exit 1
+          fi
+
+      - name: Build, test, and publish
+        run: npm run release:package
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: publish-npm
+    if: ${{ !contains(github.ref_name, '-') }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+
+  prerelease-tag:
+    name: Pre-release tag only
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.ref_name, '-') }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub pre-release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          prerelease: true
+          generate_release_notes: true
