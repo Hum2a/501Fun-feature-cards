@@ -407,6 +407,24 @@ describe('stat layout (501 module)', () => {
     expect(item.style.transform).toContain('rotate(5deg)');
     expect(item.style.transform).toContain('scale(1.05)');
   });
+
+  it('maps icon size to --fc-stat-media-max', async () => {
+    const el = mount();
+    el.data = {
+      cards: [
+        {
+          ...STAT_DATA.cards[0]!,
+          appearance: {
+            ...STAT_DATA.cards[0]!.appearance,
+            mediaMaxHeight: '10rem',
+          },
+        },
+      ],
+    };
+    await nextTick();
+    const item = el.shadowRoot!.querySelector('[data-layout="stat"]') as HTMLLIElement;
+    expect(item.style.getPropertyValue('--fc-stat-media-max')).toBe('10rem');
+  });
 });
 
 describe('watermark integration', () => {

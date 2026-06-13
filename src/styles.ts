@@ -569,7 +569,8 @@ export const componentCss = /* css */ `
 
 .card[data-layout='stat'] .media img {
   width: auto;
-  max-height: var(--fc-stat-media-max);
+  height: var(--fc-stat-media-max);
+  max-width: 100%;
   margin-inline: auto;
   object-fit: contain;
   border-radius: 0;

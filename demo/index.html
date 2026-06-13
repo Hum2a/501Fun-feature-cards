@@ -147,6 +147,20 @@
                     (ISC)
                   </p>
                 </div>
+                <div class="card-editor-field card-editor-field-span card-editor-range">
+                  <label for="editor-icon-size">Icon size</label>
+                  <input
+                    type="range"
+                    id="editor-icon-size"
+                    name="mediaMaxHeight"
+                    min="3"
+                    max="12"
+                    step="0.25"
+                    value="7.5"
+                    data-unit="rem"
+                  />
+                  <output id="editor-icon-size-out" for="editor-icon-size">7.5rem</output>
+                </div>
                 <div class="card-editor-field">
                   <label for="editor-theme">Theme preset</label>
                   <select id="editor-theme" name="theme">
@@ -255,10 +269,6 @@
                     <label for="editor-radius">Corner radius (rem)</label>
                     <input type="text" id="editor-radius" name="borderRadius" placeholder="auto" />
                   </div>
-                  <div class="card-editor-field">
-                    <label for="editor-media-max">Icon max height (rem)</label>
-                    <input type="text" id="editor-media-max" name="mediaMaxHeight" value="7.5" />
-                  </div>
                 </div>
               </form>
             </details>
@@ -266,7 +276,7 @@
             <p class="card-editor-hint">
               Canonical JSON (CMS-ready) — maps top → <code>eyebrow</code>, middle →
               <code>figure.value</code>, bottom → <code>figure.label</code>, icon →
-              <code>media.src</code>.
+              <code>media.src</code>, icon size → <code>appearance.mediaMaxHeight</code>.
             </p>
             <pre
               id="card-editor-json"

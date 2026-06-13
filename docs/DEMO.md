@@ -36,6 +36,7 @@ brief**. It must stay in sync with the schema field mapping:
 | Middle text | `figure.value` |
 | Bottom text | `figure.label` |
 | Icon | `media.src` |
+| Icon size | `appearance.mediaMaxHeight` |
 | Background / text colour | `appearance.background` / `appearance.foreground` |
 | Rotate / scale / min height | `appearance.rotateDeg` / `scale` / `minHeight` |
 

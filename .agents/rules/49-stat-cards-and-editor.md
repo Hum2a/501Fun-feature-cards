@@ -33,13 +33,14 @@ tests together.
   `501-green` | `501-magenta` | `501-blue` themes.
 - **Resize**: `appearance.minHeight`, `appearance.scale`.
 - **Rotate**: `appearance.rotateDeg` (-180…180).
-- Advanced only: font sizes, borders, radius, font family — never in core panel.
+- **Icon size**: `appearance.mediaMaxHeight` (core panel, with icon picker).
+- Advanced only: font sizes, borders, radius, font family.
 
 ## Demo card editor (`demo/editor/`)
 
 The **501 feature cards — live editor** section is the primary task deliverable:
 
-- Core panel edits the four elements + colour + rotate + scale + min height.
+- Core panel edits the four elements + icon size + colour + rotate + scale + min height.
 - Advanced `<details>` holds typography and border controls.
 - Output is canonical JSON (`localStorage` key `fc-card-editor-data`).
 - Do not regress editor → preview → JSON sync.

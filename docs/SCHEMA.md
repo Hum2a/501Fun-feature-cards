@@ -101,7 +101,8 @@ Per-card visual tuning for the 501 module and CMS colour pickers:
 | `minHeight` | `--fc-stat-min-height` | e.g. `"18rem"` |
 | `topFontSize` / `middleFontSize` / `bottomFontSize` | stat typography vars | Advanced editor only |
 | `borderWidth` / `borderColor` / `borderRadius` | border tokens | Advanced editor only |
-| `mediaMaxHeight` | `--fc-stat-media-max` | Foot icon cap |
+| `mediaMaxHeight` | `--fc-stat-media-max` | Foot icon height (e.g. `"7.5rem"`) |
+
 | `fontFamily` | `--fc-font` | Optional override |
 
 ### Figure
