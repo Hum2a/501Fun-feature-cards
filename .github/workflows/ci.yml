@@ -54,6 +54,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Generate API docs
+        run: npm run docs:api
+
       - name: Size budget
         run: npm run size
 
@@ -83,6 +86,14 @@ jobs:
         with:
           name: coverage
           path: coverage/
+          retention-days: 14
+
+      - name: Upload TypeDoc API reference
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: typedoc-api
+          path: docs/api/
           retention-days: 14
 
   webkit:
