@@ -20,7 +20,7 @@ The brief asks for a reusable replacement for three hard-coded feature-card
 | React / Vue / Svelte component | Framework sites only | Framework + reconciler | Consumer bundler |
 | Lit / Stencil | Broad | Small compiler/runtime | Build step |
 | Server partial (PHP/Twig) | Single stack | None | Server template |
-| **Native Custom Element** | **Any JS-capable page** | **None (beyond ~24 KiB component)** | **Optional for consumer** |
+| **Native Custom Element** | **Any JS-capable page** | **None (beyond ~25 KiB component)** | **Optional for consumer** |
 
 The hiring brief explicitly rewards native APIs and CMS agnosticism — not
 framework ecosystem depth.

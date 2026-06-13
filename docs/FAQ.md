@@ -20,7 +20,7 @@ portals that will never adopt a SPA framework. A Web Component loads with one
 
 ### What's the bundle size?
 
-Roughly **~24 KiB gzip** for the ESM build — enforced by `npm run size`. Zod is
+Roughly **~25 KiB gzip** for the ESM build — enforced by `npm run size`. Zod is
 the only bundled runtime dependency.
 
 ### Which browsers are supported?

@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
-[![Bundle size](https://img.shields.io/badge/ESM%20gzip-~24%20KiB-brightgreen.svg)](scripts/size.mjs)
+[![Bundle size](https://img.shields.io/badge/ESM%20gzip-~25%20KiB-brightgreen.svg)](scripts/size.mjs)
 
 **Package version:** `1.0.3`
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
@@ -14,7 +14,7 @@
 One **accessible, responsive, CMS-agnostic Web Component** that replaces hard-coded
 feature-card images. Native browser APIs — Shadow DOM, container queries,
 constructable stylesheets — authored in strict TypeScript, shipped as
-zero-framework vanilla JS (~24 KiB gzip).
+zero-framework vanilla JS (~25 KiB gzip).
 
 ![Three themed feature cards rendered by the component](tests/visual/cards.spec.ts-snapshots/inline-cards-large-chromium-win32.png)
 

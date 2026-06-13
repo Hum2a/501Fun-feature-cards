@@ -497,28 +497,25 @@ export const componentCss = /* css */ `
 }
 
 /* ---- 501 landing-page stat card themes (reference design) ------------ */
-.card[data-theme='501-green'] {
-  --fc-fg: #0a0a0a;
-  --fc-muted: #0a0a0a;
-  --fc-accent: #0a0a0a;
-  --fc-card-bg: #c6f135;
-  --fc-card-border: #0a0a0a;
-}
-
-.card[data-theme='501-magenta'] {
-  --fc-fg: #0a0a0a;
-  --fc-muted: #0a0a0a;
-  --fc-accent: #0a0a0a;
-  --fc-card-bg: #e91e8c;
-  --fc-card-border: #0a0a0a;
-}
-
+.card[data-theme='501-green'],
+.card[data-theme='501-magenta'],
 .card[data-theme='501-blue'] {
   --fc-fg: #0a0a0a;
   --fc-muted: #0a0a0a;
   --fc-accent: #0a0a0a;
-  --fc-card-bg: #29b6f6;
   --fc-card-border: #0a0a0a;
+}
+
+.card[data-theme='501-green'] {
+  --fc-card-bg: #c6f135;
+}
+
+.card[data-theme='501-magenta'] {
+  --fc-card-bg: #e91e8c;
+}
+
+.card[data-theme='501-blue'] {
+  --fc-card-bg: #29b6f6;
 }
 
 /* ---- stat layout (501 module): top / hero / bottom / foot icon -------- */
@@ -538,7 +535,6 @@ export const componentCss = /* css */ `
   letter-spacing: normal;
   font-size: var(--fc-stat-top-size);
   font-weight: 600;
-  color: var(--fc-fg);
 }
 
 .card[data-layout='stat'] .figure {
@@ -551,12 +547,17 @@ export const componentCss = /* css */ `
   font-weight: 800;
   line-height: 0.95;
   letter-spacing: -0.03em;
-  color: var(--fc-fg);
 }
 
 .card[data-layout='stat'] .figure-label {
   font-size: var(--fc-stat-bottom-size);
   font-weight: 600;
+}
+
+.card[data-layout='stat'] .eyebrow,
+.card[data-layout='stat'] .figure-value,
+.card[data-layout='stat'] .figure-label,
+.card[data-layout='stat'] .stat-fallback-title {
   color: var(--fc-fg);
 }
 
@@ -582,7 +583,6 @@ export const componentCss = /* css */ `
   font-size: var(--fc-stat-middle-size);
   font-weight: 800;
   line-height: 1;
-  color: var(--fc-fg);
 }
 
 .card[data-layout='stat'] .cta {

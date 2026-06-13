@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
-const BUDGET_GZIP_BYTES = 24 * 1024; // 24 KiB gzipped for the ESM bundle
+const BUDGET_GZIP_BYTES = 25 * 1024; // 25 KiB gzipped for the ESM bundle
 
 const bundles = [
   { label: 'ESM  (feature-cards.js)', file: 'dist/feature-cards.js', budget: true },

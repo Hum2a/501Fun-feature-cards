@@ -72,7 +72,7 @@ legacy .NET portal that will never adopt a SPA toolchain.
 A **native Custom Element**:
 
 - Registers with `customElements.define` — no reconciler, no virtual DOM
-- Ships as ESM + IIFE (~24 KiB gzip)
+- Ships as ESM + IIFE (~25 KiB gzip)
 - Upgrades existing HTML (`<feature-cards>` already in the document)
 - Degrades to plain links when JS is absent or fails
 
@@ -206,7 +206,7 @@ editor mistake). The component:
 | Mock CMS | `cms.501fun.humza-butt.space` | push to `master` |
 | npm | `@humza/feature-cards` | tag `v*.*.*` |
 
-Size budget enforced by `npm run size` (24 KiB gzip ESM ceiling).
+Size budget enforced by `npm run size` (25 KiB gzip ESM ceiling).
 
 ## Demo layers (not npm API)
 
