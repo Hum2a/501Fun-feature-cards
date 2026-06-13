@@ -5,7 +5,7 @@
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~22%20KiB-brightgreen.svg)](scripts/size.mjs)
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
-**Package version:** `1.0.1`
+**Package version:** `1.2.0`
 
 **Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)
 
@@ -251,7 +251,7 @@ Stable `v*.*.*` tags pushed to GitHub trigger CI to publish
 **Production:** [https://501fun.humza-butt.space](https://501fun.humza-butt.space)
 
 The demo (Pages) and mock CMS (Worker on `cms.501fun.humza-butt.space`) deploy from CI on
-push to `main`. Host settings live in [`config/site.json`](config/site.json).
+push to `master` (production branch in [`config/site.json`](config/site.json)).
 
 | What | Where |
 | --- | --- |
