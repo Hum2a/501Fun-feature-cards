@@ -173,7 +173,11 @@ const args = process.argv.slice(2);
 const asJson = args.includes('--json');
 const writeIndex = args.indexOf('--write');
 const writePath =
-  writeIndex !== -1 ? args[writeIndex + 1] : args.includes('--report') ? 'docs/loc-report.md' : null;
+  writeIndex !== -1
+    ? args[writeIndex + 1]
+    : args.includes('--report')
+      ? 'docs/loc-report.md'
+      : null;
 
 /** @type {Map<string, LineStats>} */
 const byArea = new Map();
@@ -224,7 +228,9 @@ function formatTable(title, rows, columns) {
   const sep = `| ${columns.map((c) => '-'.repeat(Math.max(c.label.length, c.min ?? 3))).join(' | ')} |`;
   lines.push(header, sep);
   for (const row of rows) {
-    lines.push(`| ${columns.map((c) => String(row[c.key] ?? '').padStart(c.padStart ? c.min : 0)).join(' | ')} |`);
+    lines.push(
+      `| ${columns.map((c) => String(row[c.key] ?? '').padStart(c.padStart ? c.min : 0)).join(' | ')} |`,
+    );
   }
   return lines.join('\n');
 }
@@ -238,7 +244,9 @@ function terminalTable(title, rows, keys) {
   out.push(`  ${keys.map((key, i) => key.padEnd(widths[i])).join('  ')}`);
   out.push(rule);
   for (const row of rows) {
-    out.push(`  ${keys.map((key, i) => String(row[key] ?? '').padEnd(widths[i])).join('  ')}`);
+    out.push(
+      `  ${keys.map((key, i) => String(row[key] ?? '').padEnd(widths[i])).join('  ')}`,
+    );
   }
   return out.join('\n');
 }
@@ -317,11 +325,29 @@ console.log(
 );
 
 console.log(
-  terminalTable('By area', areaRows, ['area', 'files', 'code', 'comment', 'blank', 'codePct']),
+  terminalTable('By area', areaRows, [
+    'area',
+    'files',
+    'code',
+    'comment',
+    'blank',
+    'codePct',
+  ]),
 );
-console.log(terminalTable('By extension', extRows, ['ext', 'files', 'code', 'comment', 'blank']));
-console.log(terminalTable('By kind', kindRows, ['kind', 'files', 'code', 'comment', 'blank']));
-console.log(terminalTable('Largest files (by code lines)', topRows, ['path', 'code', 'total', 'area']));
+console.log(
+  terminalTable('By extension', extRows, ['ext', 'files', 'code', 'comment', 'blank']),
+);
+console.log(
+  terminalTable('By kind', kindRows, ['kind', 'files', 'code', 'comment', 'blank']),
+);
+console.log(
+  terminalTable('Largest files (by code lines)', topRows, [
+    'path',
+    'code',
+    'total',
+    'area',
+  ]),
+);
 console.log('');
 
 const markdown = `# Lines of code report

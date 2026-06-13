@@ -26,7 +26,13 @@ describe('FeatureCards React wrapper', () => {
       root.render(
         <FeatureCards
           data={{
-            cards: [{ id: 'react-smoke', title: 'From React', cta: { label: 'Go', href: '/go' } }],
+            cards: [
+              {
+                id: 'react-smoke',
+                title: 'From React',
+                cta: { label: 'Go', href: '/go' },
+              },
+            ],
           }}
         />,
       );

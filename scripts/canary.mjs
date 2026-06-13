@@ -40,9 +40,7 @@ for (const char of hex) {
 
 // Minifiers usually emit non-ASCII as \uXXXX escapes, so accept both the
 // raw characters (rendered DOM / HTML) and the escaped form (bundle text).
-const escaped = [...signature]
-  .map((c) => `\\u200${c === ONE ? 'c' : 'b'}`)
-  .join('');
+const escaped = [...signature].map((c) => `\\u200${c === ONE ? 'c' : 'b'}`).join('');
 
 function containsSignature(text) {
   return text.includes(signature) || text.toLowerCase().includes(escaped);
@@ -75,7 +73,9 @@ try {
   const cause = err?.cause ?? err;
   if (cause?.code === 'ENOTFOUND') {
     console.error(
-      red(`DNS lookup failed for ${cause.hostname ?? url} — the hostname does not resolve yet.`),
+      red(
+        `DNS lookup failed for ${cause.hostname ?? url} — the hostname does not resolve yet.`,
+      ),
     );
     console.error(
       '\nIf this is your production demo, run `npm run deploy:domain` and ensure a CNAME exists:\n' +

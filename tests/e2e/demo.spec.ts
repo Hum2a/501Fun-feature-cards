@@ -40,7 +40,10 @@ test.describe('demo instances', () => {
 });
 
 test.describe('keyboard interaction', () => {
-  test('cards are reachable and activatable by keyboard', async ({ page, browserName }) => {
+  test('cards are reachable and activatable by keyboard', async ({
+    page,
+    browserName,
+  }) => {
     await page.goto('/');
     await waitForAllInstances(page);
 

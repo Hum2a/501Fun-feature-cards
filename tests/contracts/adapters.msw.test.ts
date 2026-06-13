@@ -12,7 +12,11 @@ import { setupServer } from 'msw/node';
 import { getAdapter } from '@src/adapters/index.js';
 import { featureCardsDataSchema } from '@src/schema.js';
 
-const FIXTURES = join(dirname(dirname(fileURLToPath(import.meta.url))), 'unit', 'fixtures');
+const FIXTURES = join(
+  dirname(dirname(fileURLToPath(import.meta.url))),
+  'unit',
+  'fixtures',
+);
 
 function load(name: string): unknown {
   return JSON.parse(readFileSync(join(FIXTURES, name), 'utf8'));

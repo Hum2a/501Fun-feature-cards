@@ -22,11 +22,7 @@ const FALLBACK = '/fixtures/cards.json';
 type CmsState = 'loading' | 'ready' | 'fallback' | 'error';
 
 /** Update the CMS section status pill. */
-function setCmsStatus(
-  el: HTMLElement | null,
-  state: CmsState,
-  detail = '',
-): void {
+function setCmsStatus(el: HTMLElement | null, state: CmsState, detail = ''): void {
   if (!el) {
     return;
   }
@@ -54,9 +50,7 @@ function wireCmsInstance(): void {
   const configured = document
     .querySelector('meta[name="fc-cms-endpoint"]')
     ?.getAttribute('content');
-  const primary = import.meta.env.DEV
-    ? LOCAL_CMS
-    : (configured ?? FALLBACK);
+  const primary = import.meta.env.DEV ? LOCAL_CMS : (configured ?? FALLBACK);
 
   setCmsStatus(status, 'loading');
 

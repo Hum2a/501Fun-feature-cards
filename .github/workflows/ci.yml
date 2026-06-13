@@ -96,7 +96,6 @@ jobs:
           path: docs/api/
           retention-days: 14
 
-
   benchmark:
     runs-on: ubuntu-latest
     steps:

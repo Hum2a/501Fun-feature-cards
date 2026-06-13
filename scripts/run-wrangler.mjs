@@ -29,13 +29,7 @@ if (!token || !accountId) {
   process.exit(1);
 }
 
-const wranglerBin = join(
-  ROOT,
-  'node_modules',
-  'wrangler',
-  'bin',
-  'wrangler.js',
-);
+const wranglerBin = join(ROOT, 'node_modules', 'wrangler', 'bin', 'wrangler.js');
 
 const args = process.argv.slice(2);
 if (args.length === 0) {

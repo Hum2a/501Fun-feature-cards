@@ -29,7 +29,10 @@
       ],
       "events": [
         { "name": "featurecards:ready", "description": "Fired after successful render." },
-        { "name": "featurecards:error", "description": "Validation or fetch failure (RFC 7807 detail)." },
+        {
+          "name": "featurecards:error",
+          "description": "Validation or fetch failure (RFC 7807 detail)."
+        },
         { "name": "featurecards:cardclick", "description": "Card link activated." }
       ],
       "references": [

@@ -46,9 +46,7 @@ describe('page motion helpers', () => {
   it('flashThemeTransition adds overlay class when motion allowed', () => {
     stubReducedMotion(false);
     flashThemeTransition();
-    expect(document.documentElement.classList.contains('theme-transitioning')).toBe(
-      true,
-    );
+    expect(document.documentElement.classList.contains('theme-transitioning')).toBe(true);
     vi.advanceTimersByTime(720);
     expect(document.documentElement.classList.contains('theme-transitioning')).toBe(
       false,
