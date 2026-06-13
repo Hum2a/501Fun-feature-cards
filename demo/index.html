@@ -18,7 +18,12 @@
     />
     <title>&lt;feature-cards&gt; — CMS-agnostic feature cards Web Component</title>
     <link rel="icon" href="/brand/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/brand/mark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+    <link
+      rel="icon"
+      href="/brand/mark.svg"
+      type="image/svg+xml"
+      media="(prefers-color-scheme: light)"
+    />
     <link rel="apple-touch-icon" href="/brand/mark.svg" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#c6f135" media="(prefers-color-scheme: light)" />
@@ -101,10 +106,10 @@
           <div>
             <h2 id="card-editor-title">501 feature cards — live editor</h2>
             <p>
-              Replace the three static card <strong>images</strong> with real text, figures, and
-              icons. Each card has four core fields — top text, middle text, bottom text, and
-              icon/image — plus colour, size, and rotation. Advanced typography and borders live
-              in the panel below.
+              Replace the three static card <strong>images</strong> with real text,
+              figures, and icons. Each card has four core fields — top text, middle text,
+              bottom text, and icon/image — plus colour, size, and rotation. Advanced
+              typography and borders live in the panel below.
             </p>
           </div>
           <div class="card-editor-toolbar">
@@ -115,7 +120,10 @@
           </div>
         </div>
 
-        <label class="card-editor-field card-editor-field-span" for="editor-section-heading">
+        <label
+          class="card-editor-field card-editor-field-span"
+          for="editor-section-heading"
+        >
           Section heading (optional)
           <input
             type="text"
@@ -143,15 +151,30 @@
               <div class="card-editor-core-grid">
                 <div class="card-editor-field card-editor-field-span">
                   <label for="editor-top-text">Top text</label>
-                  <input type="text" id="editor-top-text" name="topText" autocomplete="off" />
+                  <input
+                    type="text"
+                    id="editor-top-text"
+                    name="topText"
+                    autocomplete="off"
+                  />
                 </div>
                 <div class="card-editor-field card-editor-field-span">
                   <label for="editor-middle-text">Middle text (hero figure)</label>
-                  <input type="text" id="editor-middle-text" name="middleText" autocomplete="off" />
+                  <input
+                    type="text"
+                    id="editor-middle-text"
+                    name="middleText"
+                    autocomplete="off"
+                  />
                 </div>
                 <div class="card-editor-field card-editor-field-span">
                   <label for="editor-bottom-text">Bottom text</label>
-                  <input type="text" id="editor-bottom-text" name="bottomText" autocomplete="off" />
+                  <input
+                    type="text"
+                    id="editor-bottom-text"
+                    name="bottomText"
+                    autocomplete="off"
+                  />
                 </div>
                 <div class="card-editor-field card-editor-field-span">
                   <span id="editor-icon-label" class="card-editor-field-label">Icon</span>
@@ -191,11 +214,21 @@
                 </div>
                 <div class="card-editor-field">
                   <label for="editor-background">Card background</label>
-                  <input type="color" id="editor-background" name="background" value="#c6f135" />
+                  <input
+                    type="color"
+                    id="editor-background"
+                    name="background"
+                    value="#c6f135"
+                  />
                 </div>
                 <div class="card-editor-field">
                   <label for="editor-foreground">Text colour</label>
-                  <input type="color" id="editor-foreground" name="foreground" value="#0a0a0a" />
+                  <input
+                    type="color"
+                    id="editor-foreground"
+                    name="foreground"
+                    value="#0a0a0a"
+                  />
                 </div>
                 <div class="card-editor-field card-editor-range">
                   <label for="editor-rotate">Rotation</label>
@@ -237,7 +270,9 @@
                     value="18"
                     data-unit="rem"
                   />
-                  <output id="editor-min-height-out" for="editor-min-height">18rem</output>
+                  <output id="editor-min-height-out" for="editor-min-height"
+                    >18rem</output
+                  >
                 </div>
               </div>
             </form>
@@ -248,7 +283,12 @@
                 <div class="card-editor-core-grid">
                   <div class="card-editor-field">
                     <label for="editor-top-size">Top font size (rem)</label>
-                    <input type="text" id="editor-top-size" name="topFontSize" placeholder="auto" />
+                    <input
+                      type="text"
+                      id="editor-top-size"
+                      name="topFontSize"
+                      placeholder="auto"
+                    />
                   </div>
                   <div class="card-editor-field">
                     <label for="editor-middle-size">Middle font size (rem)</label>
@@ -279,15 +319,30 @@
                   </div>
                   <div class="card-editor-field">
                     <label for="editor-border-width">Border width (px)</label>
-                    <input type="text" id="editor-border-width" name="borderWidth" value="0" />
+                    <input
+                      type="text"
+                      id="editor-border-width"
+                      name="borderWidth"
+                      value="0"
+                    />
                   </div>
                   <div class="card-editor-field">
                     <label for="editor-border-color">Border colour</label>
-                    <input type="color" id="editor-border-color" name="borderColor" value="#0a0a0a" />
+                    <input
+                      type="color"
+                      id="editor-border-color"
+                      name="borderColor"
+                      value="#0a0a0a"
+                    />
                   </div>
                   <div class="card-editor-field">
                     <label for="editor-radius">Corner radius (rem)</label>
-                    <input type="text" id="editor-radius" name="borderRadius" placeholder="auto" />
+                    <input
+                      type="text"
+                      id="editor-radius"
+                      name="borderRadius"
+                      placeholder="auto"
+                    />
                   </div>
                 </div>
               </form>
@@ -327,7 +382,11 @@
                   "figure": { "value": "12,000,000", "label": "delighted guests" },
                   "media": { "src": "/icons/lucide/users.svg", "alt": "" },
                   "theme": "501-green",
-                  "appearance": { "background": "#c6f135", "foreground": "#0a0a0a", "minHeight": "18rem" }
+                  "appearance": {
+                    "background": "#c6f135",
+                    "foreground": "#0a0a0a",
+                    "minHeight": "18rem"
+                  }
                 },
                 {
                   "id": "countries",
@@ -336,7 +395,11 @@
                   "figure": { "value": "50", "label": "countries" },
                   "media": { "src": "/icons/lucide/globe-2.svg", "alt": "" },
                   "theme": "501-magenta",
-                  "appearance": { "background": "#e91e8c", "foreground": "#0a0a0a", "minHeight": "18rem" }
+                  "appearance": {
+                    "background": "#e91e8c",
+                    "foreground": "#0a0a0a",
+                    "minHeight": "18rem"
+                  }
                 },
                 {
                   "id": "darts",
@@ -345,7 +408,11 @@
                   "figure": { "value": "800,000,000", "label": "darts thrown" },
                   "media": { "src": "/icons/lucide/target.svg", "alt": "" },
                   "theme": "501-blue",
-                  "appearance": { "background": "#29b6f6", "foreground": "#0a0a0a", "minHeight": "18rem" }
+                  "appearance": {
+                    "background": "#29b6f6",
+                    "foreground": "#0a0a0a",
+                    "minHeight": "18rem"
+                  }
                 }
               ]
             }

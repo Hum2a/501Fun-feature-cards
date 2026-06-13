@@ -3,7 +3,11 @@
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { safeParseFeatureCardsData, type Card, type FeatureCardsData } from '@src/schema.js';
+import {
+  safeParseFeatureCardsData,
+  type Card,
+  type FeatureCardsData,
+} from '@src/schema.js';
 import {
   cloneCards,
   createBlankCard,
@@ -60,7 +64,9 @@ function readIconSrc(form: HTMLFormElement): string {
 
 function syncIconPickerSelection(picker: HTMLElement, src: string): void {
   const resolved = resolveIconSrc(src);
-  for (const input of picker.querySelectorAll<HTMLInputElement>('input[name="iconSrc"]')) {
+  for (const input of picker.querySelectorAll<HTMLInputElement>(
+    'input[name="iconSrc"]',
+  )) {
     input.checked = input.value === resolved;
   }
 }
@@ -72,7 +78,10 @@ function renderIconPicker(picker: HTMLElement, onSelect: () => void): void {
   }
 }
 
-function createIconOption(icon: LucideIconOption, onSelect: () => void): HTMLLabelElement {
+function createIconOption(
+  icon: LucideIconOption,
+  onSelect: () => void,
+): HTMLLabelElement {
   const label = document.createElement('label');
   label.className = 'card-editor-icon-option';
 
@@ -136,7 +145,9 @@ export function initCardEditor(root: HTMLElement): void {
     const result = safeParseFeatureCardsData(payload);
     jsonOut.textContent = JSON.stringify(payload, null, 2);
     if (!result.ok) {
-      jsonOut.textContent = result.issues.map((i) => `${i.path}: ${i.message}`).join('\n');
+      jsonOut.textContent = result.issues
+        .map((i) => `${i.path}: ${i.message}`)
+        .join('\n');
       return;
     }
     (preview as HTMLElement & { data?: FeatureCardsData }).data = result.data;
@@ -174,7 +185,9 @@ export function initCardEditor(root: HTMLElement): void {
     const card = currentCard();
     const appearance = card.appearance ?? {};
     const iconSrc =
-      card.media && 'src' in card.media ? resolveIconSrc(card.media.src) : resolveIconSrc(undefined);
+      card.media && 'src' in card.media
+        ? resolveIconSrc(card.media.src)
+        : resolveIconSrc(undefined);
 
     sectionHeading.value = data.heading ?? '';
 
@@ -217,7 +230,8 @@ export function initCardEditor(root: HTMLElement): void {
     const card = currentCard();
     const appearance = ensureAppearance(card);
     const val = (name: string): string => {
-      const el = coreForm.elements.namedItem(name) ?? advancedForm.elements.namedItem(name);
+      const el =
+        coreForm.elements.namedItem(name) ?? advancedForm.elements.namedItem(name);
       if (el instanceof RadioNodeList) {
         return el.value;
       }

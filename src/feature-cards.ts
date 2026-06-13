@@ -361,7 +361,11 @@ export class FeatureCardsElement extends HTMLElement {
   }
 
   /** Standard layout: media, eyebrow, title, figure, description, cta. */
-  #appendStandardCardContent(link: HTMLAnchorElement, card: Card, titleLevel: number): void {
+  #appendStandardCardContent(
+    link: HTMLAnchorElement,
+    card: Card,
+    titleLevel: number,
+  ): void {
     if (card.media) {
       link.append(this.#renderMedia(card.media));
     }
