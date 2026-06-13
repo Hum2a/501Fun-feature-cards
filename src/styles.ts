@@ -38,19 +38,19 @@
 export const componentCss = /* css */ `
 :host {
   /* ---- public token layer (theming API) ---------------------------- */
-  --fc-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fc-font: var(--page-font, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
   --fc-bg: transparent;
-  --fc-fg: light-dark(#16202b, #e8edf2);
-  --fc-muted: light-dark(#51606f, #9aa7b4);
-  --fc-accent: light-dark(#2563eb, #7aa2ff);
-  --fc-card-bg: light-dark(#ffffff, #1a2330);
-  --fc-card-border: light-dark(#e3e8ee, #2c3a4b);
+  --fc-fg: var(--page-fg, light-dark(#16202b, #e8edf2));
+  --fc-muted: var(--page-muted, light-dark(#51606f, #9aa7b4));
+  --fc-accent: var(--page-accent, light-dark(#2563eb, #7aa2ff));
+  --fc-card-bg: var(--page-card, light-dark(#ffffff, #1a2330));
+  --fc-card-border: var(--page-border, light-dark(#e3e8ee, #2c3a4b));
   --fc-card-min: 16rem;
   --fc-gap: clamp(0.75rem, 2cqi, 1.5rem);
   --fc-pad: clamp(1rem, 3cqi, 1.75rem);
   --fc-radius: 0.875rem;
-  --fc-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 12px rgb(0 0 0 / 0.05);
-  --fc-shadow-hover: 0 2px 4px rgb(0 0 0 / 0.08), 0 12px 28px rgb(0 0 0 / 0.12);
+  --fc-shadow: 0 1px 2px var(--page-shadow, rgb(0 0 0 / 0.06)), 0 4px 12px var(--page-shadow, rgb(0 0 0 / 0.05));
+  --fc-shadow-hover: 0 2px 4px var(--page-shadow, rgb(0 0 0 / 0.08)), 0 12px 28px var(--page-shadow, rgb(0 0 0 / 0.12));
   --fc-ring: var(--fc-accent);
   --fc-transition: 180ms ease;
 

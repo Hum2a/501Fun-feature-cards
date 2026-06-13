@@ -17,6 +17,9 @@ async function waitForInline(page: Page): Promise<void> {
     const el = document.querySelector('#inline-instance');
     return Boolean(el?.shadowRoot?.querySelector('.card'));
   });
+  await page.evaluate(() => {
+    document.documentElement.dataset.pageTheme = 'corporate-daydream';
+  });
   await page.evaluate(() => document.fonts.ready);
 }
 

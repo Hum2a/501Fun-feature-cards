@@ -8,6 +8,7 @@
  */
 import '@src/index.js';
 import { safeParseFeatureCardsData } from '@src/schema.js';
+import { initPageThemes } from './themes/page-theme-controller.js';
 
 const LOCAL_CMS =
   import.meta.env.VITE_FC_CMS_ENDPOINT ?? 'http://localhost:8787/api/cards';
@@ -220,6 +221,7 @@ function shortenUrl(url: string): string {
 }
 
 wireCmsInstance();
+initPageThemes();
 wirePlayground();
 wireSchemaPlayground();
 wireResizable();
