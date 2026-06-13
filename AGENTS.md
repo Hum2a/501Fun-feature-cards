@@ -53,6 +53,8 @@ Is it user-facing explanation?
 
 | Command | What it does |
 | --- | --- |
+| `npm run setup` | New contributor bootstrap (env, ci, rules, browsers, build:lib, doctor) |
+| `npm run setup:quick` | Deps + env only — skip browsers and library build |
 | `npm run dev` | Vite dev server — demo at `:5173` |
 | `npm run serve:cms` | Mock Worker CMS at `:8787` |
 | `npm run build` | Library + demo production build |

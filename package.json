@@ -103,6 +103,8 @@
     "check": "npm run typecheck && npm run lint && npm run test:ci && npm run size",
     "clean": "node scripts/clean.mjs",
     "doctor": "node scripts/doctor.mjs",
+    "setup": "node scripts/setup.mjs",
+    "setup:quick": "node scripts/setup.mjs --quick",
     "banner": "node scripts/banner.mjs",
     "stats": "node scripts/stats.mjs",
     "loc": "node scripts/loc.mjs",

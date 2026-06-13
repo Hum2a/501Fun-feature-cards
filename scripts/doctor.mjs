@@ -29,12 +29,34 @@ function tryExec(cmd) {
 
 const checks = [];
 
-// Node version vs .nvmrc
+/** @param {string} version */
+function parseNodeVersion(version) {
+  const [major = 0, minor = 0, patch = 0] = version
+    .replace(/^v/, '')
+    .split('.')
+    .map((part) => Number.parseInt(part, 10));
+  return { major, minor, patch };
+}
+
+/** @param {string} current @param {string} minimum */
+function meetsNodeMinimum(current, minimum) {
+  const c = parseNodeVersion(current);
+  const m = parseNodeVersion(minimum);
+  if (c.major !== m.major) {
+    return c.major > m.major;
+  }
+  if (c.minor !== m.minor) {
+    return c.minor > m.minor;
+  }
+  return c.patch >= m.patch;
+}
+
+// Node version vs .nvmrc (minimum semver, e.g. 22.13)
 const wanted = readFileSync(join(ROOT, '.nvmrc'), 'utf8').trim();
-const nodeMajor = process.versions.node.split('.')[0];
+const nodeOk = meetsNodeMinimum(process.versions.node, wanted);
 checks.push({
-  name: `Node ${wanted}.x (.nvmrc)`,
-  pass: nodeMajor === wanted,
+  name: `Node >= ${wanted} (.nvmrc)`,
+  pass: nodeOk,
   detail: `found v${process.versions.node}`,
 });
 

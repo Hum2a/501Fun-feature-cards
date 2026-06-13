@@ -282,11 +282,10 @@ Narrative: [ARCHITECTURE.md](ARCHITECTURE.md) · Diagrams: [docs/diagrams/archit
 ## Development
 
 ```sh
-npm install
+npm run setup        # first-time: env, deps, Playwright, build:lib, doctor
 npm run dev          # demo → http://localhost:5173
-npm run serve:cms    # mock CMS → http://localhost:8787/api/cards
+npm run serve:cms    # mock CMS → http://localhost:8787/api/cards (second terminal)
 npm run check        # typecheck + lint + format + tests + size
-npm run doctor       # verify toolchain
 ```
 
 ### Tooling

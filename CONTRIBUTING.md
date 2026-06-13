@@ -21,15 +21,13 @@ small, opinionated, and quality-gated — the rules below keep it that way.
 ```sh
 git clone https://github.com/Hum2a/feature-cards
 cd feature-cards
-npm install
-
-cp .env.example .env                          # optional: Cloudflare vars for deploy
-cp worker/.dev.vars.example worker/.dev.vars    # optional: local CMS CORS
-
-npm run doctor    # verify Node, npm, key binaries
+npm run setup     # env templates, npm ci, rules sync, Playwright, build:lib, doctor
 npm run dev       # demo → http://localhost:5173
 npm run serve:cms # mock CMS → http://localhost:8787/api/cards (second terminal)
 ```
+
+`npm run setup:quick` skips Playwright browsers and `build:lib` when you only need
+deps and env files. Run full `npm run setup` before `npm run check`.
 
 Requires **Node 22.13+** (see `.nvmrc`).
 
