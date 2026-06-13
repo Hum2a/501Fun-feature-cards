@@ -117,6 +117,7 @@
     "rules:sync:check": "node scripts/sync-agent-rules.mjs --check",
     "docs:api": "typedoc",
     "cem": "node scripts/generate-cem.mjs",
+    "cem:check": "node scripts/check-cem.mjs",
     "sri": "node scripts/generate-sri.mjs",
     "validate:cms": "node scripts/validate-cms-json.mjs",
     "postinstall": "node scripts/banner.mjs --quiet",
