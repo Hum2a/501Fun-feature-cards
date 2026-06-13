@@ -9,7 +9,12 @@ import {
   resolveInitialPageTheme,
   type PageThemeId,
 } from './page-theme-tokens.js';
-import { flashThemeTransition } from '../motion/page-motion.js';
+import {
+  crossfadeThemeHint,
+  enableThemeAnimation,
+  flashThemeTransition,
+  pulseThemeSelect,
+} from '../motion/page-motion.js';
 
 /** Wire the theme picker and sync `<html data-page-theme>`. */
 export function initPageThemes(): void {
@@ -24,13 +29,29 @@ export function initPageThemes(): void {
   applyPageTheme(initial);
   select.value = initial;
   updateThemeHint(select, initial);
+  enableThemeAnimation();
 
   select.addEventListener('change', () => {
     const id = select.value as PageThemeId;
-    flashThemeTransition();
-    applyPageTheme(id);
-    updateThemeHint(select, id);
+    switchPageTheme(id, select);
   });
+}
+
+/** Animate then apply a new page theme (vibe picker). */
+function switchPageTheme(id: PageThemeId, select: HTMLSelectElement): void {
+  const meta = PAGE_THEMES.find((theme) => theme.id === id);
+  const hint = document.querySelector<HTMLElement>('#page-theme-hint');
+
+  flashThemeTransition();
+  pulseThemeSelect(select);
+
+  if (hint && meta) {
+    crossfadeThemeHint(hint, meta.tagline, meta.colorScheme);
+  } else {
+    updateThemeHint(select, id);
+  }
+
+  applyPageTheme(id);
 }
 
 function populateThemeOptions(select: HTMLSelectElement): void {

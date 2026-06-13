@@ -4,21 +4,67 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-const FLASH_MS = 520;
+const THEME_TRANSITION_MS = 720;
+const THEME_HINT_FADE_MS = 180;
 
 /** Whether the user prefers reduced motion. */
 export function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/** Brief overlay flash when the page theme changes. */
+/** Brief overlay while page theme tokens crossfade. */
 export function flashThemeTransition(): void {
   if (prefersReducedMotion()) {
     return;
   }
   const root = document.documentElement;
   root.classList.add('theme-transitioning');
-  window.setTimeout(() => root.classList.remove('theme-transitioning'), FLASH_MS);
+  window.setTimeout(() => root.classList.remove('theme-transitioning'), THEME_TRANSITION_MS);
+}
+
+/** Pulse the vibe select while its value changes. */
+export function pulseThemeSelect(select: HTMLSelectElement): void {
+  if (prefersReducedMotion()) {
+    return;
+  }
+  select.classList.remove('theme-select-switching');
+  void select.offsetWidth;
+  select.classList.add('theme-select-switching');
+  window.setTimeout(
+    () => select.classList.remove('theme-select-switching'),
+    THEME_TRANSITION_MS,
+  );
+}
+
+/** Crossfade the tagline under the theme picker. */
+export function crossfadeThemeHint(
+  hint: HTMLElement,
+  nextText: string,
+  colorScheme: 'light' | 'dark',
+): void {
+  if (prefersReducedMotion()) {
+    hint.textContent = nextText;
+    hint.dataset.colorScheme = colorScheme;
+    return;
+  }
+
+  hint.classList.add('theme-hint-swapping');
+
+  window.setTimeout(() => {
+    hint.textContent = nextText;
+    hint.dataset.colorScheme = colorScheme;
+    hint.classList.remove('theme-hint-swapping');
+  }, THEME_HINT_FADE_MS);
+}
+
+/** Enable smooth token interpolation after the initial theme is applied. */
+export function enableThemeAnimation(): void {
+  if (prefersReducedMotion()) {
+    return;
+  }
+  requestAnimationFrame(() => {
+    document.documentElement.classList.add('theme-animate');
+  });
 }
 
 /** Scroll-triggered reveal for `.motion-reveal` sections. */

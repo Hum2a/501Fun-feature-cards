@@ -19,6 +19,7 @@ component markup.
 | --- | --- |
 | `demo/themes/page-theme-tokens.ts` | Theme ids, parody names, metadata, apply/resolve helpers |
 | `demo/themes/page-themes.css` | **All colour values** — one `[data-page-theme='…']` block per theme |
+| `demo/themes/page-theme-transitions.css` | `@property` registration + crossfade when theme changes |
 | `demo/themes/page-theme-controller.ts` | Picker wiring, `localStorage`, `data-page-theme` on `<html>` |
 | `demo/demo.css` | Layout/structure only — **must** reference `--page-*`, not literals |
 

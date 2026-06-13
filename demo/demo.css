@@ -35,6 +35,9 @@ body {
     var(--page-bg);
   color: var(--page-fg);
   line-height: 1.6;
+  transition:
+    color var(--page-theme-duration, 720ms) var(--page-theme-ease, ease),
+    background-color var(--page-theme-duration, 720ms) var(--page-theme-ease, ease);
 }
 
 .skip-link {
@@ -73,19 +76,6 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--page-muted);
-}
-
-.theme-bar select {
-  min-width: min(100%, 18rem);
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--page-border);
-  border-radius: 0.5rem;
-  background: var(--page-card);
-  color: var(--page-fg);
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
 }
 
 .theme-bar select:focus-visible {

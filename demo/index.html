@@ -27,6 +27,7 @@
       })();
     </script>
     <link rel="stylesheet" href="/themes/page-themes.css" />
+    <link rel="stylesheet" href="/themes/page-theme-transitions.css" />
     <link rel="stylesheet" href="/demo.css" />
     <link rel="stylesheet" href="/motion/page-motion.css" />
     <script type="module" src="/main.ts"></script>
@@ -36,9 +37,11 @@
 
     <div class="theme-bar" role="region" aria-label="Page vibe">
       <label for="page-theme-select">Vibe check</label>
-      <select id="page-theme-select" name="page-theme" aria-describedby="page-theme-hint">
-        <option value="corporate-daydream">Corporate Daydream™</option>
-      </select>
+      <div class="theme-picker">
+        <select id="page-theme-select" name="page-theme" aria-describedby="page-theme-hint">
+          <option value="corporate-daydream">Corporate Daydream™</option>
+        </select>
+      </div>
       <p id="page-theme-hint">Pick a parody theme — tokens only, no shortcuts.</p>
     </div>
 
