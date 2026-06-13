@@ -133,3 +133,25 @@ test.describe('reduced motion', () => {
     expect(motionState.themeAnimate).toBe(false);
   });
 });
+
+test.describe('page theme picker', () => {
+  test('selected theme persists across reload', async ({ page }) => {
+    await page.goto('/');
+    await waitForAllInstances(page);
+
+    await page.selectOption('#page-theme-select', 'terminal-green-envy');
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-page-theme',
+      'terminal-green-envy',
+    );
+
+    await page.reload();
+    await waitForAllInstances(page);
+
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-page-theme',
+      'terminal-green-envy',
+    );
+    await expect(page.locator('#page-theme-select')).toHaveValue('terminal-green-envy');
+  });
+});
