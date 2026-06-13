@@ -15,6 +15,7 @@ npm run serve:cms    # mock CMS at http://localhost:8787/api/cards (second termi
 
 | Section | What it demonstrates |
 | --- | --- |
+| **501 feature cards — live editor** | **Primary task deliverable** — edit top / middle / bottom / icon, colours, rotate, scale; advanced typography & borders; copy JSON |
 | **Hero** | Project positioning, badges, staggered entrance motion |
 | **Vibe check** | Page theme picker (12 parody themes) |
 | **Inline JSON** | `<script type="application/json">` data source |
@@ -23,6 +24,28 @@ npm run serve:cms    # mock CMS at http://localhost:8787/api/cards (second termi
 | **Theming playground** | Host `--fc-*` overrides on live instance |
 | **Resizable container** | Container-query reflow (drag width slider) |
 | **Schema playground** | Edit JSON, live preview, validation flash |
+
+## Card editor (`demo/editor/`)
+
+The editor at the top of the demo page is the reference UI for the **501 landing-page
+brief**. It must stay in sync with the schema field mapping:
+
+| Core panel | Schema |
+| --- | --- |
+| Top text | `eyebrow` |
+| Middle text | `figure.value` |
+| Bottom text | `figure.label` |
+| Icon | `media.src` |
+| Background / text colour | `appearance.background` / `appearance.foreground` |
+| Rotate / scale / min height | `appearance.rotateDeg` / `scale` / `minHeight` |
+
+Advanced controls (font sizes, borders, radius, font family) live in the
+`<details>` panel only. Icons come from [Lucide](https://lucide.dev/) — the picker
+shows a visual preview for each icon. Regenerate assets with `npm run icons:sync`.
+State persists in `localStorage` (`fc-card-editor-data`).
+
+Do not move core fields into advanced-only UI or remove the editor without updating
+`.cursor/rules/49-stat-cards-and-editor.mdc` and `docs/SCHEMA.md`.
 
 ## Page themes (Vibe check)
 

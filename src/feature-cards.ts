@@ -9,7 +9,9 @@
 import { getAdapter } from './adapters/index.js';
 import {
   safeParseFeatureCardsData,
+  resolveCardLayout,
   type Card,
+  type CardAppearance,
   type FeatureCardsData,
   type Trend,
   type ValidationIssue,
@@ -309,12 +311,15 @@ export class FeatureCardsElement extends HTMLElement {
 
   /** Render one card as a list item wrapping a single full-area link. */
   #renderCard(card: Card, titleLevel: number): HTMLLIElement {
+    const layout = resolveCardLayout(card);
     const item = document.createElement('li');
     item.className = 'card';
     item.setAttribute('part', 'card');
+    item.dataset.layout = layout;
     if (card.theme) {
       item.dataset.theme = card.theme;
     }
+    this.#applyAppearance(item, card.appearance);
 
     const link = document.createElement('a');
     link.className = 'link';
@@ -323,8 +328,19 @@ export class FeatureCardsElement extends HTMLElement {
     link.dataset.cardId = card.id;
     if (card.cta?.ariaLabel) {
       link.setAttribute('aria-label', card.cta.ariaLabel);
+    } else if (layout === 'stat') {
+      const name = [card.eyebrow, card.figure?.value, card.figure?.label]
+        .filter(Boolean)
+        .join(' ');
+      if (name) {
+        link.setAttribute('aria-label', name);
+      }
     }
-    link.addEventListener('click', () => {
+
+    link.addEventListener('click', (event) => {
+      if (link.getAttribute('href') === '#') {
+        event.preventDefault();
+      }
       this.dispatchEvent(
         new CustomEvent('featurecards:cardclick', {
           bubbles: true,
@@ -334,69 +350,34 @@ export class FeatureCardsElement extends HTMLElement {
       );
     });
 
+    if (layout === 'stat') {
+      this.#appendStatCardContent(link, card);
+    } else {
+      this.#appendStandardCardContent(link, card, titleLevel);
+    }
+
+    item.append(link);
+    return item;
+  }
+
+  /** Standard layout: media, eyebrow, title, figure, description, cta. */
+  #appendStandardCardContent(link: HTMLAnchorElement, card: Card, titleLevel: number): void {
     if (card.media) {
-      const media = document.createElement('figure');
-      media.className = 'media';
-      media.setAttribute('part', 'media');
-      if ('src' in card.media) {
-        const img = document.createElement('img');
-        img.src = card.media.src;
-        img.alt = card.media.alt;
-        img.loading = 'lazy';
-        if (card.media.alt === '') {
-          img.setAttribute('aria-hidden', 'true');
-        }
-        media.append(img);
-      } else {
-        const icon = document.createElement('span');
-        icon.className = 'icon';
-        icon.setAttribute('aria-hidden', 'true');
-        icon.textContent = card.media.icon;
-        media.append(icon);
-      }
-      link.append(media);
+      link.append(this.#renderMedia(card.media));
     }
-
     if (card.eyebrow) {
-      const eyebrow = document.createElement('p');
-      eyebrow.className = 'eyebrow';
-      eyebrow.setAttribute('part', 'eyebrow');
-      eyebrow.textContent = card.eyebrow;
-      link.append(eyebrow);
+      link.append(this.#renderEyebrow(card.eyebrow));
     }
-
-    const title = document.createElement(`h${titleLevel}`);
-    title.className = 'title';
-    title.setAttribute('part', 'title');
-    title.textContent = card.title;
-    link.append(title);
-
+    if (card.title) {
+      const title = document.createElement(`h${titleLevel}`);
+      title.className = 'title';
+      title.setAttribute('part', 'title');
+      title.textContent = card.title;
+      link.append(title);
+    }
     if (card.figure) {
-      const figure = document.createElement('p');
-      figure.className = 'figure';
-      figure.setAttribute('part', 'figure');
-
-      const value = document.createElement('span');
-      value.className = 'figure-value';
-      value.setAttribute('part', 'value');
-      value.textContent = card.figure.value;
-
-      const label = document.createElement('span');
-      label.className = 'figure-label';
-      label.setAttribute('part', 'label');
-      label.textContent = card.figure.label;
-
-      figure.append(value, label);
-
-      if (card.figure.trend) {
-        const trend = document.createElement('span');
-        trend.className = 'visually-hidden';
-        trend.textContent = ` (${describeTrend(card.figure.trend)})`;
-        figure.append(trend);
-      }
-      link.append(figure);
+      link.append(this.#renderFigure(card.figure));
     }
-
     if (card.description) {
       const description = document.createElement('p');
       description.className = 'description';
@@ -404,17 +385,132 @@ export class FeatureCardsElement extends HTMLElement {
       description.textContent = card.description;
       link.append(description);
     }
-
     if (card.cta?.label && card.cta.label !== card.title) {
-      const cta = document.createElement('span');
-      cta.className = 'cta';
-      cta.setAttribute('part', 'cta');
-      cta.textContent = card.cta.label;
-      link.append(cta);
+      link.append(this.#renderCta(card.cta.label));
     }
+  }
 
-    item.append(link);
-    return item;
+  /** Stat layout: top text, hero value, bottom text, foot media (501 module). */
+  #appendStatCardContent(link: HTMLAnchorElement, card: Card): void {
+    if (card.eyebrow) {
+      link.append(this.#renderEyebrow(card.eyebrow));
+    }
+    if (card.figure) {
+      link.append(this.#renderFigure(card.figure));
+    } else if (card.title) {
+      const title = document.createElement('p');
+      title.className = 'stat-fallback-title';
+      title.setAttribute('part', 'title');
+      title.textContent = card.title;
+      link.append(title);
+    }
+    if (card.media) {
+      link.append(this.#renderMedia(card.media));
+    }
+    if (card.cta?.label) {
+      link.append(this.#renderCta(card.cta.label));
+    }
+  }
+
+  #renderEyebrow(text: string): HTMLParagraphElement {
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'eyebrow';
+    eyebrow.setAttribute('part', 'eyebrow');
+    eyebrow.textContent = text;
+    return eyebrow;
+  }
+
+  #renderFigure(figure: NonNullable<Card['figure']>): HTMLParagraphElement {
+    const figureEl = document.createElement('p');
+    figureEl.className = 'figure';
+    figureEl.setAttribute('part', 'figure');
+
+    const value = document.createElement('span');
+    value.className = 'figure-value';
+    value.setAttribute('part', 'value');
+    value.textContent = figure.value;
+
+    const label = document.createElement('span');
+    label.className = 'figure-label';
+    label.setAttribute('part', 'label');
+    label.textContent = figure.label;
+
+    figureEl.append(value, label);
+
+    if (figure.trend) {
+      const trend = document.createElement('span');
+      trend.className = 'visually-hidden';
+      trend.textContent = ` (${describeTrend(figure.trend)})`;
+      figureEl.append(trend);
+    }
+    return figureEl;
+  }
+
+  #renderMedia(media: NonNullable<Card['media']>): HTMLElement {
+    const mediaEl = document.createElement('figure');
+    mediaEl.className = 'media';
+    mediaEl.setAttribute('part', 'media');
+    if ('src' in media) {
+      const img = document.createElement('img');
+      img.src = media.src;
+      img.alt = media.alt;
+      img.loading = 'lazy';
+      if (media.alt === '') {
+        img.setAttribute('aria-hidden', 'true');
+      }
+      mediaEl.append(img);
+    } else {
+      const icon = document.createElement('span');
+      icon.className = 'icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.textContent = media.icon;
+      mediaEl.append(icon);
+    }
+    return mediaEl;
+  }
+
+  #renderCta(label: string): HTMLSpanElement {
+    const cta = document.createElement('span');
+    cta.className = 'cta';
+    cta.setAttribute('part', 'cta');
+    cta.textContent = label;
+    return cta;
+  }
+
+  #applyAppearance(item: HTMLLIElement, appearance: CardAppearance | undefined): void {
+    if (!appearance) {
+      return;
+    }
+    const map: Array<[keyof CardAppearance, string]> = [
+      ['background', '--fc-card-bg'],
+      ['foreground', '--fc-fg'],
+      ['accent', '--fc-accent'],
+      ['minHeight', '--fc-stat-min-height'],
+      ['borderWidth', '--fc-card-border-width'],
+      ['borderColor', '--fc-card-border'],
+      ['borderRadius', '--fc-radius'],
+      ['topFontSize', '--fc-stat-top-size'],
+      ['middleFontSize', '--fc-stat-middle-size'],
+      ['bottomFontSize', '--fc-stat-bottom-size'],
+      ['mediaMaxHeight', '--fc-stat-media-max'],
+      ['fontFamily', '--fc-font'],
+    ];
+    for (const [key, token] of map) {
+      const value = appearance[key];
+      if (typeof value === 'string' && value.length > 0) {
+        item.style.setProperty(token, value);
+      }
+    }
+    const transforms: string[] = [];
+    if (appearance.rotateDeg !== undefined) {
+      transforms.push(`rotate(${appearance.rotateDeg}deg)`);
+    }
+    if (appearance.scale !== undefined) {
+      transforms.push(`scale(${appearance.scale})`);
+    }
+    if (transforms.length > 0) {
+      item.style.transform = transforms.join(' ');
+    }
   }
 
   /** Fail safe: emit structured issues, keep fallback content when present. */

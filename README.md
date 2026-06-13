@@ -37,6 +37,9 @@ zero-framework vanilla JS (~24 KiB gzip).
 
 | You need… | This provides… |
 | --- | --- |
+| **501 landing-page stat cards** (replace designer PNGs) | `layout: "stat"` + live demo **card editor** |
+| Edit top / middle / bottom / icon without a designer | Four-field schema + editor UI |
+| Per-card colour, rotation, and size | `appearance` + `501-*` themes |
 | Drop-in embed for any CMS | Custom Element + IIFE script tag |
 | No framework lock-in | Vanilla JS core; optional React wrapper |
 | Headless content | `src` fetch + WordPress / Contentful / Sanity adapters |
@@ -126,12 +129,43 @@ import { FeatureCards } from '@humza/feature-cards/react';
 
 All sources normalise to one JSON shape. Full reference: **[docs/SCHEMA.md](docs/SCHEMA.md)**.
 
+### 501 stat module (primary brief)
+
+| Editor label | JSON field |
+| --- | --- |
+| Top text | `eyebrow` |
+| Middle text | `figure.value` |
+| Bottom text | `figure.label` |
+| Icon / image | `media.src` + `alt` |
+
+Use `layout: "stat"` and optional `appearance` for colours, rotation, scale, and
+min-height. Try the **501 feature cards — live editor** at the top of the demo page.
+
+```json
+{
+  "cards": [
+    {
+      "id": "guests",
+      "layout": "stat",
+      "eyebrow": "More than",
+      "figure": { "value": "12,000,000", "label": "delighted guests" },
+      "media": { "src": "/icons/lucide/users.svg", "alt": "" },
+      "theme": "501-green",
+      "appearance": { "background": "#c6f135", "rotateDeg": 0, "scale": 1 }
+    }
+  ]
+}
+```
+
+### Standard marketing card
+
 ```json
 {
   "heading": "Optional section title",
   "cards": [
     {
       "id": "unique-id",
+      "layout": "standard",
       "title": "Required card title",
       "eyebrow": "Optional kicker",
       "description": "Supporting copy",

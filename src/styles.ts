@@ -53,6 +53,12 @@ export const componentCss = /* css */ `
   --fc-shadow-hover: 0 2px 4px var(--page-shadow, rgb(0 0 0 / 0.08)), 0 12px 28px var(--page-shadow, rgb(0 0 0 / 0.12));
   --fc-ring: var(--fc-accent);
   --fc-transition: 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  --fc-card-border-width: 1px;
+  --fc-stat-min-height: 17.5rem;
+  --fc-stat-top-size: clamp(0.95rem, 2.4cqi, 1.15rem);
+  --fc-stat-middle-size: clamp(2.4rem, 11cqi, 4.75rem);
+  --fc-stat-bottom-size: clamp(0.95rem, 2.4cqi, 1.15rem);
+  --fc-stat-media-max: 7.5rem;
   --fc-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --fc-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --fc-stagger: 65ms;
@@ -122,9 +128,10 @@ export const componentCss = /* css */ `
   display: flex;
   border-radius: var(--fc-radius);
   background: var(--fc-card-bg);
-  border: 1px solid var(--fc-card-border);
+  border: var(--fc-card-border-width) solid var(--fc-card-border);
   box-shadow: var(--fc-shadow);
   overflow: hidden;
+  transform-origin: center center;
 }
 
 .card::before {
@@ -487,6 +494,109 @@ export const componentCss = /* css */ `
   --fc-accent: light-dark(#b45309, #ffc266);
   --fc-card-bg: light-dark(#fffbeb, #2e2410);
   --fc-card-border: light-dark(#fde68a, #6b5320);
+}
+
+/* ---- 501 landing-page stat card themes (reference design) ------------ */
+.card[data-theme='501-green'] {
+  --fc-fg: #0a0a0a;
+  --fc-muted: #0a0a0a;
+  --fc-accent: #0a0a0a;
+  --fc-card-bg: #c6f135;
+  --fc-card-border: #0a0a0a;
+}
+
+.card[data-theme='501-magenta'] {
+  --fc-fg: #0a0a0a;
+  --fc-muted: #0a0a0a;
+  --fc-accent: #0a0a0a;
+  --fc-card-bg: #e91e8c;
+  --fc-card-border: #0a0a0a;
+}
+
+.card[data-theme='501-blue'] {
+  --fc-fg: #0a0a0a;
+  --fc-muted: #0a0a0a;
+  --fc-accent: #0a0a0a;
+  --fc-card-bg: #29b6f6;
+  --fc-card-border: #0a0a0a;
+}
+
+/* ---- stat layout (501 module): top / hero / bottom / foot icon -------- */
+.card[data-layout='stat'] {
+  --fc-radius: 0.35rem;
+  --fc-pad: clamp(1.1rem, 3cqi, 1.65rem);
+}
+
+.card[data-layout='stat'] .link {
+  min-height: var(--fc-stat-min-height);
+  justify-content: flex-start;
+  gap: 0.35rem;
+}
+
+.card[data-layout='stat'] .eyebrow {
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: var(--fc-stat-top-size);
+  font-weight: 600;
+  color: var(--fc-fg);
+}
+
+.card[data-layout='stat'] .figure {
+  margin: 0.15rem 0 0;
+  gap: 0.1rem;
+}
+
+.card[data-layout='stat'] .figure-value {
+  font-size: var(--fc-stat-middle-size);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--fc-fg);
+}
+
+.card[data-layout='stat'] .figure-label {
+  font-size: var(--fc-stat-bottom-size);
+  font-weight: 600;
+  color: var(--fc-fg);
+}
+
+.card[data-layout='stat'] .media {
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-top: 0.75rem;
+  align-self: stretch;
+}
+
+.card[data-layout='stat'] .media img {
+  width: auto;
+  max-height: var(--fc-stat-media-max);
+  margin-inline: auto;
+  object-fit: contain;
+  border-radius: 0;
+  filter: brightness(0);
+}
+
+.card[data-layout='stat'] .stat-fallback-title {
+  margin: 0;
+  font-size: var(--fc-stat-middle-size);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--fc-fg);
+}
+
+.card[data-layout='stat'] .cta {
+  display: none;
+}
+
+.card[data-layout='stat']::before {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card[data-layout='stat']:hover,
+  .card[data-layout='stat']:has(.link:focus-visible) {
+    transform: var(--fc-stat-hover-transform, translateY(-2px));
+  }
 }
 `;
 

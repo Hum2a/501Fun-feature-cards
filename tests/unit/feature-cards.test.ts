@@ -360,6 +360,55 @@ describe('accessibility details', () => {
   });
 });
 
+describe('stat layout (501 module)', () => {
+  const STAT_DATA: FeatureCardsData = {
+    cards: [
+      {
+        id: 'guests',
+        layout: 'stat',
+        eyebrow: 'More than',
+        figure: { value: '12,000,000', label: 'delighted guests' },
+        media: { src: '/icons/lucide/users.svg', alt: '' },
+        appearance: {
+          background: '#c6f135',
+          rotateDeg: 5,
+          scale: 1.05,
+          minHeight: '18rem',
+        },
+      },
+    ],
+  };
+
+  it('renders top → figure → media in stat layout', async () => {
+    const el = mount();
+    el.data = STAT_DATA;
+    await nextTick();
+    const link = el.shadowRoot!.querySelector('[data-layout="stat"] .link');
+    expect(link).toBeTruthy();
+    const parts = [...link!.children].map((node) => node.className);
+    expect(parts).toEqual(['eyebrow', 'figure', 'media']);
+  });
+
+  it('sets aria-label from eyebrow and figure when no CTA label', async () => {
+    const el = mount();
+    el.data = STAT_DATA;
+    await nextTick();
+    const link = el.shadowRoot!.querySelector('[data-layout="stat"] .link');
+    expect(link?.getAttribute('aria-label')).toBe('More than 12,000,000 delighted guests');
+  });
+
+  it('maps appearance to CSS variables and transform', async () => {
+    const el = mount();
+    el.data = STAT_DATA;
+    await nextTick();
+    const item = el.shadowRoot!.querySelector('[data-layout="stat"]') as HTMLLIElement;
+    expect(item.style.getPropertyValue('--fc-card-bg')).toBe('#c6f135');
+    expect(item.style.getPropertyValue('--fc-stat-min-height')).toBe('18rem');
+    expect(item.style.transform).toContain('rotate(5deg)');
+    expect(item.style.transform).toContain('scale(1.05)');
+  });
+});
+
 describe('watermark integration', () => {
   it('embeds the provenance comment and zero-width signature', async () => {
     const el = mount();

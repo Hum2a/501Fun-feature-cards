@@ -6,7 +6,7 @@
  */
 // One-shot onboarding for new contributors: env templates, deps, tooling, build artefacts.
 
-import { copyFileSync, existsSync, readFileSync } from 'node:fs';
+import { copyFileSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -65,11 +65,11 @@ console.log(
   ),
 );
 
-step('1/6  Environment templates');
+step('1/7  Environment templates');
 copyIfMissing('.env', '.env.example');
 copyIfMissing('worker/.dev.vars', 'worker/.dev.vars.example');
 
-step('2/6  Dependencies');
+step('2/7  Dependencies');
 if (skipInstall) {
   console.log(dim('  skipped (--skip-install)'));
 } else if (existsSync(join(ROOT, 'package-lock.json'))) {
@@ -78,24 +78,27 @@ if (skipInstall) {
   run('npm install');
 }
 
-step('3/6  Agent rules mirror');
+step('3/7  Agent rules mirror');
 run('npm run rules:sync');
 
-step('4/6  Playwright browsers (e2e + a11y)');
+step('4/7  Lucide demo icons');
+run('npm run icons:sync');
+
+step('5/7  Playwright browsers (e2e + a11y)');
 if (skipBrowsers) {
   console.log(dim('  skipped (--skip-browsers or --quick)'));
 } else {
   run('npx playwright install --with-deps chromium webkit');
 }
 
-step('5/6  Library build (types, CEM, dist/)');
+step('6/7  Library build (types, CEM, dist/)');
 if (skipBuild) {
   console.log(dim('  skipped (--skip-build or --quick)'));
 } else {
   run('npm run build:lib');
 }
 
-step('6/6  Toolchain doctor');
+step('7/7  Toolchain doctor');
 const doctorOk = run('npm run doctor', { optional: true });
 
 console.log('');

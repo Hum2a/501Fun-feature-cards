@@ -33,10 +33,13 @@
     <link rel="stylesheet" href="/themes/page-theme-transitions.css" />
     <link rel="stylesheet" href="/demo.css" />
     <link rel="stylesheet" href="/motion/page-motion.css" />
+    <link rel="stylesheet" href="/editor/card-editor.css" />
     <script type="module" src="/main.ts"></script>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Skip to demo content</a>
+    <nav class="skip-nav" aria-label="Skip">
+      <a class="skip-link" href="#main-content">Skip to demo content</a>
+    </nav>
 
     <div class="theme-bar" role="region" aria-label="Page vibe">
       <label for="page-theme-select">Vibe check</label>
@@ -69,6 +72,213 @@
     </header>
 
     <main id="main-content">
+      <section
+        id="card-editor"
+        class="block card-editor motion-reveal"
+        aria-labelledby="card-editor-title"
+      >
+        <div class="card-editor-header">
+          <div>
+            <h2 id="card-editor-title">501 feature cards — live editor</h2>
+            <p>
+              Replace the three static card <strong>images</strong> with real text, figures, and
+              icons. Each card has four core fields — top text, middle text, bottom text, and
+              icon/image — plus colour, size, and rotation. Advanced typography and borders live
+              in the panel below.
+            </p>
+          </div>
+          <div class="card-editor-toolbar">
+            <button type="button" id="card-editor-add">Add card</button>
+            <button type="button" id="card-editor-remove">Remove card</button>
+            <button type="button" id="card-editor-reset">Reset to 501 defaults</button>
+            <button type="button" id="card-editor-copy">Copy JSON</button>
+          </div>
+        </div>
+
+        <label class="card-editor-field card-editor-field-span" for="editor-section-heading">
+          Section heading (optional)
+          <input
+            type="text"
+            id="editor-section-heading"
+            value="Feature cards module"
+            autocomplete="off"
+          />
+        </label>
+
+        <div class="card-editor-layout">
+          <div class="card-editor-preview">
+            <feature-cards id="card-editor-preview" heading-level="2"></feature-cards>
+          </div>
+
+          <div class="card-editor-panel">
+            <div
+              id="card-editor-tabs"
+              class="card-editor-tabs"
+              role="tablist"
+              aria-label="Select card to edit"
+            ></div>
+
+            <form id="card-editor-core" class="card-editor-core">
+              <h3>Core — four elements</h3>
+              <div class="card-editor-core-grid">
+                <div class="card-editor-field card-editor-field-span">
+                  <label for="editor-top-text">Top text</label>
+                  <input type="text" id="editor-top-text" name="topText" autocomplete="off" />
+                </div>
+                <div class="card-editor-field card-editor-field-span">
+                  <label for="editor-middle-text">Middle text (hero figure)</label>
+                  <input type="text" id="editor-middle-text" name="middleText" autocomplete="off" />
+                </div>
+                <div class="card-editor-field card-editor-field-span">
+                  <label for="editor-bottom-text">Bottom text</label>
+                  <input type="text" id="editor-bottom-text" name="bottomText" autocomplete="off" />
+                </div>
+                <div class="card-editor-field card-editor-field-span">
+                  <span id="editor-icon-label" class="card-editor-field-label">Icon</span>
+                  <div
+                    id="card-editor-icon-picker"
+                    class="card-editor-icon-grid"
+                    role="radiogroup"
+                    aria-labelledby="editor-icon-label"
+                  ></div>
+                  <p class="card-editor-icon-credit">
+                    Icons from
+                    <a href="https://lucide.dev/" rel="noopener noreferrer">Lucide</a>
+                    (ISC)
+                  </p>
+                </div>
+                <div class="card-editor-field">
+                  <label for="editor-theme">Theme preset</label>
+                  <select id="editor-theme" name="theme">
+                    <option value="501-green">501 green</option>
+                    <option value="501-magenta">501 magenta</option>
+                    <option value="501-blue">501 blue</option>
+                  </select>
+                </div>
+                <div class="card-editor-field">
+                  <label for="editor-background">Card background</label>
+                  <input type="color" id="editor-background" name="background" value="#c6f135" />
+                </div>
+                <div class="card-editor-field">
+                  <label for="editor-foreground">Text colour</label>
+                  <input type="color" id="editor-foreground" name="foreground" value="#0a0a0a" />
+                </div>
+                <div class="card-editor-field card-editor-range">
+                  <label for="editor-rotate">Rotation</label>
+                  <input
+                    type="range"
+                    id="editor-rotate"
+                    name="rotateDeg"
+                    min="-15"
+                    max="15"
+                    step="0.5"
+                    value="0"
+                    data-unit="°"
+                  />
+                  <output id="editor-rotate-out" for="editor-rotate">0°</output>
+                </div>
+                <div class="card-editor-field card-editor-range">
+                  <label for="editor-scale">Scale</label>
+                  <input
+                    type="range"
+                    id="editor-scale"
+                    name="scale"
+                    min="0.75"
+                    max="1.25"
+                    step="0.01"
+                    value="1"
+                    data-unit="×"
+                  />
+                  <output id="editor-scale-out" for="editor-scale">1×</output>
+                </div>
+                <div class="card-editor-field card-editor-range">
+                  <label for="editor-min-height">Min height</label>
+                  <input
+                    type="range"
+                    id="editor-min-height"
+                    name="minHeight"
+                    min="14"
+                    max="24"
+                    step="0.5"
+                    value="18"
+                    data-unit="rem"
+                  />
+                  <output id="editor-min-height-out" for="editor-min-height">18rem</output>
+                </div>
+              </div>
+            </form>
+
+            <details class="card-editor-advanced">
+              <summary>Advanced — typography &amp; borders</summary>
+              <form id="card-editor-advanced">
+                <div class="card-editor-core-grid">
+                  <div class="card-editor-field">
+                    <label for="editor-top-size">Top font size (rem)</label>
+                    <input type="text" id="editor-top-size" name="topFontSize" placeholder="auto" />
+                  </div>
+                  <div class="card-editor-field">
+                    <label for="editor-middle-size">Middle font size (rem)</label>
+                    <input
+                      type="text"
+                      id="editor-middle-size"
+                      name="middleFontSize"
+                      placeholder="auto"
+                    />
+                  </div>
+                  <div class="card-editor-field">
+                    <label for="editor-bottom-size">Bottom font size (rem)</label>
+                    <input
+                      type="text"
+                      id="editor-bottom-size"
+                      name="bottomFontSize"
+                      placeholder="auto"
+                    />
+                  </div>
+                  <div class="card-editor-field card-editor-field-span">
+                    <label for="editor-font">Font family</label>
+                    <input
+                      type="text"
+                      id="editor-font"
+                      name="fontFamily"
+                      placeholder="system-ui, sans-serif"
+                    />
+                  </div>
+                  <div class="card-editor-field">
+                    <label for="editor-border-width">Border width (px)</label>
+                    <input type="text" id="editor-border-width" name="borderWidth" value="0" />
+                  </div>
+                  <div class="card-editor-field">
+                    <label for="editor-border-color">Border colour</label>
+                    <input type="color" id="editor-border-color" name="borderColor" value="#0a0a0a" />
+                  </div>
+                  <div class="card-editor-field">
+                    <label for="editor-radius">Corner radius (rem)</label>
+                    <input type="text" id="editor-radius" name="borderRadius" placeholder="auto" />
+                  </div>
+                  <div class="card-editor-field">
+                    <label for="editor-media-max">Icon max height (rem)</label>
+                    <input type="text" id="editor-media-max" name="mediaMaxHeight" value="7.5" />
+                  </div>
+                </div>
+              </form>
+            </details>
+
+            <p class="card-editor-hint">
+              Canonical JSON (CMS-ready) — maps top → <code>eyebrow</code>, middle →
+              <code>figure.value</code>, bottom → <code>figure.label</code>, icon →
+              <code>media.src</code>.
+            </p>
+            <pre
+              id="card-editor-json"
+              class="card-editor-json"
+              aria-live="polite"
+              tabindex="0"
+              aria-label="Generated card JSON"
+            ></pre>
+          </div>
+        </div>
+      </section>
+
       <section class="block motion-reveal" aria-labelledby="mode-1-title">
         <h2 id="mode-1-title">1 · Declarative inline JSON</h2>
         <p class="block-note">
@@ -81,43 +291,31 @@
               "heading": "Why teams choose us",
               "cards": [
                 {
-                  "id": "satisfaction",
-                  "eyebrow": "Customer love",
-                  "title": "Satisfaction that sticks",
-                  "description": "Our support team resolves issues fast and follows up until you're genuinely happy — not just ticket-closed happy.",
-                  "figure": {
-                    "value": "97%",
-                    "label": "customer satisfaction",
-                    "trend": "up"
-                  },
-                  "cta": { "label": "Read customer stories", "href": "#customers" },
-                  "theme": "brand-blue"
+                  "id": "guests",
+                  "layout": "stat",
+                  "eyebrow": "More than",
+                  "figure": { "value": "12,000,000", "label": "delighted guests" },
+                  "media": { "src": "/icons/lucide/users.svg", "alt": "" },
+                  "theme": "501-green",
+                  "appearance": { "background": "#c6f135", "foreground": "#0a0a0a", "minHeight": "18rem" }
                 },
                 {
-                  "id": "growth",
-                  "eyebrow": "Proven results",
-                  "title": "Growth you can measure",
-                  "description": "Clients see compounding returns within the first quarter, tracked in a dashboard you can audit any time.",
-                  "figure": {
-                    "value": "3.2x",
-                    "label": "average first-year ROI",
-                    "trend": "up"
-                  },
-                  "cta": { "label": "See the numbers", "href": "#results" },
-                  "theme": "brand-green"
+                  "id": "countries",
+                  "layout": "stat",
+                  "eyebrow": "Find us in",
+                  "figure": { "value": "50", "label": "countries" },
+                  "media": { "src": "/icons/lucide/globe-2.svg", "alt": "" },
+                  "theme": "501-magenta",
+                  "appearance": { "background": "#e91e8c", "foreground": "#0a0a0a", "minHeight": "18rem" }
                 },
                 {
-                  "id": "speed",
-                  "eyebrow": "No waiting around",
-                  "title": "Onboarding in days, not months",
-                  "description": "A dedicated specialist gets you live fast, with migrations handled for you end to end.",
-                  "figure": {
-                    "value": "5 days",
-                    "label": "median time to launch",
-                    "trend": "flat"
-                  },
-                  "cta": { "label": "Start onboarding", "href": "#onboarding" },
-                  "theme": "brand-amber"
+                  "id": "darts",
+                  "layout": "stat",
+                  "eyebrow": "Over",
+                  "figure": { "value": "800,000,000", "label": "darts thrown" },
+                  "media": { "src": "/icons/lucide/target.svg", "alt": "" },
+                  "theme": "501-blue",
+                  "appearance": { "background": "#29b6f6", "foreground": "#0a0a0a", "minHeight": "18rem" }
                 }
               ]
             }

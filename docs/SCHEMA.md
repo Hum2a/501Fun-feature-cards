@@ -19,11 +19,52 @@ paint. Validation uses [Zod](https://zod.dev/) (`src/schema.ts`); failures are
 | `heading` | `string` | No | Section `<h*>` above the grid. Overridden by the `heading` attribute. |
 | `cards` | `Card[]` | **Yes** | Minimum length **1**. Order is display order. |
 
-## Card
+## Card layouts
+
+| `layout` | Purpose |
+| --- | --- |
+| `stat` | **501 landing-page module** — top / hero / bottom / foot icon |
+| `standard` | Title-led marketing card with optional description + CTA |
+
+### 501 stat module — four core elements
+
+| Editor / UI | Schema | Example |
+| --- | --- | --- |
+| Top text | `eyebrow` | “More than” |
+| Middle text | `figure.value` | “12,000,000” |
+| Bottom text | `figure.label` | “delighted guests” |
+| Icon / image | `media.src` + `alt` | `/icons/lucide/users.svg`, `alt: ""` |
+
+```json
+{
+  "id": "guests",
+  "layout": "stat",
+  "eyebrow": "More than",
+  "figure": { "value": "12,000,000", "label": "delighted guests" },
+  "media": { "src": "/icons/lucide/users.svg", "alt": "" },
+  "theme": "501-green",
+  "appearance": {
+    "background": "#c6f135",
+    "foreground": "#0a0a0a",
+    "rotateDeg": 0,
+    "scale": 1,
+    "minHeight": "18rem"
+  }
+}
+```
+
+Per-card **`appearance`** controls background, text colour, rotation, scale,
+min-height, typography, and borders. The demo **card editor** (`demo/editor/`)
+is the reference UI for these fields.
+
+Themes: `501-green`, `501-magenta`, `501-blue` (reference palette).
+
+## Card (all layouts)
 
 ```json
 {
   "id": "satisfaction",
+  "layout": "standard",
   "eyebrow": "Customer love",
   "title": "Satisfaction that sticks",
   "description": "Teams report measurable lift within one quarter.",
@@ -37,13 +78,31 @@ paint. Validation uses [Zod](https://zod.dev/) (`src/schema.ts`); failures are
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `id` | `string` (min 1) | **Yes** | Stable key for rendering and `featurecards:cardclick` detail. |
-| `eyebrow` | `string` | No | Small kicker above the title. |
-| `title` | `string` (min 1) | **Yes** | Rendered as a heading one level below the section heading. |
-| `description` | `string` | No | Supporting copy under the title. |
-| `figure` | `Figure` | No | Headline statistic block. |
-| `media` | `Media` | No | Image **or** icon — see below. |
+| `layout` | `"standard"` \| `"stat"` | No | Default inferred from fields; use `stat` for 501 module. |
+| `eyebrow` | `string` | No | Top text in stat layout; kicker in standard layout. |
+| `title` | `string` (min 1) | Standard: **Yes** | Rendered as heading (standard). Optional in stat when figure is complete. |
+| `description` | `string` | No | Supporting copy (standard layout). |
+| `figure` | `Figure` | No | Middle + bottom text in stat layout (`value` + `label`). |
+| `media` | `Media` | No | Icon/image — foot of stat cards. |
 | `cta` | `Cta` | No | When present, the **entire card** is a single link. |
-| `theme` | `string` | No | Per-card theme token (`brand-blue`, `brand-green`, `brand-amber`). Wins over host `theme` attribute. |
+| `theme` | `string` | No | `brand-*` or `501-*` theme tokens. |
+| `appearance` | `CardAppearance` | No | Colours, rotation, scale, typography overrides. |
+
+### CardAppearance
+
+Per-card visual tuning for the 501 module and CMS colour pickers:
+
+| Field | Maps to | Notes |
+| --- | --- | --- |
+| `background` | `--fc-card-bg` | Card fill colour |
+| `foreground` | `--fc-fg` | Text and icon colour |
+| `rotateDeg` | `transform: rotate()` | -180…180 |
+| `scale` | `transform: scale()` | 0.5…2 |
+| `minHeight` | `--fc-stat-min-height` | e.g. `"18rem"` |
+| `topFontSize` / `middleFontSize` / `bottomFontSize` | stat typography vars | Advanced editor only |
+| `borderWidth` / `borderColor` / `borderRadius` | border tokens | Advanced editor only |
+| `mediaMaxHeight` | `--fc-stat-media-max` | Foot icon cap |
+| `fontFamily` | `--fc-font` | Optional override |
 
 ### Figure
 

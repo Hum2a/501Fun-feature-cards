@@ -14,16 +14,21 @@ export type { CreateFeatureCardsOptions } from './create-feature-cards.js';
 export { buildProblemDetail } from './errors.js';
 export type { FeatureCardsErrorDetail, ProblemDetail } from './errors.js';
 export {
+  cardAppearanceSchema,
+  cardLayoutSchema,
   cardSchema,
   ctaSchema,
   featureCardsDataSchema,
   figureSchema,
   mediaSchema,
+  resolveCardLayout,
   safeParseFeatureCardsData,
   trendSchema,
 } from './schema.js';
 export type {
   Card,
+  CardAppearance,
+  CardLayout,
   Cta,
   FeatureCardsData,
   Figure,
