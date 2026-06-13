@@ -74,7 +74,7 @@ test.describe('keyboard interaction', () => {
     );
     await firstCard.focus();
     await page.keyboard.press('Enter');
-    expect((await detail).id).toBe('satisfaction');
+    expect((await detail).id).toBe('guests');
   });
 });
 

@@ -173,6 +173,7 @@ Precedence is **top wins**. Never assume `src` is used if `data` is also set.
 
 | Mistake | Correct approach |
 | --- | --- |
+| Changing stat card field mapping without editor/docs | Keep four core fields; update `demo/editor/`, SCHEMA, rule 49 |
 | Adding `--page-*` tokens to component | Page tokens are demo-only; use `--fc-*` |
 | Using `innerHTML` for card text | `textContent` only |
 | Viewport media queries in component | Container queries on `:host` |
@@ -185,7 +186,8 @@ Precedence is **top wins**. Never assume `src` is used if `data` is also set.
 
 | Doc | Use when |
 | --- | --- |
-| [docs/SCHEMA.md](docs/SCHEMA.md) | Field shapes, validation |
+| [docs/SCHEMA.md](docs/SCHEMA.md) | Field shapes, validation, 501 stat mapping |
+| [docs/DEMO.md](docs/DEMO.md) | Card editor behaviour |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Integration debugging |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Design rationale |
 | [ACCESSIBILITY.md](ACCESSIBILITY.md) | a11y requirements |

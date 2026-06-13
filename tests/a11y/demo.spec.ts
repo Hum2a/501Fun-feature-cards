@@ -25,14 +25,19 @@ test.describe('accessibility', () => {
     expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
   });
 
-  test('cards expose accessible names and real headings', async ({ page }) => {
+  test('cards expose accessible names and stat layout content', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => {
+      const el = document.querySelector('#inline-instance');
+      return Boolean(el?.shadowRoot?.querySelector('[data-layout="stat"]'));
+    });
     const inline = page.locator('#inline-instance');
-    await expect(
-      inline.locator('a.link', { hasText: 'Satisfaction that sticks' }),
-    ).toBeVisible();
-    // Section heading level is configurable; the demo nests it as h3 → h4 titles.
+    await expect(inline.locator('[data-layout="stat"]')).toHaveCount(3);
     await expect(inline.locator('h3.heading')).toHaveText('Why teams choose us');
-    await expect(inline.locator('h4.title')).toHaveCount(3);
+    await expect(inline.locator('a.link').first()).toHaveAttribute(
+      'aria-label',
+      'More than 12,000,000 delighted guests',
+    );
+    await expect(inline.locator('.figure-value').first()).toHaveText('12,000,000');
   });
 });

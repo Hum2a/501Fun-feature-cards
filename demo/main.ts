@@ -14,6 +14,7 @@ import {
   initPageMotion,
   pulseResizeReadout,
 } from './motion/page-motion.js';
+import { initCardEditor } from './editor/card-editor.js';
 
 const LOCAL_CMS =
   import.meta.env.VITE_FC_CMS_ENDPOINT ?? 'http://localhost:8787/api/cards';
@@ -226,6 +227,10 @@ function shortenUrl(url: string): string {
 wireCmsInstance();
 initPageThemes();
 initPageMotion();
+const editorRoot = document.querySelector('#card-editor');
+if (editorRoot instanceof HTMLElement) {
+  initCardEditor(editorRoot);
+}
 wirePlayground();
 wireSchemaPlayground();
 wireResizable();

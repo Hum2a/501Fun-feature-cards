@@ -43,25 +43,78 @@ export const ctaSchema = z.object({
   ariaLabel: z.string().optional(),
 });
 
-/** The canonical card shape every CMS adapter normalises into. */
-export const cardSchema = z.object({
-  /** Stable unique id, used for keyed rendering and click events. */
-  id: z.string().min(1),
-  /** Small kicker text above the title. */
-  eyebrow: z.string().optional(),
-  /** Card title; rendered as a heading. */
-  title: z.string().min(1),
-  /** Supporting copy. */
-  description: z.string().optional(),
-  /** Headline statistic. */
-  figure: figureSchema.optional(),
-  /** Image or icon. */
-  media: mediaSchema.optional(),
-  /** Link target for the card. */
-  cta: ctaSchema.optional(),
-  /** Named theme token set, e.g. "brand-blue". */
-  theme: z.string().optional(),
+/**
+ * Visual tuning for a single card — maps to `--fc-*` overrides and transforms.
+ * Used by the demo editor and CMS fields for the 501-style stat module.
+ */
+export const cardAppearanceSchema = z.object({
+  background: z.string().min(1).optional(),
+  foreground: z.string().min(1).optional(),
+  accent: z.string().min(1).optional(),
+  /** Rotation in degrees (-180 to 180). */
+  rotateDeg: z.number().min(-180).max(180).optional(),
+  /** Uniform scale (0.5–2). */
+  scale: z.number().min(0.5).max(2).optional(),
+  minHeight: z.string().min(1).optional(),
+  borderWidth: z.string().min(1).optional(),
+  borderColor: z.string().min(1).optional(),
+  borderRadius: z.string().min(1).optional(),
+  topFontSize: z.string().min(1).optional(),
+  middleFontSize: z.string().min(1).optional(),
+  bottomFontSize: z.string().min(1).optional(),
+  mediaMaxHeight: z.string().min(1).optional(),
+  fontFamily: z.string().min(1).optional(),
 });
+
+/** Card layout — `stat` matches the 501 landing-page coloured stat cards. */
+export const cardLayoutSchema = z.enum(['standard', 'stat']);
+
+/** The canonical card shape every CMS adapter normalises into. */
+export const cardSchema = z
+  .object({
+    /** Stable unique id, used for keyed rendering and click events. */
+    id: z.string().min(1),
+    /**
+     * `standard` — title-led marketing card.
+     * `stat` — 501-style module: top text, hero figure, bottom text, bottom media.
+     */
+    layout: cardLayoutSchema.optional(),
+    /** Top text in stat layout (maps to “More than”, “Find us in”, …). */
+    eyebrow: z.string().optional(),
+    /** Card title; optional in stat layout when figure value + label are set. */
+    title: z.string().min(1).optional(),
+    /** Supporting copy (standard layout). */
+    description: z.string().optional(),
+    /** Middle + bottom text in stat layout (`value` + `label`). */
+    figure: figureSchema.optional(),
+    /** Icon or image — anchored to the card foot in stat layout. */
+    media: mediaSchema.optional(),
+    /** Link target for the card. */
+    cta: ctaSchema.optional(),
+    /** Named theme token set, e.g. "brand-blue" or "501-green". */
+    theme: z.string().optional(),
+    /** Per-card colours, size, rotation, and typography overrides. */
+    appearance: cardAppearanceSchema.optional(),
+  })
+  .superRefine((card, ctx) => {
+    const layout = card.layout ?? (card.figure ? 'stat' : 'standard');
+    const hasTitle = Boolean(card.title?.length);
+    const hasStatCopy = Boolean(card.figure?.value && card.figure?.label);
+    if (layout === 'standard' && !hasTitle) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Standard layout cards require title',
+        path: ['title'],
+      });
+    }
+    if (layout === 'stat' && !hasTitle && !hasStatCopy) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Stat layout needs figure.value + figure.label or a title',
+        path: ['figure'],
+      });
+    }
+  });
 
 /** Top-level payload consumed by `<feature-cards>`. */
 export const featureCardsDataSchema = z.object({
@@ -74,8 +127,24 @@ export type Trend = z.infer<typeof trendSchema>;
 export type Figure = z.infer<typeof figureSchema>;
 export type Media = z.infer<typeof mediaSchema>;
 export type Cta = z.infer<typeof ctaSchema>;
+export type CardAppearance = z.infer<typeof cardAppearanceSchema>;
+export type CardLayout = z.infer<typeof cardLayoutSchema>;
 export type Card = z.infer<typeof cardSchema>;
 export type FeatureCardsData = z.infer<typeof featureCardsDataSchema>;
+
+/** Resolved layout for rendering (explicit or inferred from data). */
+export function resolveCardLayout(card: Card): CardLayout {
+  if (card.layout) {
+    return card.layout;
+  }
+  if (card.figure && !card.title && !card.description) {
+    return 'stat';
+  }
+  if (card.figure && card.eyebrow && !card.description) {
+    return 'stat';
+  }
+  return 'standard';
+}
 
 /** One flattened validation problem from {@link safeParseFeatureCardsData}. */
 export interface ValidationIssue {
