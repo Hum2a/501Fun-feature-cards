@@ -44,6 +44,9 @@ jobs:
       - name: Property-based schema fuzz
         run: npm run test:fuzz
 
+      - name: CEM manifest drift check
+        run: npm run cem:check
+
       - name: npm audit (high+)
         run: npm audit --audit-level=high
         continue-on-error: true
