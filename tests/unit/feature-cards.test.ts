@@ -394,7 +394,9 @@ describe('stat layout (501 module)', () => {
     el.data = STAT_DATA;
     await nextTick();
     const link = el.shadowRoot!.querySelector('[data-layout="stat"] .link');
-    expect(link?.getAttribute('aria-label')).toBe('More than 12,000,000 delighted guests');
+    expect(link?.getAttribute('aria-label')).toBe(
+      'More than 12,000,000 delighted guests',
+    );
   });
 
   it('maps appearance to CSS variables and transform', async () => {

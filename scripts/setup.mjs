@@ -111,9 +111,13 @@ if (doctorOk) {
 }
 console.log(bold('Next steps'));
 console.log('  npm run dev         demo → http://localhost:5173');
-console.log('  npm run serve:cms   mock CMS → http://localhost:8787/api/cards  (second terminal)');
+console.log(
+  '  npm run serve:cms   mock CMS → http://localhost:8787/api/cards  (second terminal)',
+);
 console.log('  npm run check       full gate before opening a PR');
 console.log('\n' + dim('Docs: CONTRIBUTING.md · docs/README.md · AGENTS.md'));
-console.log('\n' + dim('Flags: --quick  --skip-install  --skip-browsers  --skip-build') + '\n');
+console.log(
+  '\n' + dim('Flags: --quick  --skip-install  --skip-browsers  --skip-build') + '\n',
+);
 
 process.exit(doctorOk ? 0 : 1);

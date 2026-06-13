@@ -69,9 +69,9 @@ describe('schema', () => {
 
   describe('resolveCardLayout', () => {
     it('prefers explicit layout', () => {
-      expect(
-        resolveCardLayout({ id: 'a', layout: 'stat', title: 'Has title' }),
-      ).toBe('stat');
+      expect(resolveCardLayout({ id: 'a', layout: 'stat', title: 'Has title' })).toBe(
+        'stat',
+      );
     });
 
     it('infers stat when figure exists without title or description', () => {
