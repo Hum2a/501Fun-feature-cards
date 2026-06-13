@@ -1,33 +1,87 @@
 # ADR-0003: Canonical schema + CMS adapter layer
 
-- Status: accepted
-- Date: 2026-06-12
+| | |
+| --- | --- |
+| **Status** | Accepted |
+| **Date** | 2026-06-12 |
+| **Related** | [SCHEMA.md](../SCHEMA.md) |
 
 ## Context
 
-"CMS-agnostic" cannot mean the renderer understands every CMS's payload.
-WordPress REST, Contentful Delivery, and Sanity GROQ responses share no
-shape. Coupling rendering to any of them — or to a lowest common
-denominator — would make every new CMS a rendering change.
+Headless CMS payloads share no common shape:
+
+| CMS | Typical response |
+| --- | --- |
+| WordPress | `{ id, title: { rendered }, _embedded, acf }` |
+| Contentful | `{ items: [{ fields: { … } }] }` |
+| Sanity | `{ result: […] }` or bare array |
+
+Coupling the renderer to any one CMS — or to a lowest-common-denominator JSON —
+forces rendering changes for every new integration.
 
 ## Decision
 
-Define **one canonical schema** (`Card`, `FeatureCardsData`) validated with
-Zod, and translate CMS payloads into it with small pure **adapter**
-functions selected by the `adapter` attribute through a registry
-(`getAdapter`), defaulting to a normalising `generic` adapter.
+1. Define **one canonical schema** — `Card`, `FeatureCardsData` in `src/schema.ts`
+2. Validate with **Zod** at runtime (`safeParse` — non-throwing)
+3. Map CMS payloads via pure **`adapter` functions** (~40 lines each)
+4. Select adapter through **`adapter` attribute** + `getAdapter()` registry
+5. Default **`generic`** adapter normalises already-canonical JSON
+
+The renderer imports **zero CMS-specific code**.
+
+## Rationale
+
+"CMS-agnostic with minimal adjustment" becomes concrete:
+
+```
+New CMS = one mapper + one registry line
+```
+
+Not: fork the component, add conditional branches, or expose CMS types in public API.
+
+Zod earns its ~12 KiB gzip budget:
+
+- Single source of truth for TS types (`z.infer`)
+- Structured validation issues → `featurecards:error`
+- Property-based fuzz tests guard invariants
+
+Hand-rolled validation was rejected — false economy; error paths would be ad hoc.
 
 ## Consequences
 
-- Integrating a new CMS is one ~40-line mapper plus one registry line; the
-  component, styles, and tests don't change. This is the concrete form of
-  "minimal adjustment".
-- Validation is non-throwing (`safeParse` → structured issues) so bad CMS
-  data degrades to an event (`featurecards:error`) and the no-JS fallback,
-  never a broken page.
-- Zod becomes the single bundled runtime dependency (~12 KiB gzip). Judged
-  worth it: typed inference keeps schema and types from drifting, and
-  structured error paths power the fail-safe story. Revisit if the size
-  budget tightens.
-- Adapters are deliberately lossy: they map what the schema models and drop
-  the rest, keeping the canonical shape small and renderable.
+### Positive
+
+- WordPress, Contentful, Sanity ship as examples — not special cases in core
+- Invalid CMS data fails safe (event + slot fallback)
+- Contract tests (MSW) lock adapter behaviour
+- Cookbooks document field mapping per CMS
+
+### Negative
+
+- Adapters are **lossy** — unmapped CMS fields are dropped
+- Zod is the **only** bundled runtime dependency
+- Adapter maintenance when CMS APIs change (expected, isolated)
+- Consumers with exotic shapes preprocess to canonical JSON themselves
+
+## Error handling
+
+Invalid data **never throws**:
+
+```ts
+safeParseFeatureCardsData(input)
+  → { success: false, issues: [...] }
+  → emit featurecards:error
+  → preserve light DOM
+```
+
+## Compliance
+
+- [docs/SCHEMA.md](../SCHEMA.md) documents every field
+- Cookbooks per CMS
+- `npm run test:contracts` in CI
+- `npm run test:fuzz` for schema properties
+
+## References
+
+- [ARCHITECTURE.md](../../ARCHITECTURE.md)
+- `src/adapters/wordpress.ts` — reference adapter size (~40 lines)

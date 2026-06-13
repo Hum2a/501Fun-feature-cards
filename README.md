@@ -2,26 +2,55 @@
 
 [![CI](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
-[![Bundle size](https://img.shields.io/badge/ESM%20gzip-~22%20KiB-brightgreen.svg)](scripts/size.mjs)
+[![Bundle size](https://img.shields.io/badge/ESM%20gzip-~24%20KiB-brightgreen.svg)](scripts/size.mjs)
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
-**Package version:** `1.2.0`
+**Package:** `@humza/feature-cards` · **Version:** `1.2.0`  
+**Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)  
+**Documentation hub:** [docs/README.md](docs/README.md)
 
-**Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)
-
-**One accessible, responsive, CMS-agnostic Web Component that replaces
-hard-coded feature-card images.** Native browser APIs only — Shadow DOM,
-container queries, constructable stylesheets — authored in strict
-TypeScript, shipped as zero-framework vanilla JS.
+One **accessible, responsive, CMS-agnostic Web Component** that replaces hard-coded
+feature-card images. Native browser APIs — Shadow DOM, container queries,
+constructable stylesheets — authored in strict TypeScript, shipped as
+zero-framework vanilla JS (~24 KiB gzip).
 
 ![Three themed feature cards rendered by the component](tests/visual/cards.spec.ts-snapshots/inline-cards-large-chromium-win32.png)
 
+## Table of contents
+
+- [Why this exists](#why-this-exists)
+- [Quick start](#quick-start)
+- [Data model](#data-model)
+- [Public API](#public-api)
+- [CMS integration](#cms-integration)
+- [Demo page themes and motion](#demo-page-themes-and-motion)
+- [Accessibility](#accessibility)
+- [Architecture & methodology](#architecture--methodology)
+- [Development](#development)
+- [Testing](#testing)
+- [Releasing](#releasing)
+- [Deployment](#deployment)
+- [Documentation index](#documentation-index)
+- [Licence](#licence)
+
+## Why this exists
+
+| You need… | This provides… |
+| --- | --- |
+| Drop-in embed for any CMS | Custom Element + IIFE script tag |
+| No framework lock-in | Vanilla JS core; optional React wrapper |
+| Headless content | `src` fetch + WordPress / Contentful / Sanity adapters |
+| No-JS fallback | Plain `<a>` children upgrade progressively |
+| Style safety on unknown pages | Shadow DOM + `--fc-*` token theming API |
+| Sidebar **and** full-width layouts | Container queries — not viewport breakpoints |
+| Proof of quality | axe zero violations in CI; 90%+ unit coverage |
+
 ## Quick start
 
-**Script tag (any CMS, no build step):**
+### Script tag (any CMS, no build step)
 
 ```html
-<script src="https://unpkg.com/@humza/feature-cards/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/dist/feature-cards.iife.js" defer></script>
 
 <feature-cards heading="Why teams choose us">
   <script type="application/json">
@@ -40,16 +69,20 @@ TypeScript, shipped as zero-framework vanilla JS.
 </feature-cards>
 ```
 
-**ESM:**
+Pin versions and add SRI — see [WordPress cookbook](docs/cookbook/wordpress.md).
+
+### ESM
 
 ```js
-import '@humza/feature-cards'; // registers <feature-cards>
+import '@humza/feature-cards';
 
 const el = document.querySelector('feature-cards');
-el.data = { cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' } }] };
+el.data = {
+  cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' } }],
+};
 ```
 
-**Progressive enhancement (works with JS disabled):**
+### Progressive enhancement (JS disabled)
 
 ```html
 <feature-cards heading="From plain links">
@@ -59,13 +92,13 @@ el.data = { cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' }
 </feature-cards>
 ```
 
-**From a headless CMS:**
+### Headless CMS
 
 ```html
 <feature-cards src="https://cms.example.com/api/cards" adapter="wordpress"></feature-cards>
 ```
 
-**Imperative mount (WordPress themes, static embeds):**
+### Imperative mount
 
 ```js
 import { createFeatureCards } from '@humza/feature-cards';
@@ -78,7 +111,7 @@ createFeatureCards({
 });
 ```
 
-**React (optional peer dependency):**
+### React (optional peer)
 
 ```tsx
 import { FeatureCards } from '@humza/feature-cards/react';
@@ -89,42 +122,66 @@ import { FeatureCards } from '@humza/feature-cards/react';
 />
 ```
 
+## Data model
+
+All sources normalise to one JSON shape. Full reference: **[docs/SCHEMA.md](docs/SCHEMA.md)**.
+
+```json
+{
+  "heading": "Optional section title",
+  "cards": [
+    {
+      "id": "unique-id",
+      "title": "Required card title",
+      "eyebrow": "Optional kicker",
+      "description": "Supporting copy",
+      "figure": { "value": "97%", "label": "customer satisfaction", "trend": "up" },
+      "media": { "src": "/img.svg", "alt": "" },
+      "cta": { "label": "Learn more", "href": "/path" },
+      "theme": "brand-blue"
+    }
+  ]
+}
+```
+
+**Precedence** (highest wins): `data` property → inline JSON → `src` + adapter → light-DOM links.
+
 ## Public API
 
 ### Attributes
 
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
-| `src` | URL | — | JSON endpoint to fetch card data from |
-| `adapter` | `generic` \| `wordpress` \| `contentful` \| `sanity` | `generic` | Mapper applied to the fetched payload |
-| `columns` | `1`–`6` | auto-fit | Caps the number of grid tracks |
-| `heading` | string | from data | Section heading (overrides the data's `heading`) |
-| `heading-level` | `1`–`6` | `2` | Section heading level; card titles render one level deeper |
-| `theme` | `brand-blue` \| `brand-green` \| `brand-amber` | — | Host-level theme (per-card `theme` in data wins) |
+| `src` | URL | — | JSON endpoint to fetch card data |
+| `adapter` | `generic` \| `wordpress` \| `contentful` \| `sanity` | `generic` | CMS payload mapper |
+| `columns` | `1`–`6` | auto-fit | Caps grid track count |
+| `heading` | string | from data | Section heading (overrides data `heading`) |
+| `heading-level` | `1`–`6` | `2` | Section heading level; card titles = level + 1 |
+| `theme` | `brand-blue` \| `brand-green` \| `brand-amber` | — | Host theme (per-card `theme` in data wins) |
 
 ### Properties
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `data` | `FeatureCardsData \| undefined` | Set validated data directly; takes precedence over all other sources. Reads back the currently rendered data. |
+| `data` | `FeatureCardsData \| undefined` | Validated data; highest precedence. Reads back current render state. |
 | `provenance` | object (readonly) | Inert authorship record (UUID, repo, licence) |
 
 ### Events (bubble, composed)
 
-| Event | `detail` | Fired when |
+| Event | `detail` | When |
 | --- | --- | --- |
-| `featurecards:ready` | `{ count }` | A render completed |
-| `featurecards:error` | `{ issues: { path, message }[], problem: ProblemDetail }` | Data was invalid or fetching failed (the component fails safe — no throw, light DOM preserved) |
-| `featurecards:cardclick` | `{ id, card }` | A card was activated |
+| `featurecards:ready` | `{ count }` | Render completed |
+| `featurecards:error` | `{ issues[], problem }` | Invalid data or fetch failure — **never throws** |
+| `featurecards:cardclick` | `{ id, card }` | Card link activated |
 
 ### Slots
 
 | Slot | Purpose |
 | --- | --- |
-| *(default)* | Fallback content before data resolves / when data is invalid — the no-JS path |
-| `heading` | Replace the generated section heading |
+| *(default)* | No-JS fallback / invalid-data fallback |
+| `heading` | Replace generated section heading |
 
-### CSS custom properties (theming API)
+### Theming — CSS custom properties
 
 | Token | Purpose | Token | Purpose |
 | --- | --- | --- | --- |
@@ -133,186 +190,199 @@ import { FeatureCards } from '@humza/feature-cards/react';
 | `--fc-fg` | Primary text | `--fc-pad` | Card padding |
 | `--fc-muted` | Secondary text | `--fc-radius` | Corner radius |
 | `--fc-accent` | Accent colour | `--fc-shadow` / `--fc-shadow-hover` | Elevation |
-| `--fc-card-bg` | Card background | `--fc-ring` | Focus ring colour |
+| `--fc-card-bg` | Card background | `--fc-ring` | Focus ring |
 | `--fc-card-border` | Card border | `--fc-transition` | Motion timing |
 
 ### CSS parts
 
-`::part(section)`, `::part(heading)`, `::part(grid)`, `::part(card)`,
-`::part(link)`, `::part(eyebrow)`, `::part(title)`, `::part(description)`,
-`::part(figure)`, `::part(value)`, `::part(label)`, `::part(media)`,
-`::part(cta)`
+`::part(section)` · `::part(heading)` · `::part(grid)` · `::part(card)` ·
+`::part(link)` · `::part(eyebrow)` · `::part(title)` · `::part(description)` ·
+`::part(figure)` · `::part(value)` · `::part(label)` · `::part(media)` · `::part(cta)`
 
 ```css
-/* Example: restyle from outside the shadow boundary */
-feature-cards { --fc-accent: rebeccapurple; --fc-radius: 4px; }
-feature-cards::part(card):hover { outline: 2px solid rebeccapurple; }
+feature-cards {
+  --fc-accent: rebeccapurple;
+  --fc-radius: 4px;
+}
+feature-cards::part(card):hover {
+  outline: 2px solid rebeccapurple;
+}
 ```
+
+TypeDoc: `npm run docs:api` → `docs/api/` (CI uploads artefacts).
 
 ## CMS integration
 
-The component renders one canonical schema; **adapters** translate CMS
-payloads into it. Built-ins:
+One canonical schema; **adapters** map CMS JSON into it.
 
 ```html
-<!-- WordPress REST (with _embed for featured media) -->
+<!-- WordPress REST (+ _embed for media) -->
 <feature-cards src="https://site.com/wp-json/wp/v2/posts?_embed" adapter="wordpress"></feature-cards>
 
 <!-- Contentful Delivery API -->
-<feature-cards src="https://cdn.contentful.com/spaces/SPACE/entries?content_type=card" adapter="contentful"></feature-cards>
+<feature-cards src="https://cdn.contentful.com/spaces/SPACE/entries?content_type=card&access_token=TOKEN" adapter="contentful"></feature-cards>
 
 <!-- Sanity GROQ HTTP API -->
 <feature-cards src="https://PROJECT.api.sanity.io/v2024-01-01/data/query/production?query=..." adapter="sanity"></feature-cards>
 
-<!-- Anything already shaped like the schema -->
+<!-- Already canonical JSON -->
 <feature-cards src="/api/cards" adapter="generic"></feature-cards>
 ```
 
-A new CMS is one small pure function — see `src/adapters/wordpress.ts`
-(~40 lines) and register it in `src/adapters/index.ts`.
+| Guide | Topics |
+| --- | --- |
+| [WordPress](docs/cookbook/wordpress.md) | `functions.php`, REST, imperative mount, SRI |
+| [Contentful](docs/cookbook/contentful.md) | Content model, Delivery API, webhook → static JSON |
+| [Sanity](docs/cookbook/sanity.md) | GROQ, HTTP API, Studio preview workflow |
 
-Cookbook walkthroughs: [WordPress](docs/cookbook/wordpress.md),
-[Contentful](docs/cookbook/contentful.md), [Sanity](docs/cookbook/sanity.md).
+New CMS = one ~40-line adapter + registry line. Mock Worker OpenAPI:
+[live schema](https://cms.501fun.humza-butt.space/openapi.json) ·
+[source](docs/openapi/cms-api.json).
 
-The mock CMS Worker exposes an OpenAPI description at
-[`/openapi.json`](https://cms.501fun.humza-butt.space/openapi.json)
-(source: [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json)).
+**Stuck?** → [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) · [docs/FAQ.md](docs/FAQ.md)
 
 ## Demo page themes and motion
 
-The live demo includes a **Vibe check** theme picker with twelve parody-named
-page themes (Corporate Daydream™, Pager Duty Noir, …). Themes swap via
-`--page-*` CSS custom properties with an animated crossfade; the choice
-persists in `localStorage` (`fc-page-theme`).
+The live demo includes a **Vibe check** picker — twelve parody-named page themes
+(Corporate Daydream™, Pager Duty Noir, …). Themes swap via `--page-*` CSS
+properties with animated crossfade; choice persists in `localStorage`
+(`fc-page-theme`).
 
-Scroll reveals, hero stagger, schema validation flashes, and component
-enter/hover animations live in `demo/motion/`. Both layers honour
-`prefers-reduced-motion`. See `.cursor/rules/47-page-themes.mdc` and
-`48-page-motion.mdc` for contributor rules.
+Scroll reveals, hero stagger, schema validation flashes, and component enter/hover
+animations live in `demo/motion/`. Both layers honour `prefers-reduced-motion`.
+
+> **Note:** Page themes are **demo-only** — not part of the npm package. Production
+> sites use `--fc-*` component tokens. Full guide: **[docs/DEMO.md](docs/DEMO.md)**.
 
 ## Accessibility
 
-Semantic section/heading/list/link structure, configurable heading levels,
-single-link cards with proper accessible names, decorative-vs-meaningful
-media handling, visually-hidden trend announcements, full keyboard
-operation, `prefers-reduced-motion` and `prefers-contrast` support, and an
-axe-core CI gate at **zero violations**. Details: [ACCESSIBILITY.md](ACCESSIBILITY.md).
+Semantic structure, configurable heading levels, single-link cards, trend
+announcements, keyboard-native interaction, reduced-motion and high-contrast
+support, and an **axe-core CI gate at zero violations**.
 
-## Methodology
+| Topic | Document |
+| --- | --- |
+| WCAG mapping, keyboard, SR behaviour | [ACCESSIBILITY.md](ACCESSIBILITY.md) |
+| FAQ | [docs/FAQ.md](docs/FAQ.md) |
+| Tests | [docs/TESTING.md](docs/TESTING.md) |
 
-The short version: a native Custom Element maximises "CMS-agnostic"
-(ADR-0001); Shadow DOM makes it collision-proof with theming as an explicit
-API (ADR-0002); a Zod schema + tiny adapters make "minimal adjustment"
-concrete (ADR-0003); AGPL + inert provenance markers protect authorship
-(ADR-0004). The narrative is in [ARCHITECTURE.md](ARCHITECTURE.md); the
-formal records are in [docs/adr/](docs/adr/).
+## Architecture & methodology
+
+| ADR | Decision |
+| --- | --- |
+| [0001](docs/adr/0001-web-component-over-framework.md) | Custom Element over framework |
+| [0002](docs/adr/0002-shadow-dom-encapsulation.md) | Shadow DOM encapsulation |
+| [0003](docs/adr/0003-schema-and-adapters.md) | Zod schema + adapters |
+| [0004](docs/adr/0004-agpl-licence.md) | AGPL + canary provenance |
+| [0005](docs/adr/0005-container-queries.md) | Container-query layout |
+| [0006](docs/adr/0006-page-themes-and-motion.md) | Demo themes & motion |
+
+Narrative: [ARCHITECTURE.md](ARCHITECTURE.md) · Diagrams: [docs/diagrams/architecture.md](docs/diagrams/architecture.md)
 
 ## Development
 
 ```sh
 npm install
-npm run dev        # demo at http://localhost:5173
-npm run serve:cms  # mock CMS Worker at http://localhost:8787/api/cards
-npm run check      # typecheck + lint + full test chain + size budget
-npm run doctor     # verify your toolchain
-npm run docs:api   # TypeDoc → docs/api/
-npm run cem        # regenerate custom-elements.json (CEM)
-npm run sri        # Subresource-Integrity hash for the IIFE bundle
-npm run validate:cms -- https://cms.501fun.humza-butt.space/api/cards
+npm run dev          # demo → http://localhost:5173
+npm run serve:cms    # mock CMS → http://localhost:8787/api/cards
+npm run check        # typecheck + lint + format + tests + size
+npm run doctor       # verify toolchain
 ```
 
-### Tooling extras
+### Tooling
 
-| Artifact | Purpose |
+| Command | Output |
 | --- | --- |
-| [`custom-elements.json`](custom-elements.json) | Custom Elements Manifest — VS Code / IDE autocomplete |
-| [`.vscode/html-custom-data.json`](.vscode/html-custom-data.json) | VS Code HTML tag hints for `<feature-cards>` |
-| [`docs/api/`](docs/api/) | Generated TypeDoc reference — run `npm run docs:api` (CI uploads artifacts; not hosted separately yet) |
-| [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json) | CMS Worker OpenAPI schema |
+| `npm run docs:api` | TypeDoc → `docs/api/` |
+| `npm run cem` / `cem:check` | Custom Elements Manifest |
+| `npm run sri` | IIFE Subresource Integrity hash |
+| `npm run validate:cms -- <url>` | Smoke-test CMS JSON |
+| `npm run rules:sync` | Mirror agent rules to `.claude/` + `.agents/` |
 
-The full script deck (including `stats`, `whoami`, `ship-it`, and other
-indulgences) is in `package.json`.
+| Artefact | Purpose |
+| --- | --- |
+| [custom-elements.json](custom-elements.json) | CEM — IDE autocomplete |
+| [.vscode/html-custom-data.json](.vscode/html-custom-data.json) | VS Code tag hints |
+| [docs/api/](docs/api/) | Generated API reference |
+
+Contributors: [CONTRIBUTING.md](CONTRIBUTING.md) · Agents: [AGENTS.md](AGENTS.md)
+
+## Testing
+
+```sh
+npm run test:unit       # Vitest
+npm run test:contracts  # MSW adapter contracts
+npm run test:fuzz       # Property-based schema
+npm run test:a11y       # axe zero violations
+npm run test:e2e        # Playwright demo flows
+npm run test:visual     # Screenshot regression (Chromium)
+npm run test:browser    # Web Test Runner
+npm run check           # All gates
+```
+
+Full matrix: **[docs/TESTING.md](docs/TESTING.md)**
 
 ## Releasing
 
 ```sh
-npm run release:current              # show latest tag vs HEAD
-npm run release -- --patch             # bump, changelog, tag, push
-npm run release -- --minor --publish   # tag + publish to npm
-npm run release:package:dry            # validate without publishing
+npm run release:current
+npm run release -- --patch              # bump + changelog + tag
+npm run release -- --minor --publish    # tag + npm publish
 ```
 
-Stable `v*.*.*` tags pushed to GitHub trigger CI to publish
-`@humza/feature-cards` to npm (requires `NPM_TOKEN` secret). See
-[CONTRIBUTING.md](CONTRIBUTING.md) for the full release workflow.
+Playbook: **[docs/RELEASE.md](docs/RELEASE.md)** · Stable `v*.*.*` tags publish to npm when `NPM_TOKEN` is set.
 
 ## Deployment
 
-**Production:** [https://501fun.humza-butt.space](https://501fun.humza-butt.space)
+**Production demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)
 
-The demo (Pages) and mock CMS (Worker on `cms.501fun.humza-butt.space`) deploy from CI on
-push to `master` (production branch in [`config/site.json`](config/site.json)).
-
-| What | Where |
+| Service | URL |
 | --- | --- |
-| Demo (Pages) | `https://501fun.humza-butt.space` |
+| Demo (Cloudflare Pages) | `https://501fun.humza-butt.space` |
 | Mock CMS (Worker) | `https://cms.501fun.humza-butt.space/api/cards` |
+
+Push to **`master`** triggers CI deploy (see [`config/site.json`](config/site.json)).
+PRs receive `*.pages.dev` preview URLs.
 
 ### One-time setup
 
-1. **DNS** — In Cloudflare, ensure `501fun.humza-butt.space` is on your
-   `humza-butt.space` zone (you said this is already done).
-2. **GitHub secrets** — `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
-3. **API token permissions** — your token needs:
-   - **Account → Cloudflare Pages → Edit**
-   - **Account → Workers Scripts → Edit**
-   - **Zone → DNS → Edit** on `humza-butt.space` *(creates the Pages CNAME — without it the domain stays “pending” and DNS won’t resolve)*
+1. **DNS** — `501fun.humza-butt.space` on Cloudflare zone `humza-butt.space`
+2. **GitHub secrets** — `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
+3. **Token permissions** — Pages Edit, Workers Edit, Zone DNS Edit
 
-   Local deploys load these from `.env` via `scripts/run-wrangler.mjs` — do **not** rely on `wrangler login` OAuth for deploys.
-
-On merge to `master` (production branch in `config/site.json`), CI builds the
-demo, deploys to the `feature-cards` Pages project, attaches the Pages custom domain
-via `scripts/attach-pages-domain.mjs`, uploads the CMS Worker, then attaches
-`cms.501fun.humza-butt.space` via `scripts/attach-worker-domain.mjs`.
-PRs still get `*.pages.dev` preview URLs.
+Local deploy uses `.env` via `scripts/run-wrangler.mjs` — not `wrangler login` OAuth.
 
 ### Manual deploy
 
-Put `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in `.env`, then:
-
 ```sh
-npm run deploy              # build + Pages + domain + Worker
-npm run deploy:domain       # attach custom domain only
-npm run deploy:worker       # upload CMS Worker + attach cms.* domain
-npm run deploy:worker:domain # attach cms.* domain only
-npm run deploy:domain:dry   # preview the Pages domain API call
-npm run deploy:worker:domain:dry
-```
-
-If Pages deployed but domain/Worker failed partway through, run the remaining
-steps:
-
-```sh
-npm run deploy:domain
-npm run deploy:worker
-```
-
-Verify after deploy:
-
-```sh
+npm run deploy
 npm run canary:verify -- https://501fun.humza-butt.space
 ```
 
+## Documentation index
+
+| Document | Description |
+| --- | --- |
+| [docs/README.md](docs/README.md) | **Master documentation hub** |
+| [docs/SCHEMA.md](docs/SCHEMA.md) | Canonical JSON reference |
+| [docs/FAQ.md](docs/FAQ.md) | Frequently asked questions |
+| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Symptom → fix guide |
+| [docs/TESTING.md](docs/TESTING.md) | Test matrix and conventions |
+| [docs/DEMO.md](docs/DEMO.md) | Demo page themes & motion |
+| [docs/RELEASE.md](docs/RELEASE.md) | Release playbook |
+| [docs/BRANCHING.md](docs/BRANCHING.md) | Branch strategy |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Design narrative |
+| [ACCESSIBILITY.md](ACCESSIBILITY.md) | a11y specification |
+| [SECURITY.md](SECURITY.md) | Security & canary verification |
+| [CHANGELOG.md](CHANGELOG.md) | Version history |
+
 ## Licence
 
-**AGPL-3.0-only** — © 2026 Humza Butt. See [LICENSE](LICENSE) and
-[NOTICE](NOTICE).
+**AGPL-3.0-only** — © 2026 Humza Butt. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
-In plain English: you can read, run, and evaluate this code freely. If you
-deploy it — or a modified version — as part of a website or service, the
-AGPL requires you to offer your users the complete corresponding source
-under the same licence. Commercial closed-source use isn't permitted by
-the AGPL; if that's what you need, contact the author about a separate
-commercial licence. This repository also embeds inert authorship markers
-verifiable with `npm run canary:verify -- <url>` (see
-[SECURITY.md](SECURITY.md)).
+You may read, run, and evaluate freely. Deploying modified versions as a network
+service requires offering corresponding source under the same licence. Commercial
+closed-source use requires a separate agreement with the author.
+
+Inert authorship markers are verifiable: `npm run canary:verify -- <url>` —
+details in [SECURITY.md](SECURITY.md).

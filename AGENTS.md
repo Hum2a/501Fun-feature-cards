@@ -1,106 +1,203 @@
 # AGENTS.md — operating manual
 
-This file is the onboarding doc for any AI agent or human contributor
-working in this repository. Read it before changing anything.
+Onboarding doc for **AI agents and human contributors**. Read this before changing
+anything. Human-readable doc index: [docs/README.md](docs/README.md).
 
 ## What this project is
 
 `<feature-cards>` is a **CMS-agnostic, accessible, responsive Web Component**
 that replaces hard-coded feature-card images with a reusable custom element.
-It is authored in strict TypeScript and shipped as zero-dependency vanilla
-JavaScript (ESM + IIFE). Data flows through one canonical Zod-validated
-schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
-(`src/adapters/`).
+
+| Property | Value |
+| --- | --- |
+| Language | Strict TypeScript |
+| Shipped runtime | Zero-framework vanilla JS (ESM + IIFE) |
+| Bundled deps | Zod only |
+| Validation | `src/schema.ts` + adapters in `src/adapters/` |
+| Optional | React wrapper `@humza/feature-cards/react` |
+| Demo | Vite landing page — themes/motion **not** in npm API |
+| Licence | AGPL-3.0-only + inert canary watermark |
 
 ## Golden rules
 
 1. **No frameworks in shipped code.** Native browser APIs only.
-2. **Progressive enhancement is non-negotiable.** The component must degrade
-   to plain, working links without JavaScript.
-3. **Accessibility is an acceptance criterion.** axe must report zero
-   violations; keyboard operation must be complete; reduced motion must be
-   respected.
-4. **Never throw at consumers.** Bad data renders nothing destructive and
-   emits a `featurecards:error` event with structured issues.
-5. **The canary watermark in `src/watermark.ts` must never be removed or
-   altered.** It is non-functional authorship evidence and part of the
-   project's licensing posture. Treat it as load-bearing.
-6. Every source file carries the AGPL-3.0 licence header.
+2. **Progressive enhancement is non-negotiable.** Degrade to plain working links without JS.
+3. **Accessibility is an acceptance criterion.** axe zero violations; keyboard complete; reduced motion respected.
+4. **Never throw at consumers.** Bad data → `featurecards:error` + preserved light DOM.
+5. **Never remove or alter `src/watermark.ts`.** Load-bearing authorship evidence.
+6. **AGPL licence header** on every source file.
+7. **No new runtime dependencies** without explicit justification.
+
+## Decision tree: where does my change go?
+
+```
+Is it card rendering / schema / adapters?
+  └─ yes → src/
+Is it demo page chrome (themes, motion, playground)?
+  └─ yes → demo/ (NOT published npm API)
+Is it mock CMS / OpenAPI?
+  └─ yes → worker/ + docs/openapi/
+Is it tests?
+  └─ yes → tests/{unit,contracts,e2e,a11y,visual,browser,bench}/
+Is it CI/deploy?
+  └─ yes → .github/workflows/ + scripts/
+Is it agent/human guidance?
+  └─ yes → .cursor/rules/ → npm run rules:sync
+Is it user-facing explanation?
+  └─ yes → README, ARCHITECTURE, docs/
+```
 
 ## How to run things
 
+### Daily development
+
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Vite dev server for the demo page |
-| `npm run build` | Library build (ESM + IIFE + types) and demo build |
-| `npm run serve:cms` | Run the mock Cloudflare Worker CMS locally |
-| `npm run typecheck` / `lint` / `format` | Static checks |
-| `npm run test:unit` | Vitest unit tests |
-| `npm run test:fuzz` | fast-check property tests for the schema |
-| `npm run test:contracts` | MSW contract tests for CMS adapters |
-| `npm run test:bench` | Render benchmark (100 cards) |
-| `npm run test:browser` | Web Test Runner (real browser, no Playwright) |
-| `npm run test:a11y` / `test:e2e` / `test:visual` | Playwright suites (visual baselines are Chromium-only) |
-| `npm run test:ci` | Full test chain as CI runs it |
-| `npm run check` | The everything gate: typecheck + lint + tests + size |
-| `npm run size` | Bundle size vs budget |
-| `npm run canary:verify -- <url>` | Scan a URL for the authorship markers |
-| `npm run stats` | Repo stats summary (files, LOC snapshot, bundle size) |
-| `npm run loc` | Full lines-of-code report (terminal) |
-| `npm run loc:report` | Write `docs/loc-report.md` |
-| `npm run release -- --patch` | Bump version, update CHANGELOG, create git tag |
-| `npm run release:package` | Build, test, and publish to npm (tagged HEAD) |
-| `npm run rules:sync` | Mirror `.cursor/rules/` → `.claude/rules/` and `.agents/rules/` |
-| `npm run rules:sync:check` | Fail if agent rule mirrors are stale (CI) |
-| `npm run docs:api` | Generate TypeDoc reference under `docs/api/` |
-| `npm run cem` | Regenerate `custom-elements.json` (runs in `build:lib`) |
-| `npm run cem:check` | Fail if CEM manifest drifted from the generator |
-| `npm run sri` | Print SRI hash for the IIFE bundle |
-| `npm run validate:cms` | Smoke-validate a CMS JSON endpoint |
+| `npm run dev` | Vite dev server — demo at `:5173` |
+| `npm run serve:cms` | Mock Worker CMS at `:8787` |
+| `npm run build` | Library + demo production build |
+| `npm run build:lib` | ESM + IIFE + types + CEM only |
 
-## Agent rules
+### Quality gates
 
-Cursor rules live in `.cursor/rules/` (source of truth). After editing them,
-run `npm run rules:sync` to replicate the same guidance into:
+| Command | What it does |
+| --- | --- |
+| `npm run check` | **Everything gate** — run before every PR |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` / `lint:fix` | ESLint |
+| `npm run format` / `format:check` | Prettier |
+| `npm run size` | Bundle budget enforcement |
 
-- `.claude/rules/` — Claude Code / Claude agent sessions
-- `.agents/rules/` — other agent tooling that reads a parallel rules dir
+### Tests (see [docs/TESTING.md](docs/TESTING.md))
 
-Do not edit the mirrored `.md` files directly — they are regenerated.
+| Command | Suite |
+| --- | --- |
+| `npm run test:unit` | Vitest unit |
+| `npm run test:fuzz` | fast-check schema |
+| `npm run test:contracts` | MSW adapters |
+| `npm run test:bench` | Render benchmark |
+| `npm run test:browser` | Web Test Runner |
+| `npm run test:a11y` | axe + Playwright |
+| `npm run test:e2e` | Demo integration |
+| `npm run test:visual` | Screenshot regression |
+| `npm run test:ci` | Full chain (no typecheck/lint) |
+| `npm run coverage` | Unit + thresholds |
+
+### Docs & artefacts
+
+| Command | Output |
+| --- | --- |
+| `npm run docs:api` | `docs/api/` TypeDoc |
+| `npm run cem` / `cem:check` | `custom-elements.json` drift guard |
+| `npm run sri` | IIFE Subresource Integrity hash |
+| `npm run validate:cms -- <url>` | Smoke-test CMS JSON |
+| `npm run loc:report` | `docs/loc-report.md` |
+
+### Release & deploy
+
+| Command | What it does |
+| --- | --- |
+| `npm run release -- --patch` | Version + changelog + tag |
+| `npm run release:package` | npm publish tagged HEAD |
+| `npm run deploy` | Build + Pages + Worker + domains |
+| `npm run canary:verify -- <url>` | Scan for authorship markers |
+
+### Agent rules sync
+
+| Command | What it does |
+| --- | --- |
+| `npm run rules:sync` | `.cursor/rules/` → `.claude/` + `.agents/` |
+| `npm run rules:sync:check` | Fail if mirrors stale (CI) |
+
+**Never edit mirrored `.md` files in `.claude/rules/` or `.agents/rules/` directly.**
 
 ## Environment files
 
 | File | Purpose |
 | --- | --- |
-| `.env` | Local dev (gitignored). Copy from `.env.example`. `VITE_*` vars reach the demo. |
-| `.env.example` | Committed template for root env vars |
-| `worker/.dev.vars` | Wrangler local overrides (gitignored). Copy from `worker/.dev.vars.example`. |
-| `worker/.dev.vars.example` | Committed template — sets `CORS_ORIGIN` for `npm run serve:cms` |
+| `.env` | Local dev (gitignored) — copy from `.env.example` |
+| `.env.example` | Cloudflare tokens for deploy scripts |
+| `worker/.dev.vars` | Wrangler local CMS CORS (gitignored) |
+| `worker/.dev.vars.example` | Template for `serve:cms` |
 
-## Definition of done for a change
+## Definition of done
 
-- `npm run check` passes locally.
-- New public behaviour has unit tests; rendered-markup changes keep axe at
-  zero violations and update visual baselines intentionally.
-- Public API changes are reflected in README's API table and JSDoc.
-- Demo page UI changes follow rules 47 (page themes) and 48 (page motion).
-- The licence header is present on any new source file.
-- No new runtime dependencies.
+- [ ] `npm run check` passes locally
+- [ ] New public behaviour has unit tests
+- [ ] Markup changes: axe green + intentional visual updates
+- [ ] Public API reflected in README + JSDoc + `docs/SCHEMA.md` if schema-related
+- [ ] Demo UI: rules 47 (themes) and 48 (motion)
+- [ ] Licence header on new files
+- [ ] No new runtime dependencies
+- [ ] If `.cursor/rules/` edited → `npm run rules:sync`
 
 ## Repository map
 
-- `src/` — the element (`feature-cards.ts`), styles, schema, adapters,
-  watermark, imperative API (`create-feature-cards.ts`), errors
-  (`errors.ts`), optional React wrapper (`react/`).
-- `demo/` — the example landing page served by Vite (schema playground,
-  `themes/` page-theme tokens + picker, `motion/` scroll/transition layer).
-- `worker/` — mock Cloudflare Worker CMS endpoint (`/api/cards`, `/openapi.json`).
-- `tests/` — `unit/`, `contracts/`, `bench/`, `browser/`, `a11y/`, `e2e/`, `visual/`.
-- `scripts/` — Node utility scripts (size, doctor, canary, banner, stats…).
-- `docs/adr/` — Architecture Decision Records (0001–0006).
-- `docs/cookbook/` — CMS integration walkthroughs.
-- `docs/openapi/` — OpenAPI schema for the mock CMS Worker.
-- `docs/BRANCHING.md` — branch and release workflow.
-- `docs/DEPENDENCY-UPGRADES.md` — deferred major dependency upgrades.
-- `custom-elements.json` — Custom Elements Manifest (CEM).
-- `.cursor/rules/47-page-themes.mdc`, `48-page-motion.mdc` — demo UI conventions.
+```
+feature-cards/
+├── src/                    # SHIPPED — element, schema, adapters, styles, react/
+├── demo/                   # NOT SHIPPED — landing page showcase
+│   ├── themes/             # Page theme tokens + picker
+│   └── motion/             # Scroll reveal, transitions
+├── worker/                 # Mock CMS Cloudflare Worker
+├── tests/                  # unit, contracts, bench, browser, a11y, e2e, visual
+├── scripts/                # build, deploy, canary, release, doctor, …
+├── docs/
+│   ├── README.md           # Documentation index
+│   ├── SCHEMA.md           # Canonical JSON reference
+│   ├── FAQ.md, TROUBLESHOOTING.md, TESTING.md, DEMO.md, RELEASE.md
+│   ├── adr/                # Architecture Decision Records 0001–0006
+│   ├── cookbook/           # WordPress, Contentful, Sanity
+│   └── openapi/            # CMS Worker schema
+├── .cursor/rules/          # Agent rules (SOURCE OF TRUTH)
+├── custom-elements.json    # CEM — regenerate with npm run cem
+└── config/site.json        # Production URLs + branch
+```
+
+## Data flow (mental model)
+
+```
+property → inline JSON → src+adapter → light DOM
+                    ↓
+              Zod safeParse
+                    ↓
+         valid → render shadow tree
+         invalid → featurecards:error + slot fallback
+```
+
+Precedence is **top wins**. Never assume `src` is used if `data` is also set.
+
+## Common agent mistakes to avoid
+
+| Mistake | Correct approach |
+| --- | --- |
+| Adding `--page-*` tokens to component | Page tokens are demo-only; use `--fc-*` |
+| Using `innerHTML` for card text | `textContent` only |
+| Viewport media queries in component | Container queries on `:host` |
+| Editing `.claude/rules/` directly | Edit `.cursor/rules/`, run `rules:sync` |
+| Throwing on bad CMS data | Emit error event |
+| Removing watermark "for cleanliness" | Forbidden — see SECURITY.md |
+| Skipping tests for "docs only" PRs that change examples | Runnable snippets must stay accurate |
+
+## Key documentation links
+
+| Doc | Use when |
+| --- | --- |
+| [docs/SCHEMA.md](docs/SCHEMA.md) | Field shapes, validation |
+| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Integration debugging |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Design rationale |
+| [ACCESSIBILITY.md](ACCESSIBILITY.md) | a11y requirements |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | PR workflow |
+| [docs/RELEASE.md](docs/RELEASE.md) | Shipping versions |
+
+## Live URLs
+
+| Service | URL |
+| --- | --- |
+| Demo | https://501fun.humza-butt.space |
+| Mock CMS | https://cms.501fun.humza-butt.space/api/cards |
+| npm | `@humza/feature-cards` |
+
+---
+
+When in doubt: **`npm run check`**, read the nearest ADR, and preserve progressive enhancement.
