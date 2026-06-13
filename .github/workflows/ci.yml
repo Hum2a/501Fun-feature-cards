@@ -35,8 +35,11 @@ jobs:
       - name: Format check
         run: npm run format:check
 
-      - name: Unit + contract tests + coverage
+      - name: Unit tests + coverage
         run: npm run coverage
+
+      - name: MSW contract tests
+        run: npm run test:contracts
 
       - name: Property-based schema fuzz
         run: npm run test:fuzz
