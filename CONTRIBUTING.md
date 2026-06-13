@@ -64,6 +64,12 @@ Pushing a stable `v*.*.*` tag triggers CI to publish `@humza/feature-cards`
 to npm and create a GitHub Release. Set the `NPM_TOKEN` secret in the repo
 for automated publishes.
 
+Before tagging a release:
+
+1. Run `npm run build:lib` so `custom-elements.json` is current (or `npm run cem:check`).
+2. Run `npm run sri` and update cookbook SRI hashes if the IIFE bundle changed.
+3. Run `npm run check` locally.
+
 Pre-release tags (`--name beta` → `v1.1.0-beta`) create a GitHub
 pre-release but are **not** auto-published to npm unless you run
 `npm run release:package -- --allow-prerelease` locally.
