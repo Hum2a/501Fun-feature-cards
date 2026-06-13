@@ -1,106 +1,249 @@
 # Architecture
 
-This document explains *why* the component is built the way it is. The
-formal decision records live in [`docs/adr/`](docs/adr/); this is the
-narrative version.
+*Why* `<feature-cards>` is built the way it is — the engineering story behind
+the brief. Formal decision records live in [`docs/adr/`](docs/adr/); narrative
+diagrams in [`docs/diagrams/`](docs/diagrams/architecture.md). For field-level
+JSON details see [`docs/SCHEMA.md`](docs/SCHEMA.md).
+
+## Table of contents
+
+- [The problem](#the-problem)
+- [System overview](#system-overview)
+- [Why a Custom Element](#why-a-custom-element-and-not-a-framework-component)
+- [Why Shadow DOM](#why-shadow-dom)
+- [Why schema + adapters](#why-schema--adapters)
+- [Progressive enhancement](#progressive-enhancement)
+- [Responsiveness without media queries](#responsiveness-without-media-queries)
+- [TypeScript in, vanilla JS out](#authored-in-typescript-shipped-as-vanilla-js)
+- [Error model](#error-model)
+- [Build & deploy topology](#build--deploy-topology)
+- [Demo layers (not npm API)](#demo-layers-not-npm-api)
+- [Trade-offs rejected](#trade-offs-considered-and-rejected)
+- [Licensing & provenance](#licensing--provenance)
 
 ## The problem
 
-Replace three hard-coded card images with something *reusable, accessible,
-responsive, and CMS-agnostic with minimal adjustment* — using native
-browser APIs where possible.
+Replace three hard-coded feature-card **images** with something that is:
+
+| Requirement | Architectural response |
+| --- | --- |
+| Reusable | One Custom Element, many embed contexts |
+| Accessible | Semantic DOM, axe gate, keyboard-native links |
+| Responsive | Container queries + grid auto-fit |
+| CMS-agnostic | Canonical schema + tiny adapters |
+| Minimal adjustment | Script tag or single ESM import |
+| Native APIs | No framework runtime in shipped bundle |
+
+## System overview
+
+```mermaid
+flowchart LR
+  subgraph consumer["Consumer page"]
+    HTML["HTML / CMS template"]
+    CE["&lt;feature-cards&gt;"]
+  end
+
+  subgraph data["Data layer"]
+    Z["Zod safeParse"]
+    AD["Adapters"]
+  end
+
+  subgraph render["Render layer"]
+    SD["Shadow DOM"]
+    SS["Constructable stylesheet"]
+  end
+
+  HTML --> CE
+  CE --> AD --> Z
+  Z -->|valid| SD
+  SD --> SS
+  Z -->|invalid| EV["featurecards:error"]
+```
+
+Data enters from four sources (documented precedence), passes through optional
+adapters, validates once, then renders exactly one internal template.
 
 ## Why a Custom Element (and not a framework component)
 
-A React/Vue/Svelte component answers "CMS-agnostic" only for sites that run
-that framework. A **native Custom Element** runs in any page that can run
-JavaScript: WordPress themes, Shopify liquid, server-rendered .NET, static
-HTML. There is no runtime to ship, no version matrix, no build-tool
-requirement for consumers — a single `<script>` tag or ESM import. That is
-the strongest possible reading of the brief. (ADR-0001)
+A React/Vue/Svelte component is the right tool **inside** that framework's app.
+It is the wrong tool for a WordPress PHP theme, a Shopify liquid section, or a
+legacy .NET portal that will never adopt a SPA toolchain.
+
+A **native Custom Element**:
+
+- Registers with `customElements.define` — no reconciler, no virtual DOM
+- Ships as ESM + IIFE (~24 KiB gzip)
+- Upgrades existing HTML (`<feature-cards>` already in the document)
+- Degrades to plain links when JS is absent or fails
+
+Optional `@humza/feature-cards/react` exists for teams that *want* React — the
+core does not *require* it. (ADR-0001)
 
 ## Why Shadow DOM
 
-Dropping a widget into arbitrary CMS pages means arbitrary global CSS.
-Shadow DOM gives hard style encapsulation in both directions: host-page
-resets can't break the cards, and card styles can't leak out. Theming stays
-possible — deliberately so — through the two official shadow-piercing
-mechanisms: CSS custom properties (the `--fc-*` token layer) and
-`::part()`. The shadow root is `mode: 'open'` so tests, tooling, and
-consumers can introspect. (ADR-0002)
+CMS pages arrive with unknown global CSS: resets, utilities, `!important`
+rules, theme frameworks. Light-DOM widgets routinely break in both directions
+(host breaks widget, widget breaks host).
+
+**Open Shadow DOM** gives:
+
+- Hard encapsulation for internal structure and class names
+- A deliberate **public styling API**: `--fc-*` custom properties + `::part()`
+- Preserved light-DOM children via `<slot>` (progressive enhancement)
+- Inspectability for tests, axe, and debugging (`mode: 'open'`)
+
+Iframe embedding was rejected: SEO, heading outline, theming, and container
+layout all suffer. (ADR-0002)
 
 ## Why schema + adapters
 
-"CMS-agnostic with minimal adjustment" is a data problem more than a
-rendering problem. The design splits it:
+"CMS-agnostic" is primarily a **data** problem. WordPress REST, Contentful
+Delivery, and Sanity GROQ share no natural shape.
 
-- **One canonical schema** (`src/schema.ts`, Zod-validated) is the only
-  shape the renderer ever sees. Validation is non-throwing and produces
-  structured issues, surfaced via the `featurecards:error` event.
-- **Adapters** (`src/adapters/`) are ~40-line pure functions that reshape a
-  CMS payload into the schema. WordPress, Contentful, and Sanity ship as
-  working examples; a new CMS is one small mapper, registered in one line.
+The split:
 
-The component itself never learns about any CMS. (ADR-0003)
+```
+CMS payload  →  adapter (pure fn)  →  FeatureCardsData  →  renderer
+```
+
+- **One canonical schema** — `src/schema.ts`, Zod-validated, typed exports
+- **Adapters** — ~40-line mappers in `src/adapters/`
+- **Registry** — `adapter` attribute selects mapper (`getAdapter`)
+- **generic** — pass-through normaliser for JSON already shaped correctly
+
+The renderer never imports CMS-specific code. Adding WordPress was one adapter;
+adding Contentful was another — the element did not change. (ADR-0003)
 
 ## Progressive enhancement
 
-The element accepts plain `<a>` children. Before JavaScript loads — or if
-it never does — those links render and work. On upgrade, the component
-parses them into card data and renders the full UI. Bad data never
-destroys content: the shadow root keeps a `<slot>` so the original light
-DOM stays visible, and the error is reported as an event instead of a
-thrown exception.
+The element accepts plain `<a>` children. Before JavaScript:
 
-Data sources resolve in a documented precedence order (property → inline
-JSON → `src` fetch → light DOM), so the same element supports everything
-from "hardcode it in the page" to "fetch from a headless CMS."
+- Links render and navigate normally
+- No broken layout from empty custom tags (slot content visible)
+
+After upgrade:
+
+- Light DOM parsed into card data OR remote/inline JSON renders the full UI
+- Invalid data **never destroys** fallback content
+- Errors surface as events, not thrown exceptions
+
+### Data precedence (highest wins)
+
+1. `element.data` property
+2. Inline `<script type="application/json">`
+3. `src` fetch + adapter
+4. Default slot anchors
+
+Document this order when debugging integration issues —
+[`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md).
 
 ## Responsiveness without media queries
 
-The component cannot know its viewport context — it may be a full-width
-band or a narrow sidebar widget. So it responds to its **container**:
-`container-type: inline-size` on the host, `@container` queries for
-spacing/typography, CSS Grid `repeat(auto-fit, minmax(...))` for track
-count, and `clamp()` for fluid type. A `columns` attribute caps tracks when
-a layout demands it. (ADR-0005 territory; covered in ADR-0002/0003
-consequences.)
+The component cannot assume viewport context. It may sit in:
+
+- A full-width marketing band
+- A 280px sidebar widget
+- A resizable demo panel
+
+Therefore:
+
+- `container-type: inline-size` on `:host`
+- `@container` rules for spacing and heading rhythm
+- `grid-template-columns: repeat(auto-fit, minmax(min(var(--fc-card-min), 100%), 1fr))`
+- `clamp()` for fluid typography
+- Optional `columns` attribute (1–6) to cap tracks when layout demands it
+
+Verified by e2e resize test against `#resizable-instance`, not viewport emulation.
+(ADR-0005)
 
 ## Authored in TypeScript, shipped as vanilla JS
 
-Strict TypeScript (with `exactOptionalPropertyTypes`,
-`noUncheckedIndexedAccess`) catches data-shape errors at compile time and
-generates `.d.ts` for consumers — while the shipped artefacts are plain
-ESM and a self-registering IIFE with zero framework runtime. Zod is the
-single bundled dependency, earning its place as the runtime validation
-layer the schema-first design depends on.
+Strict compiler flags (`exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`)
+keep adapter and schema code honest. Consumers get `.d.ts` declarations.
 
-## Build pipeline
+Shipped artefacts:
+
+| File | Role |
+| --- | --- |
+| `dist/feature-cards.js` | ESM entry |
+| `dist/feature-cards.iife.js` | Script tag / CDN |
+| `dist/react.js` | Optional React wrapper |
+| `dist/types/` | TypeScript declarations |
+
+**Zod** is the sole bundled runtime dependency — it earns its ~12 KiB gzip by
+powering validation, typed inference, and structured error paths.
+
+## Error model
+
+Bad data is a normal operating condition (CMS misconfiguration, stale cache,
+editor mistake). The component:
+
+1. Runs `safeParseFeatureCardsData`
+2. On failure, emits `featurecards:error` with `{ issues, problem }`
+3. Keeps shadow slot visible so light-DOM fallback remains
+4. Never throws to embedding pages
+
+`ProblemDetail` follows RFC 7807-style fields for tooling compatibility
+(`src/errors.ts`).
+
+## Build & deploy topology
 
 ```
-src/*.ts ──vite lib build──► dist/feature-cards.js        (ESM)
-         │                  dist/feature-cards.iife.js    (script-tag)
-         └─tsc -p build───► dist/types/*.d.ts             (declarations)
-demo/    ──vite build─────► dist/demo/                    (Pages deploy)
-worker/  ──wrangler───────► mock CMS endpoint             (Worker deploy)
+┌─────────────────────────────────────────────────────────────┐
+│  src/*.ts                                                    │
+│    vite lib build → dist/feature-cards.{js,iife.js}         │
+│    tsc -p build   → dist/types/                             │
+│    generate-cem   → custom-elements.json                    │
+├─────────────────────────────────────────────────────────────┤
+│  demo/  → vite demo build → dist/demo/  → Cloudflare Pages  │
+│  worker/ → wrangler deploy  → mock CMS   → Cloudflare Worker │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-Both bundles carry the AGPL licence banner; the size budget is enforced by
-`npm run size` (24 KiB gzip for the ESM bundle).
+| Surface | URL | Branch trigger |
+| --- | --- | --- |
+| Demo | `501fun.humza-butt.space` | push to `master` |
+| Mock CMS | `cms.501fun.humza-butt.space` | push to `master` |
+| npm | `@humza/feature-cards` | tag `v*.*.*` |
+
+Size budget enforced by `npm run size` (24 KiB gzip ESM ceiling).
+
+## Demo layers (not npm API)
+
+The demo landing page adds **page chrome** that is deliberately excluded from
+the published package:
+
+| Layer | Location | Purpose |
+| --- | --- | --- |
+| Page themes | `demo/themes/` | 12 parody `--page-*` token sets + picker |
+| Page motion | `demo/motion/` | Scroll reveal, theme flash, validation pulses |
+| Schema playground | `demo/main.ts` | Live JSON editor |
+
+Component motion tokens (`--fc-transition`) ship in `src/styles.ts`; demo-only
+motion does not. See [ADR-0006](docs/adr/0006-page-themes-and-motion.md) and
+[`docs/DEMO.md`](docs/DEMO.md).
 
 ## Trade-offs considered and rejected
 
 | Option | Why rejected |
 | --- | --- |
-| Framework component (+ wrappers per framework) | Couples consumers to a runtime; fails the "any CMS" requirement. |
-| Lit / Stencil | Excellent tools, but a runtime dependency contradicts the "native browser APIs" brief and isn't needed at this scale. |
-| Light-DOM rendering (no shadow) | Simpler theming, but style collisions in arbitrary CMS pages are exactly the failure mode this must avoid. |
-| iframe embedding | Total isolation, but kills SEO, a11y context, responsive integration, and theming. |
-| Hand-rolled validation | Cheaper bytes, but loses typed inference and structured error paths; Zod's cost (~12 KiB gzip) buys the whole schema story. |
-| Media queries | Wrong axis — the component must adapt to its container, not the page viewport. |
+| Framework component (+ per-framework wrappers) | Couples consumers to a runtime; fails "any CMS". |
+| Lit / Stencil | Excellent tools; runtime/compiler contradicts zero-dependency brief at this scale. |
+| Light-DOM rendering | Style collisions in arbitrary CMS pages — the failure mode we must avoid. |
+| iframe embed | Isolation at the cost of SEO, a11y context, theming, container layout. |
+| Hand-rolled validation | Loses typed inference and structured errors; false economy on bytes. |
+| Viewport media queries | Wrong axis — embeddable components respond to **container** width. |
+| Runtime CSS-in-JS | No framework runtime policy; constructable stylesheets are native and fast. |
 
 ## Licensing & provenance
 
-AGPL-3.0-only with embedded inert authorship markers (see `SECURITY.md`).
-The licence obligates network users of modified versions to share source;
-the canary makes provenance provable. (ADR-0004)
+**AGPL-3.0-only** with inert authorship markers (canary watermark) in shipped
+bundles and rendered output. Network use of modified versions triggers source
+offer obligations; markers make provenance verifiable without tracking users.
+
+Details: [SECURITY.md](SECURITY.md), [ADR-0004](docs/adr/0004-agpl-licence.md).
+
+---
+
+**Next reads:** [docs/README.md](docs/README.md) · [SCHEMA.md](docs/SCHEMA.md) ·
+[ACCESSIBILITY.md](ACCESSIBILITY.md)

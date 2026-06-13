@@ -1,30 +1,76 @@
 # ADR-0001: Web Component over framework component
 
-- Status: accepted
-- Date: 2026-06-12
+| | |
+| --- | --- |
+| **Status** | Accepted |
+| **Date** | 2026-06-12 |
+| **Deciders** | Project author |
+| **Related** | ADR-0002, ADR-0003 |
 
 ## Context
 
-The brief asks for a reusable, CMS-agnostic replacement for three
-hard-coded card images, deployable to an unknown CMS "with minimal
-adjustment", and encourages native browser APIs. Candidate approaches:
-a framework component (React/Vue/Svelte), a meta-compiled component
-(Lit/Stencil), a server-side partial, or a native Custom Element.
+The brief asks for a reusable replacement for three hard-coded feature-card
+**images**, deployable to an **unknown CMS** with **minimal adjustment**, using
+**native browser APIs** where possible.
+
+### Candidates considered
+
+| Approach | CMS reach | Runtime cost | Build requirement |
+| --- | --- | --- | --- |
+| React / Vue / Svelte component | Framework sites only | Framework + reconciler | Consumer bundler |
+| Lit / Stencil | Broad | Small compiler/runtime | Build step |
+| Server partial (PHP/Twig) | Single stack | None | Server template |
+| **Native Custom Element** | **Any JS-capable page** | **None (beyond ~24 KiB component)** | **Optional for consumer** |
+
+The hiring brief explicitly rewards native APIs and CMS agnosticism — not
+framework ecosystem depth.
 
 ## Decision
 
-Build a native **Custom Element** (`<feature-cards>`), authored in strict
-TypeScript, shipped as vanilla ESM plus a self-registering IIFE bundle with
-zero framework runtime.
+Build a native **Custom Element** (`<feature-cards>`):
+
+- Authored in **strict TypeScript**
+- Shipped as **vanilla ESM** + **self-registering IIFE**
+- **Zero framework runtime** in the published bundle
+- Optional **`@humza/feature-cards/react`** wrapper for teams that want JSX ergonomics
+
+Registration via `customElements.define`; lifecycle via standard callbacks;
+rendering via DOM APIs and constructable stylesheets.
+
+## Rationale
+
+1. **WordPress PHP themes** will never adopt React for one widget.
+2. **Script tag integration** is the lowest-friction CMS path.
+3. **Progressive enhancement** maps naturally to custom elements upgrading existing markup.
+4. **Long-term maintenance** avoids N framework wrappers (React, Vue, Svelte, …).
+
+Lit and Stencil were evaluated favourably but rejected: at this component's
+size, their runtime/compiler adds bytes and conceptual overhead without
+unlocking capabilities native APIs lack.
 
 ## Consequences
 
-- Works in any CMS or page that can load a script tag — WordPress themes,
-  static HTML, server-rendered apps — with no framework version matrix.
-- Consumers needing framework ergonomics can still wrap it trivially; the
-  reverse (un-wrapping a React component for a PHP site) is not true.
-- We own rendering, lifecycle, and accessibility details that a framework
-  would otherwise provide; the test suite carries that responsibility.
-- Lit/Stencil were rejected not on quality but on principle: at this
-  component's scale their runtime/compiler buys little and contradicts the
-  zero-dependency, native-API positioning.
+### Positive
+
+- Works anywhere JavaScript runs — static HTML, SSR pages, legacy portals
+- No consumer version matrix (`react@18` vs `19`, etc.) for the core
+- Framework users wrap; non-framework users don't pay for unused runtime
+- Aligns with portfolio positioning: platform primitives over app frameworks
+
+### Negative
+
+- We own lifecycle, a11y, and re-render semantics that frameworks abstract
+- Test suite must cover integration concerns (e2e, a11y, visual)
+- DX is `querySelector` + properties/events — not JSX unless wrapper used
+- SSR story is "enhance client-side" — server renders fallback links
+
+## Compliance
+
+- README documents script tag, ESM, imperative, and React paths
+- `createFeatureCards()` API for non-module hosts
+- React wrapper is **optional peer dependency**, not bundled in core
+
+## References
+
+- [ARCHITECTURE.md](../../ARCHITECTURE.md)
+- [MDN: Using custom elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements)

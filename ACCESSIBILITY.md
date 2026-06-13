@@ -1,75 +1,149 @@
 # Accessibility
 
-Accessibility is an acceptance criterion for this component, verified by an
-automated axe-core gate (zero violations) and by hand with a keyboard. This
-document records what is addressed, how, and what the limits are.
+Accessibility is an **acceptance criterion**, not a nice-to-have. This component
+targets **WCAG 2.2 Level AA** for its default token sets and ships with an
+automated **axe-core gate at zero violations** plus keyboard integration tests.
+
+For integrator FAQ see [`docs/FAQ.md`](docs/FAQ.md). For test commands see
+[`docs/TESTING.md`](docs/TESTING.md).
+
+## Design principles
+
+1. **Native semantics first** — real headings, links, and lists; ARIA only when
+   semantics cannot express the pattern.
+2. **One activation target per card** — the entire card is a single `<a>`; no
+   nested interactive controls fighting for focus.
+3. **Fail safe** — invalid data preserves light-DOM fallback links.
+4. **User preferences are law** — reduced motion, increased contrast, and colour
+   scheme preferences override decorative choices.
 
 ## WCAG 2.2 criteria addressed
 
-| Criterion | How |
-| --- | --- |
-| 1.1.1 Non-text content | Meaningful images get real `alt` text from the data; decorative images get `alt=""` + `aria-hidden="true"`; icons are always `aria-hidden`. |
-| 1.3.1 Info and relationships | Semantic structure: `<section>`, real headings, a `role="list"` card list, `<article>`-free single-link cards. No ARIA where semantics suffice. |
-| 1.3.2 Meaningful sequence | DOM order matches visual order; the whole card is one link, so there is no split reading order. |
-| 1.4.3 Contrast (minimum) | All token defaults meet AA in light and dark schemes; the axe gate includes `color-contrast`. |
-| 1.4.4 Resize text | All type uses `rem`/`clamp()`; nothing breaks at 200% zoom. |
-| 1.4.10 Reflow | CSS Grid `auto-fit` + container queries reflow to one column in narrow containers with no horizontal scroll. |
-| 2.1.1 Keyboard | Every card is a link: reachable with Tab, activated with Enter. No custom key handling to get wrong, no focus trap. |
-| 2.4.3 Focus order | Cards follow DOM order; one tab stop per card. |
-| 2.4.6 Headings and labels | Section heading + per-card title headings; `heading-level` lets the host page keep a correct outline. |
-| 2.4.7 / 2.4.13 Focus visible/appearance | A 3px `:focus-visible` outline in the accent colour, offset 2px, on every card link. |
-| 2.5.8 Target size | Whole-card links far exceed 24×24px. |
-| 4.1.2 Name, role, value | Links have accessible names from their content, or `cta.ariaLabel` when the data provides one. Events don't replace native link behaviour. |
+| Criterion | Level | How we meet it |
+| --- | --- | --- |
+| 1.1.1 Non-text content | A | Meaningful images: real `alt` from data. Decorative: `alt=""` + `aria-hidden`. Icons: always decorative. |
+| 1.3.1 Info and relationships | A | `<section>`, heading hierarchy, list semantics for card grid. |
+| 1.3.2 Meaningful sequence | A | DOM order matches reading order; single link per card. |
+| 1.4.3 Contrast (minimum) | AA | Default `--fc-*` tokens meet AA in light and dark via `light-dark()`. |
+| 1.4.4 Resize text | AA | `rem` / `clamp()` — usable at 200% zoom. |
+| 1.4.10 Reflow | AA | Grid reflows to single column in narrow **containers** without horizontal scroll. |
+| 1.4.11 Non-text contrast | AA | Focus ring and card borders meet contrast against adjacent colours in default themes. |
+| 2.1.1 Keyboard | A | Every card link: Tab focusable, Enter activates. |
+| 2.4.3 Focus order | A | DOM order; one tab stop per card. |
+| 2.4.6 Headings and labels | AA | Section + card titles; configurable `heading-level`. |
+| 2.4.7 Focus visible | AA | 3px `:focus-visible` outline, accent colour, 2px offset. |
+| 2.4.11 Focus not obscured | AA | Focus ring not clipped by shadow padding defaults. |
+| 2.5.8 Target size | AA | Whole-card links exceed 24×24 CSS px by wide margin. |
+| 4.1.2 Name, role, value | A | Link name from visible text or `cta.ariaLabel`. |
+
+> **Integrator responsibility:** overriding `--fc-*` tokens with low-contrast
+> colours makes contrast **your** obligation. Defaults are tested.
 
 ## Heading strategy
 
-The component cannot know where it sits in a page outline, so the
-`heading-level` attribute (1–6, default 2) sets the section heading's level
-and card titles render one level deeper. If the data supplies no section
-heading, card titles still render at `heading-level + 1` — set
-`heading-level` to one less than the surrounding heading to nest correctly.
+The component cannot know its position in the page outline. Use **`heading-level`**
+(1–6, default **2**):
 
-## Keyboard map
+```
+Page h1
+  └── feature-cards heading-level="2"  →  section h2
+        └── card titles                  →  h3
+```
 
-| Key | Behaviour |
+If the data omits a section heading, card titles still render at
+`heading-level + 1`. Nest correctly by setting `heading-level` one less than
+the surrounding heading on the host page.
+
+Override the section heading visually with the **`heading` slot** while keeping
+levels programmatically correct.
+
+## Keyboard interaction
+
+| Input | Behaviour |
 | --- | --- |
-| `Tab` / `Shift+Tab` | Move between card links in DOM order |
-| `Enter` | Activate the focused card (follows the link, emits `featurecards:cardclick`) |
+| `Tab` | Move to next card link in DOM order |
+| `Shift+Tab` | Move to previous card link |
+| `Enter` | Activate focused link; emits `featurecards:cardclick` |
 
-There are deliberately no arrow-key grid semantics: cards are a list of
-links, not a composite widget, so standard link interaction is correct.
+**Deliberately omitted:** arrow-key grid navigation. Cards are a **list of links**,
+not a composite widget — browser link semantics are correct and predictable.
 
-## Screen-reader behaviour
+## Screen reader experience
 
-- The section announces as a region with its heading.
-- Each card announces as a link whose name is the card's text content
-  (eyebrow, title, figure, description, CTA) or the explicit `ariaLabel`.
-- Figure trends get visually-hidden context — "97% customer satisfaction
-  (increased)" — instead of an unexplained arrow glyph.
+| Element | Announcement |
+| --- | --- |
+| Section | Region with heading (when heading present) |
+| Card | Link whose name combines eyebrow, title, figure, description, CTA text |
+| Figure trend | Visually-hidden expansion: e.g. "97% customer satisfaction (increased)" |
+| Decorative media | Hidden from accessibility tree |
 
-## Motion and contrast preferences
+### Accessible name examples
 
-- `prefers-reduced-motion: reduce` — all transitions and hover transforms
-  are disabled (motion is only ever applied under `no-preference`).
-- `prefers-contrast: more` — card borders thicken and muted text is
-  promoted to full foreground colour.
-- `light-dark()` tokens adapt to `prefers-color-scheme` automatically.
+| Data | Computed name (simplified) |
+| --- | --- |
+| Title + CTA only | "Ship faster — Get started" |
+| With figure trend up | Includes "(increased)" context |
+| `cta.ariaLabel` set | Uses explicit label instead of concatenation |
+
+## Motion & contrast preferences
+
+| Preference | Component behaviour | Demo page behaviour |
+| --- | --- | --- |
+| `prefers-reduced-motion: reduce` | `--fc-transition` → `0s`; no hover transforms | `data-motion="reduce"`; no theme crossfade |
+| `prefers-contrast: more` | Thicker borders; muted text promoted | High-contrast theme available in picker |
+| `prefers-color-scheme` | `light-dark()` token pairs | Page themes also set `color-scheme` |
+
+## Theming API accessibility notes
+
+- Customise via **`--fc-*` tokens** and **`::part()`** — do not inject CSS that
+  removes focus outlines.
+- **`::part(link):focus-visible`** is the supported focus hook.
+- Do not set `pointer-events: none` on parts — cards must remain activatable.
 
 ## Testing approach
 
-- **Automated:** `npm run test:a11y` drives the full demo (all rendering
-  modes) through axe-core via Playwright and fails on any violation.
-- **Unit-level:** decorative/meaningful alt handling, trend announcements,
-  `aria-label` plumbing, and heading levels are unit-tested.
-- **Manual:** keyboard walk-through and zoom checks are part of the release
-  checklist.
+### Automated (CI gate)
+
+```sh
+npm run test:a11y    # axe on full demo — zero violations
+npm run test:e2e     # keyboard + reduced motion scenarios
+```
+
+### Unit coverage
+
+- Decorative vs meaningful `alt` handling
+- Trend announcement strings
+- `ariaLabel` plumbing
+- Heading level math
+
+### Manual release checklist
+
+- [ ] Tab through all demo cards without trap or skip
+- [ ] 200% browser zoom — no clipping or overlap
+- [ ] VoiceOver or NVDA on one card with figure + trend
+- [ ] Spot check with `prefers-reduced-motion` enabled
 
 ## Known limitations
 
-- The component renders into Shadow DOM; assistive tech released before
-  ~2020 may have degraded shadow-root support. The no-JS fallback (plain
-  links) remains fully accessible in those environments.
-- Colour tokens can be overridden by consumers; contrast then becomes the
-  consumer's responsibility. The defaults are AA-safe.
-- `icon` media renders the supplied glyph as decorative; if an icon is the
-  only carrier of meaning, the data should express that meaning in text.
+| Limitation | Mitigation |
+| --- | --- |
+| Shadow DOM on very old assistive tech | No-JS plain links remain fully accessible in light DOM |
+| Consumer token overrides | Document contrast responsibility; test after theming |
+| Icon-only meaning | Express meaning in text fields; icons are decorative |
+| Demo parody themes | Some themes are jokes — `high-contrast-parental-controls` is the serious a11y showcase |
+
+## Reporting accessibility bugs
+
+Treat a11y regressions as **release blockers**. File a GitHub issue with:
+
+1. WCAG criterion affected (if known)
+2. Browser + assistive tech versions
+3. Reduced test case JSON or URL
+4. Expected vs actual behaviour
+
+Security issues use the private channel in [SECURITY.md](SECURITY.md).
+
+---
+
+**Related:** [README § Accessibility](README.md#accessibility) ·
+[ADR-0002](docs/adr/0002-shadow-dom-encapsulation.md) (open shadow for testing)
