@@ -9,6 +9,7 @@ import {
   resolveInitialPageTheme,
   type PageThemeId,
 } from './page-theme-tokens.js';
+import { flashThemeTransition } from '../motion/page-motion.js';
 
 /** Wire the theme picker and sync `<html data-page-theme>`. */
 export function initPageThemes(): void {
@@ -26,6 +27,7 @@ export function initPageThemes(): void {
 
   select.addEventListener('change', () => {
     const id = select.value as PageThemeId;
+    flashThemeTransition();
     applyPageTheme(id);
     updateThemeHint(select, id);
   });

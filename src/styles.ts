@@ -52,7 +52,10 @@ export const componentCss = /* css */ `
   --fc-shadow: 0 1px 2px var(--page-shadow, rgb(0 0 0 / 0.06)), 0 4px 12px var(--page-shadow, rgb(0 0 0 / 0.05));
   --fc-shadow-hover: 0 2px 4px var(--page-shadow, rgb(0 0 0 / 0.08)), 0 12px 28px var(--page-shadow, rgb(0 0 0 / 0.12));
   --fc-ring: var(--fc-accent);
-  --fc-transition: 180ms ease;
+  --fc-transition: 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  --fc-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --fc-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fc-stagger: 65ms;
 
   display: block;
   container-type: inline-size;
@@ -73,6 +76,24 @@ export const componentCss = /* css */ `
   font-size: clamp(1.35rem, 3.5cqi, 1.9rem);
   line-height: 1.2;
   margin: 0 0 clamp(0.75rem, 2cqi, 1.25rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .heading {
+    animation: fc-heading-enter 560ms var(--fc-ease-out) backwards;
+  }
+}
+
+@keyframes fc-heading-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---- layout: auto-fit grid, optionally capped by [columns] --------- */
@@ -103,6 +124,22 @@ export const componentCss = /* css */ `
   background: var(--fc-card-bg);
   border: 1px solid var(--fc-card-border);
   box-shadow: var(--fc-shadow);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--fc-accent) 14%, transparent),
+    transparent 55%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fc-transition);
 }
 
 .link {
@@ -129,12 +166,30 @@ export const componentCss = /* css */ `
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fc-accent);
+  transition:
+    letter-spacing var(--fc-transition),
+    color var(--fc-transition);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .link:hover .eyebrow,
+  .link:focus-visible .eyebrow {
+    letter-spacing: 0.12em;
+  }
 }
 
 .title {
   margin: 0;
   font-size: clamp(1.05rem, 2.6cqi, 1.3rem);
   line-height: 1.25;
+  transition: transform var(--fc-transition);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .link:hover .title,
+  .link:focus-visible .title {
+    transform: translateX(2px);
+  }
 }
 
 .description {
@@ -157,6 +212,14 @@ export const componentCss = /* css */ `
   line-height: 1.05;
   color: var(--fc-accent);
   font-variant-numeric: tabular-nums;
+  transition: transform var(--fc-transition);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .link:hover .figure-value,
+  .link:focus-visible .figure-value {
+    transform: scale(1.03);
+  }
 }
 
 .figure-label {
@@ -173,6 +236,14 @@ export const componentCss = /* css */ `
   width: 100%;
   border-radius: calc(var(--fc-radius) - 0.35rem);
   object-fit: cover;
+  transition: transform var(--fc-transition);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .link:hover .media img,
+  .link:focus-visible .media img {
+    transform: scale(1.04);
+  }
 }
 
 .media .icon {
@@ -186,6 +257,7 @@ export const componentCss = /* css */ `
   font-weight: 600;
   color: var(--fc-accent);
   font-size: 0.92rem;
+  transition: color var(--fc-transition);
 }
 
 .cta::after {
@@ -206,6 +278,24 @@ export const componentCss = /* css */ `
   border-radius: var(--fc-radius);
   background: color-mix(in srgb, var(--fc-card-bg) 88%, var(--fc-accent));
   color: var(--fc-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .state {
+    animation: fc-state-enter 480ms var(--fc-ease-out) backwards;
+  }
+}
+
+@keyframes fc-state-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .state-title {
@@ -250,18 +340,6 @@ export const componentCss = /* css */ `
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .state-loading .state-title::after {
-    animation: none;
-    opacity: 0.7;
-  }
-
-  .link:hover .cta::after,
-  .link:focus-visible .cta::after {
-    transform: none;
-  }
-}
-
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -274,22 +352,94 @@ export const componentCss = /* css */ `
   border: 0;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .state-loading .state-title::after {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .link:hover .cta::after,
+  .link:focus-visible .cta::after {
+    transform: none;
+  }
+
+  .heading,
+  .state,
+  .card {
+    animation: none;
+  }
+
+  .card,
+  .card::before,
+  .eyebrow,
+  .title,
+  .figure-value,
+  .media img,
+  .cta {
+    transition: none;
+  }
+}
+
 /* ---- motion (opt-in only) ------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
   .card {
+    animation: fc-card-enter 620ms var(--fc-ease-out) backwards;
     transition:
       transform var(--fc-transition),
-      box-shadow var(--fc-transition);
+      box-shadow var(--fc-transition),
+      border-color var(--fc-transition);
+  }
+
+  .card:nth-child(1) {
+    animation-delay: 0ms;
+  }
+
+  .card:nth-child(2) {
+    animation-delay: var(--fc-stagger);
+  }
+
+  .card:nth-child(3) {
+    animation-delay: calc(var(--fc-stagger) * 2);
+  }
+
+  .card:nth-child(4) {
+    animation-delay: calc(var(--fc-stagger) * 3);
+  }
+
+  .card:nth-child(5) {
+    animation-delay: calc(var(--fc-stagger) * 4);
+  }
+
+  .card:nth-child(6) {
+    animation-delay: calc(var(--fc-stagger) * 5);
   }
 
   .card:hover,
   .card:has(.link:focus-visible) {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     box-shadow: var(--fc-shadow-hover);
+    border-color: color-mix(in srgb, var(--fc-accent) 35%, var(--fc-card-border));
+  }
+
+  .card:hover::before,
+  .card:has(.link:focus-visible)::before {
+    opacity: 1;
   }
 
   .card:has(.link:active) {
-    transform: translateY(-1px);
+    transform: translateY(-1px) scale(0.995);
+  }
+}
+
+@keyframes fc-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
