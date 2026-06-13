@@ -1,6 +1,6 @@
 {
   "name": "@humza/feature-cards",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
   "type": "module",
   "license": "AGPL-3.0-only",
