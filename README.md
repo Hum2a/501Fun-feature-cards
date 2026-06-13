@@ -227,7 +227,7 @@ npm run validate:cms -- https://cms.501fun.humza-butt.space/api/cards
 | --- | --- |
 | [`custom-elements.json`](custom-elements.json) | Custom Elements Manifest — VS Code / IDE autocomplete |
 | [`.vscode/html-custom-data.json`](.vscode/html-custom-data.json) | VS Code HTML tag hints for `<feature-cards>` |
-| [`docs/api/`](docs/api/) | Generated TypeDoc reference — run `npm run docs:api` |
+| [`docs/api/`](docs/api/) | Generated TypeDoc reference — run `npm run docs:api` (CI uploads artifacts; not hosted separately yet) |
 | [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json) | CMS Worker OpenAPI schema |
 
 The full script deck (including `stats`, `whoami`, `ship-it`, and other
