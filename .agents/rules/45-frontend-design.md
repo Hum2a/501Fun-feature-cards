@@ -11,8 +11,9 @@ alwaysApply: false
 ## Visual language
 
 - **Token-first.** Component colours/spacing live in `--fc-*` (`src/styles.ts`).
-  Demo page chrome uses separate `--page-*` tokens (`demo/demo.css`). Never
-  hard-code hex values in markup or TS.
+  Demo page chrome uses the **page theme system** (`demo/themes/`) — all
+  colours via `--page-*` tokens. Never hard-code hex values in markup or TS.
+  See `.cursor/rules/47-page-themes.mdc`.
 - **Adaptive colour.** Use `light-dark()` for every surface, text, and border
   token. Support `prefers-contrast: more` with stronger borders and promoted
   muted text.

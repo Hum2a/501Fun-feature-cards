@@ -1,0 +1,259 @@
+/*!
+ * Demo page theme token layer — every `[data-page-theme]` block MUST define
+ * the full `--page-*` set listed in `.cursor/rules/47-page-themes.mdc`.
+ *
+ * Do not style elements directly here; only assign custom properties.
+ */
+
+/* ---- Corporate Daydream™ (default light) ------------------------------ */
+[data-page-theme='corporate-daydream'],
+:root:not([data-page-theme]) {
+  color-scheme: light;
+  --page-bg: #f6f8fb;
+  --page-bg-accent: #e8eef8;
+  --page-fg: #16202b;
+  --page-muted: #51606f;
+  --page-accent: #2563eb;
+  --page-on-accent: #ffffff;
+  --page-card: #ffffff;
+  --page-border: #e3e8ee;
+  --page-shadow: rgb(15 23 42 / 0.06);
+  --page-success: #047857;
+  --page-success-border: #a7f3d0;
+  --page-warning: #b45309;
+  --page-warning-border: #fde68a;
+  --page-error: #b91c1c;
+  --page-error-border: #fecaca;
+  --page-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---- Pager Duty Noir (default dark) ----------------------------------- */
+[data-page-theme='pager-duty-noir'] {
+  color-scheme: dark;
+  --page-bg: #0d141d;
+  --page-bg-accent: #121c28;
+  --page-fg: #e8edf2;
+  --page-muted: #9aa7b4;
+  --page-accent: #7aa2ff;
+  --page-on-accent: #0d141d;
+  --page-card: #1a2330;
+  --page-border: #2c3a4b;
+  --page-shadow: rgb(0 0 0 / 0.35);
+  --page-success: #5fd4ab;
+  --page-success-border: #1d5c47;
+  --page-warning: #ffc266;
+  --page-warning-border: #6b5320;
+  --page-error: #fca5a5;
+  --page-error-border: #7f1d1d;
+  --page-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---- Sepia Substack Writer's Loft ------------------------------------- */
+[data-page-theme='sepia-substack'] {
+  color-scheme: light;
+  --page-bg: #f4ecd8;
+  --page-bg-accent: #e8dcc4;
+  --page-fg: #3d2c1e;
+  --page-muted: #7a6554;
+  --page-accent: #8b4513;
+  --page-on-accent: #fff8ef;
+  --page-card: #faf3e6;
+  --page-border: #d4c4a8;
+  --page-shadow: rgb(61 44 30 / 0.08);
+  --page-success: #5c6b2f;
+  --page-success-border: #c5d4a0;
+  --page-warning: #a16207;
+  --page-warning-border: #f0d080;
+  --page-error: #991b1b;
+  --page-error-border: #f0b8b8;
+  --page-font: Georgia, 'Times New Roman', serif;
+}
+
+/* ---- Vaporwave Investor Deck ------------------------------------------ */
+[data-page-theme='vaporwave-investor-deck'] {
+  color-scheme: dark;
+  --page-bg: #1a0a2e;
+  --page-bg-accent: #2d1b69;
+  --page-fg: #f0e6ff;
+  --page-muted: #c4a8e8;
+  --page-accent: #ff71ce;
+  --page-on-accent: #1a0a2e;
+  --page-card: #241447;
+  --page-border: #5b3a9e;
+  --page-shadow: rgb(255 113 206 / 0.15);
+  --page-success: #01cdfe;
+  --page-success-border: #017a96;
+  --page-warning: #fcee09;
+  --page-warning-border: #8a8200;
+  --page-error: #ff6b6b;
+  --page-error-border: #8b2020;
+  --page-font: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ---- Forest Gump Enterprise Edition ----------------------------------- */
+[data-page-theme='forest-gump-enterprise'] {
+  color-scheme: dark;
+  --page-bg: #0a1a12;
+  --page-bg-accent: #0f2918;
+  --page-fg: #dcfce7;
+  --page-muted: #86b896;
+  --page-accent: #22c55e;
+  --page-on-accent: #052e16;
+  --page-card: #12281c;
+  --page-border: #1e4d32;
+  --page-shadow: rgb(34 197 94 / 0.12);
+  --page-success: #4ade80;
+  --page-success-border: #166534;
+  --page-warning: #fbbf24;
+  --page-warning-border: #78350f;
+  --page-error: #f87171;
+  --page-error-border: #7f1d1d;
+  --page-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---- Bubblegum SaaS Pitch Deck ---------------------------------------- */
+[data-page-theme='bubblegum-saas-pitch'] {
+  color-scheme: light;
+  --page-bg: #fff0f8;
+  --page-bg-accent: #ffe0f0;
+  --page-fg: #4a1942;
+  --page-muted: #9d5c8f;
+  --page-accent: #ff1493;
+  --page-on-accent: #ffffff;
+  --page-card: #ffffff;
+  --page-border: #ffb8e0;
+  --page-shadow: rgb(255 20 147 / 0.1);
+  --page-success: #db2777;
+  --page-success-border: #fbcfe8;
+  --page-warning: #ea580c;
+  --page-warning-border: #fed7aa;
+  --page-error: #dc2626;
+  --page-error-border: #fecaca;
+  --page-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---- Terminal Green Envy ------------------------------------------------ */
+[data-page-theme='terminal-green-envy'] {
+  color-scheme: dark;
+  --page-bg: #0a0f0a;
+  --page-bg-accent: #0f180f;
+  --page-fg: #33ff33;
+  --page-muted: #1faa1f;
+  --page-accent: #00ff00;
+  --page-on-accent: #0a0f0a;
+  --page-card: #0d140d;
+  --page-border: #1a661a;
+  --page-shadow: rgb(0 255 0 / 0.08);
+  --page-success: #66ff66;
+  --page-success-border: #1a661a;
+  --page-warning: #ccff00;
+  --page-warning-border: #666600;
+  --page-error: #ff3333;
+  --page-error-border: #661111;
+  --page-font: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* ---- Sunset LinkedIn Thought Leadership --------------------------------- */
+[data-page-theme='sunset-linkedin-post'] {
+  color-scheme: light;
+  --page-bg: #fff7ed;
+  --page-bg-accent: #ffedd5;
+  --page-fg: #431407;
+  --page-muted: #9a3412;
+  --page-accent: #ea580c;
+  --page-on-accent: #ffffff;
+  --page-card: #ffffff;
+  --page-border: #fdba74;
+  --page-shadow: rgb(234 88 12 / 0.1);
+  --page-success: #15803d;
+  --page-success-border: #bbf7d0;
+  --page-warning: #ca8a04;
+  --page-warning-border: #fef08a;
+  --page-error: #b91c1c;
+  --page-error-border: #fecaca;
+  --page-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---- Coffee Shop Minimalist (No WiFi) ----------------------------------- */
+[data-page-theme='coffee-shop-minimalist'] {
+  color-scheme: light;
+  --page-bg: #f5f0e8;
+  --page-bg-accent: #ebe4d8;
+  --page-fg: #3d3429;
+  --page-muted: #8b7355;
+  --page-accent: #6b5344;
+  --page-on-accent: #faf8f5;
+  --page-card: #faf8f5;
+  --page-border: #d4c8b8;
+  --page-shadow: rgb(61 52 41 / 0.06);
+  --page-success: #5c6b4a;
+  --page-success-border: #c8d4b8;
+  --page-warning: #a67c52;
+  --page-warning-border: #e8d4bc;
+  --page-error: #8b4513;
+  --page-error-border: #e8c4a8;
+  --page-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---- Discord Mod at 3am ------------------------------------------------- */
+[data-page-theme='discord-mod-at-3am'] {
+  color-scheme: dark;
+  --page-bg: #36393f;
+  --page-bg-accent: #2f3136;
+  --page-fg: #dcddde;
+  --page-muted: #b9bbbe;
+  --page-accent: #5865f2;
+  --page-on-accent: #ffffff;
+  --page-card: #40444b;
+  --page-border: #4f545c;
+  --page-shadow: rgb(0 0 0 / 0.25);
+  --page-success: #3ba55d;
+  --page-success-border: #2d7d46;
+  --page-warning: #faa81a;
+  --page-warning-border: #8a5a00;
+  --page-error: #ed4245;
+  --page-error-border: #8b2020;
+  --page-font: 'gg sans', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ---- Government Portal Chic --------------------------------------------- */
+[data-page-theme='government-portal-chic'] {
+  color-scheme: light;
+  --page-bg: #dee2e6;
+  --page-bg-accent: #d0d4d8;
+  --page-fg: #0b0c0c;
+  --page-muted: #505a5f;
+  --page-accent: #003078;
+  --page-on-accent: #ffffff;
+  --page-card: #ffffff;
+  --page-border: #b1b4b6;
+  --page-shadow: rgb(11 12 12 / 0.08);
+  --page-success: #00703c;
+  --page-success-border: #b8e0c8;
+  --page-warning: #ffdd00;
+  --page-warning-border: #8a8200;
+  --page-error: #d4351c;
+  --page-error-border: #f0b8b0;
+  --page-font: Arial, Helvetica, sans-serif;
+}
+
+/* ---- High-Contrast Parental Controls ------------------------------------ */
+[data-page-theme='high-contrast-parental-controls'] {
+  color-scheme: dark;
+  --page-bg: #000000;
+  --page-bg-accent: #111111;
+  --page-fg: #ffffff;
+  --page-muted: #ffff00;
+  --page-accent: #ffff00;
+  --page-on-accent: #000000;
+  --page-card: #000000;
+  --page-border: #ffffff;
+  --page-shadow: rgb(255 255 0 / 0.2);
+  --page-success: #00ff00;
+  --page-success-border: #ffffff;
+  --page-warning: #ff9900;
+  --page-warning-border: #ffffff;
+  --page-error: #ff0000;
+  --page-error-border: #ffffff;
+  --page-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
