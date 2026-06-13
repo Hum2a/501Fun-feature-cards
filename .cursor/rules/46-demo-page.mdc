@@ -10,14 +10,16 @@ alwaysApply: false
 
 - `demo/index.html` — semantic sections only; no inline styles. Each mode gets
   a numbered `.block` with `aria-labelledby` pointing at its `<h2>`.
-- `demo/demo.css` — all page chrome. Component appearance stays in Shadow DOM
-  (`src/styles.ts`); do not style `.card` / shadow internals from the demo.
+- `demo/demo.css` — layout and structure for page chrome; colours come from
+  `demo/themes/page-themes.css` via `--page-*` tokens (see rule 47).
 - `demo/main.ts` — wiring only (CMS endpoint, playground, resize readout,
   event logging). No DOM templating.
 
 ## Required UX affordances
 
 - **Skip link** to `#main-content` as the first focusable element.
+- **Theme picker** (`#page-theme-select`, `#page-theme-hint`) in `.theme-bar`;
+  wired by `initPageThemes()` — persists to `localStorage` (`fc-page-theme`).
 - **CMS status pill** (`#cms-status`, `role="status"`, `aria-live="polite"`)
   updated on `featurecards:ready` / `featurecards:error`.
 - **Playground** (`#playground`) drives `#playground-instance` via CSS custom

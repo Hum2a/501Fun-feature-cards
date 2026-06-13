@@ -1,0 +1,78 @@
+---
+description: Demo page theme infrastructure — mandatory token layer for all page chrome
+globs: demo/**,src/styles.ts
+alwaysApply: false
+---
+
+# Page theme infrastructure
+
+The demo app uses a **token-first page theme system**. Every page surface
+(colours, borders, shadows, status states, typography) flows through
+`--page-*` custom properties — never hard-coded hex/rgb in HTML, TS, or
+component markup.
+
+## Source of truth
+
+| Layer | Role |
+| --- | --- |
+| `demo/themes/page-theme-tokens.ts` | Theme ids, parody names, metadata, apply/resolve helpers |
+| `demo/themes/page-themes.css` | **All colour values** — one `[data-page-theme='…']` block per theme |
+| `demo/themes/page-theme-controller.ts` | Picker wiring, `localStorage`, `data-page-theme` on `<html>` |
+| `demo/demo.css` | Layout/structure only — **must** reference `--page-*`, not literals |
+
+Component Shadow DOM (`src/styles.ts`) may **fall back** to page tokens for
+un-themed cards:
+
+```css
+--fc-fg: var(--page-fg, light-dark(…));
+```
+
+Per-card `data-theme` / `theme` attributes still override card accents.
+
+## Required `--page-*` tokens (every theme block)
+
+Every `[data-page-theme]` block in `page-themes.css` **must** define the
+full set:
+
+- `--page-bg`, `--page-bg-accent`
+- `--page-fg`, `--page-muted`, `--page-accent`, `--page-on-accent`
+- `--page-card`, `--page-border`, `--page-shadow`
+- `--page-success`, `--page-success-border`
+- `--page-warning`, `--page-warning-border`
+- `--page-error`, `--page-error-border`
+- `--page-font`
+- `color-scheme: light | dark`
+
+Use semantic status tokens for pills, validation output, and alerts —
+**not** inline `light-dark()` per component.
+
+## Adding a new theme
+
+1. Add a `PageThemeId` + `PAGE_THEMES` entry in `page-theme-tokens.ts`
+   (parody name required — even “normal” light/dark get joke names).
+2. Add a complete token block in `page-themes.css`.
+3. Options appear via `page-theme-controller.ts` (dynamic from registry).
+4. Do **not** add colours anywhere else.
+
+## Adding new demo UI
+
+When creating sections, controls, or chrome:
+
+1. Style with existing `--page-*` tokens only.
+2. If a new semantic role is needed (e.g. `--page-info`), add it to **every**
+   theme block in `page-themes.css` first, document it here, then use it in
+   `demo.css`.
+3. Never use `light-dark()` in `demo.css` — themes own light vs dark.
+4. Never set `background`, `color`, or `border-color` literals on demo classes.
+
+## Theme activation
+
+- `<html data-page-theme="…">` set by `applyPageTheme()` / inline FOUC guard.
+- Persisted under `fc-page-theme` in `localStorage`.
+- System default: `corporate-daydream` (light) / `pager-duty-noir` (dark).
+
+## Do not
+
+- Bypass the registry with one-off `<style>` blocks or inline styles.
+- Put page theme colours in `demo/main.ts` (TS handles ids only, not colours).
+- Style shadow internals from the demo — page tokens cascade via `:host` fallbacks only.
