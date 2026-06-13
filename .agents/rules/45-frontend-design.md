@@ -36,12 +36,11 @@ alwaysApply: false
 
 ## Interaction & motion
 
-- Wrap all transforms/transitions in
-  `@media (prefers-reduced-motion: no-preference)`.
-- Hover: subtle lift + shadow on cards; CTA arrow nudge. Active: lighter press
-  state. Always pair with `:focus-visible` rings (`3px solid`, 2px offset).
-- Demo controls (sliders, buttons, links) get the same focus treatment as
-  cards.
+See **`.cursor/rules/48-page-motion.mdc`** — every new element needs enter,
+hover/focus, and state-change motion. Wrap decorative transforms in
+`@media (prefers-reduced-motion: no-preference)`; disable under `reduce`.
+Demo tokens: `demo/motion/page-motion.css`. Component tokens: `--fc-transition`
+in `src/styles.ts`.
 
 ## UX patterns
 
