@@ -54,6 +54,7 @@ schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
 | `npm run rules:sync:check` | Fail if agent rule mirrors are stale (CI) |
 | `npm run docs:api` | Generate TypeDoc reference under `docs/api/` |
 | `npm run cem` | Regenerate `custom-elements.json` (runs in `build:lib`) |
+| `npm run cem:check` | Fail if CEM manifest drifted from the generator |
 | `npm run sri` | Print SRI hash for the IIFE bundle |
 | `npm run validate:cms` | Smoke-validate a CMS JSON endpoint |
 
@@ -82,6 +83,7 @@ Do not edit the mirrored `.md` files directly — they are regenerated.
 - New public behaviour has unit tests; rendered-markup changes keep axe at
   zero violations and update visual baselines intentionally.
 - Public API changes are reflected in README's API table and JSDoc.
+- Demo page UI changes follow rules 47 (page themes) and 48 (page motion).
 - The licence header is present on any new source file.
 - No new runtime dependencies.
 
@@ -90,11 +92,15 @@ Do not edit the mirrored `.md` files directly — they are regenerated.
 - `src/` — the element (`feature-cards.ts`), styles, schema, adapters,
   watermark, imperative API (`create-feature-cards.ts`), errors
   (`errors.ts`), optional React wrapper (`react/`).
-- `demo/` — the example landing page served by Vite (includes schema playground).
+- `demo/` — the example landing page served by Vite (schema playground,
+  `themes/` page-theme tokens + picker, `motion/` scroll/transition layer).
 - `worker/` — mock Cloudflare Worker CMS endpoint (`/api/cards`, `/openapi.json`).
 - `tests/` — `unit/`, `contracts/`, `bench/`, `browser/`, `a11y/`, `e2e/`, `visual/`.
 - `scripts/` — Node utility scripts (size, doctor, canary, banner, stats…).
-- `docs/adr/` — Architecture Decision Records: the methodology record.
+- `docs/adr/` — Architecture Decision Records (0001–0006).
 - `docs/cookbook/` — CMS integration walkthroughs.
 - `docs/openapi/` — OpenAPI schema for the mock CMS Worker.
+- `docs/BRANCHING.md` — branch and release workflow.
+- `docs/DEPENDENCY-UPGRADES.md` — deferred major dependency upgrades.
 - `custom-elements.json` — Custom Elements Manifest (CEM).
+- `.cursor/rules/47-page-themes.mdc`, `48-page-motion.mdc` — demo UI conventions.

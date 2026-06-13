@@ -7,7 +7,10 @@
     "license": { "name": "AGPL-3.0-only" }
   },
   "servers": [
-    { "url": "https://cms.501fun.humza-butt.space", "description": "Production mock CMS" },
+    {
+      "url": "https://cms.501fun.humza-butt.space",
+      "description": "Production mock CMS"
+    },
     { "url": "http://localhost:8787", "description": "Local wrangler dev" }
   ],
   "paths": {

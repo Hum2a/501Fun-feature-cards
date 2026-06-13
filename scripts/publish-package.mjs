@@ -60,7 +60,9 @@ if (!tag) {
 
 const isPrerelease = /^v\d+\.\d+\.\d+-/.test(tag);
 const tagMatchesVersion =
-  tag === expectedStableTag || tag === `v${version}` || tag.startsWith(`${expectedStableTag}-`);
+  tag === expectedStableTag ||
+  tag === `v${version}` ||
+  tag.startsWith(`${expectedStableTag}-`);
 
 if (!tagMatchesVersion) {
   console.error(
@@ -76,7 +78,9 @@ if (isPrerelease && !allowPrerelease) {
   process.exit(1);
 }
 
-console.log(`Publishing ${pkg.name}@${version} (tag: ${tag})${dryRun ? ' [dry-run]' : ''}…\n`);
+console.log(
+  `Publishing ${pkg.name}@${version} (tag: ${tag})${dryRun ? ' [dry-run]' : ''}…\n`,
+);
 
 run('npm run build:lib');
 

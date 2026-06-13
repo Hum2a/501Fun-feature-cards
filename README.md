@@ -1,11 +1,11 @@
 # `<feature-cards>`
 
-[![CI](https://github.com/humza/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/humza/feature-cards/actions/workflows/ci.yml)
+[![CI](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~22%20KiB-brightgreen.svg)](scripts/size.mjs)
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
-**Package version:** `1.0.1`
+**Package version:** `1.2.0`
 
 **Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)
 
@@ -178,6 +178,18 @@ The mock CMS Worker exposes an OpenAPI description at
 [`/openapi.json`](https://cms.501fun.humza-butt.space/openapi.json)
 (source: [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json)).
 
+## Demo page themes and motion
+
+The live demo includes a **Vibe check** theme picker with twelve parody-named
+page themes (Corporate Daydream™, Pager Duty Noir, …). Themes swap via
+`--page-*` CSS custom properties with an animated crossfade; the choice
+persists in `localStorage` (`fc-page-theme`).
+
+Scroll reveals, hero stagger, schema validation flashes, and component
+enter/hover animations live in `demo/motion/`. Both layers honour
+`prefers-reduced-motion`. See `.cursor/rules/47-page-themes.mdc` and
+`48-page-motion.mdc` for contributor rules.
+
 ## Accessibility
 
 Semantic section/heading/list/link structure, configurable heading levels,
@@ -215,7 +227,7 @@ npm run validate:cms -- https://cms.501fun.humza-butt.space/api/cards
 | --- | --- |
 | [`custom-elements.json`](custom-elements.json) | Custom Elements Manifest — VS Code / IDE autocomplete |
 | [`.vscode/html-custom-data.json`](.vscode/html-custom-data.json) | VS Code HTML tag hints for `<feature-cards>` |
-| [`docs/api/`](docs/api/) | Generated TypeDoc reference — run `npm run docs:api` |
+| [`docs/api/`](docs/api/) | Generated TypeDoc reference — run `npm run docs:api` (CI uploads artifacts; not hosted separately yet) |
 | [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json) | CMS Worker OpenAPI schema |
 
 The full script deck (including `stats`, `whoami`, `ship-it`, and other
@@ -239,7 +251,7 @@ Stable `v*.*.*` tags pushed to GitHub trigger CI to publish
 **Production:** [https://501fun.humza-butt.space](https://501fun.humza-butt.space)
 
 The demo (Pages) and mock CMS (Worker on `cms.501fun.humza-butt.space`) deploy from CI on
-push to `main`. Host settings live in [`config/site.json`](config/site.json).
+push to `master` (production branch in [`config/site.json`](config/site.json)).
 
 | What | Where |
 | --- | --- |

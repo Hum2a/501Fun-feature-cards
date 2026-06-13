@@ -6,6 +6,8 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-06-13
+
 ### Added
 
 - Imperative `createFeatureCards()` API for non-SPA hosts.
@@ -17,11 +19,27 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 - TypeDoc API reference (`npm run docs:api`).
 - MSW contract tests, fast-check fuzz tests, Web Test Runner browser suite, render benchmark.
 - CI hardening: CodeQL, Lighthouse workflow, WebKit e2e/a11y, post-deploy CMS smoke, npm provenance.
-- Scripts: `validate:cms`, `sri`, `cem`, `rules:sync:check`.
+- Scripts: `validate:cms`, `sri`, `cem`, `cem:check`, `rules:sync:check`.
+- Demo page theme system: twelve parody-named themes, animated crossfade picker,
+  `localStorage` persistence, and FOUC guard in `index.html`.
+- Demo page motion layer: scroll reveals, theme flash, schema/resize pulses; component
+  enter/hover animations in `src/styles.ts`.
+- Cursor rules 47 (page themes) and 48 (page motion).
+- ADR-0006 documenting demo theme and motion infrastructure.
+- Housekeeping docs: branching strategy, dependency upgrade plan.
+- E2E coverage for theme picker persistence and page reduced-motion chrome.
+- Unit tests for page theme tokens, motion helpers, and the React wrapper.
 
 ### Changed
 
 - Visual regression baselines are pinned to Chromium; WebKit skips visual tests.
+- CI runs MSW contract tests, Prettier format check, browser suite, CEM drift check,
+  and uploads TypeDoc artifacts; redundant WebKit-only job removed.
+- Lighthouse workflow falls back to `pages.dev` when the production origin is unreachable.
+- Post-deploy smoke validates CMS JSON and canary markers without swallowing failures.
+- README documents the vibe picker, motion layer, and `master` as the production branch.
+- Cookbook CDN examples pin `@humza/feature-cards@1.2`.
+- Node toolchain pinned to 22.13+ via `.nvmrc`.
 
 ## [1.0.1] - 2026-06-12
 
@@ -54,9 +72,8 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 - CI/CD: GitHub Actions for checks, Cloudflare Pages/Worker deployment,
   tag-based npm releases via `scripts/release.sh`.
 
-[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.0.1...HEAD
-[1.0.0]: https://github.com/humza/feature-cards/releases/tag/v1.0.0
-
-[0.0.1]: https://github.com/Hum2a/feature-cards/compare/v0.0.0...v0.0.1
-
+[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Hum2a/feature-cards/compare/v1.0.1...v1.2.0
 [1.0.1]: https://github.com/Hum2a/feature-cards/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/Hum2a/feature-cards/releases/tag/v1.0.0
+[0.0.1]: https://github.com/Hum2a/feature-cards/compare/v0.0.0...v0.0.1

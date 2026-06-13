@@ -12,17 +12,20 @@
       name="description"
       content="Demo of <feature-cards>: a CMS-agnostic, accessible, responsive Web Component."
     />
-    <meta name="fc-cms-endpoint" content="https://cms.501fun.humza-butt.space/api/cards" />
+    <meta
+      name="fc-cms-endpoint"
+      content="https://cms.501fun.humza-butt.space/api/cards"
+    />
     <title>&lt;feature-cards&gt; — CMS-agnostic feature cards Web Component</title>
     <script>
+      /* FOUC guard — KEY, LIGHT, and DARK must stay in sync with demo/themes/page-theme-tokens.ts */
       (function () {
         var KEY = 'fc-page-theme';
         var LIGHT = 'corporate-daydream';
         var DARK = 'pager-duty-noir';
         var stored = localStorage.getItem(KEY);
         var theme =
-          stored ||
-          (matchMedia('(prefers-color-scheme: dark)').matches ? DARK : LIGHT);
+          stored || (matchMedia('(prefers-color-scheme: dark)').matches ? DARK : LIGHT);
         document.documentElement.dataset.pageTheme = theme;
       })();
     </script>
@@ -38,7 +41,11 @@
     <div class="theme-bar" role="region" aria-label="Page vibe">
       <label for="page-theme-select">Vibe check</label>
       <div class="theme-picker">
-        <select id="page-theme-select" name="page-theme" aria-describedby="page-theme-hint">
+        <select
+          id="page-theme-select"
+          name="page-theme"
+          aria-describedby="page-theme-hint"
+        >
           <option value="corporate-daydream">Corporate Daydream™</option>
         </select>
       </div>
@@ -203,8 +210,8 @@
       <section class="block motion-reveal" aria-labelledby="playground-title">
         <h2 id="playground-title">Theming playground</h2>
         <p class="block-note">
-          Theming is just CSS custom properties — tweak the controls and watch the
-          preview cards restyle live. No internals touched.
+          Theming is just CSS custom properties — tweak the controls and watch the preview
+          cards restyle live. No internals touched.
         </p>
         <form class="playground" id="playground">
           <label>
@@ -278,9 +285,19 @@
         </p>
         <div class="schema-playground">
           <label class="schema-editor" for="schema-input">Canonical JSON</label>
-          <textarea id="schema-input" spellcheck="false" aria-describedby="schema-validation"></textarea>
-          <pre id="schema-validation" role="status" aria-live="polite">Waiting for input…</pre>
-          <feature-cards id="schema-instance" heading="Schema preview" heading-level="3"></feature-cards>
+          <textarea
+            id="schema-input"
+            spellcheck="false"
+            aria-describedby="schema-validation"
+          ></textarea>
+          <pre id="schema-validation" role="status" aria-live="polite">
+Waiting for input…</pre
+          >
+          <feature-cards
+            id="schema-instance"
+            heading="Schema preview"
+            heading-level="3"
+          ></feature-cards>
         </div>
       </section>
 

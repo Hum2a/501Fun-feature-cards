@@ -40,7 +40,10 @@ test.describe('demo instances', () => {
 });
 
 test.describe('keyboard interaction', () => {
-  test('cards are reachable and activatable by keyboard', async ({ page, browserName }) => {
+  test('cards are reachable and activatable by keyboard', async ({
+    page,
+    browserName,
+  }) => {
     await page.goto('/');
     await waitForAllInstances(page);
 
@@ -116,5 +119,42 @@ test.describe('reduced motion', () => {
       return card ? getComputedStyle(card).transitionDuration : null;
     });
     expect(duration).toBe('0s');
+  });
+
+  test('page chrome skips theme animation under prefers-reduced-motion', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+
+    const motionState = await page.evaluate(() => ({
+      motion: document.documentElement.dataset.motion,
+      themeAnimate: document.documentElement.classList.contains('theme-animate'),
+    }));
+
+    expect(motionState.motion).toBe('reduce');
+    expect(motionState.themeAnimate).toBe(false);
+  });
+});
+
+test.describe('page theme picker', () => {
+  test('selected theme persists across reload', async ({ page }) => {
+    await page.goto('/');
+    await waitForAllInstances(page);
+
+    await page.selectOption('#page-theme-select', 'terminal-green-envy');
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-page-theme',
+      'terminal-green-envy',
+    );
+
+    await page.reload();
+    await waitForAllInstances(page);
+
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-page-theme',
+      'terminal-green-envy',
+    );
+    await expect(page.locator('#page-theme-select')).toHaveValue('terminal-green-envy');
   });
 });

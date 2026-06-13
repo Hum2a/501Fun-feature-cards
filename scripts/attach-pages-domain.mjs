@@ -46,7 +46,10 @@ function recordLabel(name) {
 }
 
 async function cfJson(url, init) {
-  const response = await fetch(url, { ...init, headers: { ...headers, ...init?.headers } });
+  const response = await fetch(url, {
+    ...init,
+    headers: { ...headers, ...init?.headers },
+  });
   return response.json();
 }
 
@@ -162,4 +165,6 @@ if (dns.manual) {
   process.exit(dns.ok ? 0 : 0);
 }
 
-console.log(`Pages custom domain should become active once DNS and TLS finish provisioning.`);
+console.log(
+  `Pages custom domain should become active once DNS and TLS finish provisioning.`,
+);

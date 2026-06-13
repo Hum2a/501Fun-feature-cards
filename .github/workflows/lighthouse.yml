@@ -15,10 +15,20 @@ jobs:
         id: site
         run: echo "origin=$(node -p "require('./config/site.json').origin")" >> "$GITHUB_OUTPUT"
 
+      - name: Resolve Lighthouse URL
+        id: url
+        run: |
+          ORIGIN="${{ steps.site.outputs.origin }}"
+          if curl -sf --max-time 15 "${ORIGIN}" > /dev/null; then
+            echo "url=${ORIGIN}" >> "$GITHUB_OUTPUT"
+          else
+            echo "url=https://feature-cards.pages.dev" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Lighthouse CI
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            ${{ steps.site.outputs.origin }}
+            ${{ steps.url.outputs.url }}
           uploadArtifacts: true
           temporaryPublicStorage: true

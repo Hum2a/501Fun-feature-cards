@@ -73,9 +73,7 @@ if (payload.success) {
   process.exit(0);
 }
 
-const message = (payload.errors ?? [])
-  .map((e) => e.message ?? String(e.code))
-  .join('; ');
+const message = (payload.errors ?? []).map((e) => e.message ?? String(e.code)).join('; ');
 
 if (/already|duplicate|exists/i.test(message)) {
   console.log(`Worker domain ${hostname} is already attached — OK.`);

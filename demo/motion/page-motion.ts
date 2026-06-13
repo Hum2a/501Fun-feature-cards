@@ -19,7 +19,10 @@ export function flashThemeTransition(): void {
   }
   const root = document.documentElement;
   root.classList.add('theme-transitioning');
-  window.setTimeout(() => root.classList.remove('theme-transitioning'), THEME_TRANSITION_MS);
+  window.setTimeout(
+    () => root.classList.remove('theme-transitioning'),
+    THEME_TRANSITION_MS,
+  );
 }
 
 /** Pulse the vibe select while its value changes. */

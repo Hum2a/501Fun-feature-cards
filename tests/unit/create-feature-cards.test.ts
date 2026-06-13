@@ -29,7 +29,9 @@ describe('createFeatureCards', () => {
 
   it('throws when the target selector misses', () => {
     defineFeatureCards();
-    expect(() => createFeatureCards({ target: '#missing-host-xyz' })).toThrow(/no element/);
+    expect(() => createFeatureCards({ target: '#missing-host-xyz' })).toThrow(
+      /no element/,
+    );
   });
 
   it('applies attributes and wires event callbacks', async () => {
@@ -74,9 +76,7 @@ describe('createFeatureCards', () => {
     expect(el.getAttribute('columns')).toBe('2');
     expect(el.getAttribute('theme')).toBe('brand-green');
 
-    el.dispatchEvent(
-      new CustomEvent('featurecards:ready', { detail: { count: 1 } }),
-    );
+    el.dispatchEvent(new CustomEvent('featurecards:ready', { detail: { count: 1 } }));
     el.dispatchEvent(
       new CustomEvent('featurecards:error', {
         detail: {
@@ -93,9 +93,7 @@ describe('createFeatureCards', () => {
 
     expect(ready).toHaveBeenCalledWith({ count: 1 });
     expect(error).toHaveBeenCalled();
-    expect(click).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'b' }),
-    );
+    expect(click).toHaveBeenCalledWith(expect.objectContaining({ id: 'b' }));
 
     host.remove();
   });

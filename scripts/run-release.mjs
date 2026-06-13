@@ -20,10 +20,12 @@ function findBash() {
   const candidates =
     process.platform === 'win32'
       ? [
-          process.env.PROGRAMFILES && join(process.env.PROGRAMFILES, 'Git', 'bin', 'bash.exe'),
+          process.env.PROGRAMFILES &&
+            join(process.env.PROGRAMFILES, 'Git', 'bin', 'bash.exe'),
           process.env['ProgramFiles(x86)'] &&
             join(process.env['ProgramFiles(x86)'], 'Git', 'bin', 'bash.exe'),
-          process.env.LOCALAPPDATA && join(process.env.LOCALAPPDATA, 'Programs', 'Git', 'bin', 'bash.exe'),
+          process.env.LOCALAPPDATA &&
+            join(process.env.LOCALAPPDATA, 'Programs', 'Git', 'bin', 'bash.exe'),
           'bash.exe',
           'bash',
         ].filter(Boolean)

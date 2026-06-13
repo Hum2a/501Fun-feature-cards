@@ -210,32 +210,32 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .theme-bar {
-    animation: page-slide-down var(--page-motion-duration-reveal) var(--page-motion-ease-out)
-      backwards;
+    animation: page-slide-down var(--page-motion-duration-reveal)
+      var(--page-motion-ease-out) backwards;
     animation-delay: 80ms;
   }
 
   .hero-eyebrow {
-    animation: page-fade-rise var(--page-motion-duration-reveal) var(--page-motion-ease-out)
-      backwards;
+    animation: page-fade-rise var(--page-motion-duration-reveal)
+      var(--page-motion-ease-out) backwards;
     animation-delay: 140ms;
   }
 
   .hero h1 {
-    animation: page-fade-rise var(--page-motion-duration-reveal) var(--page-motion-ease-out)
-      backwards;
+    animation: page-fade-rise var(--page-motion-duration-reveal)
+      var(--page-motion-ease-out) backwards;
     animation-delay: 220ms;
   }
 
   .hero-sub {
-    animation: page-fade-rise var(--page-motion-duration-reveal) var(--page-motion-ease-out)
-      backwards;
+    animation: page-fade-rise var(--page-motion-duration-reveal)
+      var(--page-motion-ease-out) backwards;
     animation-delay: 300ms;
   }
 
   .hero-badges span {
-    animation: page-scale-in var(--page-motion-duration-slow) var(--page-motion-ease-spring)
-      backwards;
+    animation: page-scale-in var(--page-motion-duration-slow)
+      var(--page-motion-ease-spring) backwards;
   }
 
   .hero-badges span:nth-child(1) {
@@ -269,18 +269,19 @@
   }
 
   .motion-reveal.is-revealed {
-    animation: page-fade-rise var(--page-motion-duration-reveal) var(--page-motion-ease-out)
-      forwards;
+    animation: page-fade-rise var(--page-motion-duration-reveal)
+      var(--page-motion-ease-out) forwards;
   }
 
   .motion-reveal.is-revealed .block > h2::after {
-    animation: page-underline-grow var(--page-motion-duration-slow) var(--page-motion-ease-out)
-      forwards;
+    animation: page-underline-grow var(--page-motion-duration-slow)
+      var(--page-motion-ease-out) forwards;
     animation-delay: calc(var(--page-motion-stagger) * 2);
   }
 
   .motion-reveal.is-revealed .block-note {
-    animation: page-fade-in var(--page-motion-duration-base) var(--page-motion-ease-out) forwards;
+    animation: page-fade-in var(--page-motion-duration-base) var(--page-motion-ease-out)
+      forwards;
     animation-delay: var(--page-motion-stagger);
   }
 }
@@ -429,7 +430,8 @@
 @media (prefers-reduced-motion: no-preference) {
   .cms-status[data-state='ready'],
   .cms-status[data-state='fallback'] {
-    animation: page-success-pop var(--page-motion-duration-slow) var(--page-motion-ease-spring);
+    animation: page-success-pop var(--page-motion-duration-slow)
+      var(--page-motion-ease-spring);
   }
 }
 
@@ -539,7 +541,8 @@
   }
 
   #schema-validation[data-state='ok'].motion-flash-ok {
-    animation: page-success-pop var(--page-motion-duration-slow) var(--page-motion-ease-spring);
+    animation: page-success-pop var(--page-motion-duration-slow)
+      var(--page-motion-ease-spring);
   }
 }
 
@@ -549,7 +552,8 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .resize-readout.motion-tick {
-    animation: page-resize-tick var(--page-motion-duration-base) var(--page-motion-ease-out);
+    animation: page-resize-tick var(--page-motion-duration-base)
+      var(--page-motion-ease-out);
   }
 }
 

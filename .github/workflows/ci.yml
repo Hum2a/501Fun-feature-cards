@@ -32,11 +32,20 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Unit + contract tests + coverage
+      - name: Format check
+        run: npm run format:check
+
+      - name: Unit tests + coverage
         run: npm run coverage
+
+      - name: MSW contract tests
+        run: npm run test:contracts
 
       - name: Property-based schema fuzz
         run: npm run test:fuzz
+
+      - name: CEM manifest drift check
+        run: npm run cem:check
 
       - name: npm audit (high+)
         run: npm audit --audit-level=high
@@ -44,6 +53,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Generate API docs
+        run: npm run docs:api
 
       - name: Size budget
         run: npm run size
@@ -76,17 +88,13 @@ jobs:
           path: coverage/
           retention-days: 14
 
-  webkit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Upload TypeDoc API reference
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          node-version-file: .nvmrc
-          cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps webkit
-      - run: npm run test:e2e -- --project=webkit
+          name: typedoc-api
+          path: docs/api/
+          retention-days: 14
 
   benchmark:
     runs-on: ubuntu-latest

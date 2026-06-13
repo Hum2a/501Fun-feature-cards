@@ -14,7 +14,11 @@ export default defineConfig({
   },
   test: {
     environment: 'happy-dom',
-    include: ['tests/unit/**/*.test.ts', 'tests/contracts/**/*.test.ts'],
+    include: [
+      'tests/unit/**/*.test.ts',
+      'tests/unit/**/*.test.tsx',
+      'tests/contracts/**/*.test.ts',
+    ],
     environmentMatchGlobs: [['tests/contracts/**', 'node']],
     coverage: {
       provider: 'v8',

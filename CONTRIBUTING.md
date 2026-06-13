@@ -30,8 +30,11 @@ npm run dev      # demo at http://localhost:5173
    the same gate CI runs.
 2. New public behaviour needs unit tests; rendered-markup changes must keep
    `npm run test:a11y` green and update visual baselines intentionally
-   (`npx playwright test tests/visual --update-snapshots`).
-3. Update the README API table and JSDoc for any public API change.
+   (`npx playwright test tests/visual --update-snapshots` on **Chromium** —
+   visual tests skip WebKit).
+3. Demo page UI (theme picker, motion) must follow `.cursor/rules/47-page-themes.mdc`
+   and `48-page-motion.mdc`.
+4. Update the README API table and JSDoc for any public API change.
 
 ## Releasing
 
@@ -60,6 +63,12 @@ npm run release:package:dry   # dry-run only
 Pushing a stable `v*.*.*` tag triggers CI to publish `@humza/feature-cards`
 to npm and create a GitHub Release. Set the `NPM_TOKEN` secret in the repo
 for automated publishes.
+
+Before tagging a release:
+
+1. Run `npm run build:lib` so `custom-elements.json` is current (or `npm run cem:check`).
+2. Run `npm run sri` and update cookbook SRI hashes if the IIFE bundle changed.
+3. Run `npm run check` locally.
 
 Pre-release tags (`--name beta` → `v1.1.0-beta`) create a GitHub
 pre-release but are **not** auto-published to npm unless you run

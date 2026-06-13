@@ -6,10 +6,7 @@
  * This file is part of feature-cards, licensed under the GNU Affero
  * General Public License v3.0 only. See LICENSE for full terms.
  */
-import {
-  defineFeatureCards,
-  type FeatureCardsElement,
-} from './feature-cards.js';
+import { defineFeatureCards, type FeatureCardsElement } from './feature-cards.js';
 import type { AdapterName } from './adapters/index.js';
 import type { Card, FeatureCardsData } from './schema.js';
 import type { FeatureCardsErrorDetail } from './errors.js';
@@ -95,9 +92,7 @@ export function createFeatureCards(
   }
   if (options.onCardClick) {
     el.addEventListener('featurecards:cardclick', (event) => {
-      options.onCardClick?.(
-        (event as CustomEvent<{ id: string; card: Card }>).detail,
-      );
+      options.onCardClick?.((event as CustomEvent<{ id: string; card: Card }>).detail);
     });
   }
 
