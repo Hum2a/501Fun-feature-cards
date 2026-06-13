@@ -1,0 +1,134 @@
+/*!
+ * Interpolates `--page-*` colour tokens when `data-page-theme` changes.
+ * Requires `html.theme-animate` (added after first paint in page-theme-controller).
+ */
+
+@property --page-bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f6f8fb;
+}
+
+@property --page-bg-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e8eef8;
+}
+
+@property --page-fg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #16202b;
+}
+
+@property --page-muted {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #51606f;
+}
+
+@property --page-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #2563eb;
+}
+
+@property --page-on-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --page-card {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --page-border {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e3e8ee;
+}
+
+@property --page-shadow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #0f172a;
+}
+
+@property --page-success {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #047857;
+}
+
+@property --page-success-border {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #a7f3d0;
+}
+
+@property --page-warning {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #b45309;
+}
+
+@property --page-warning-border {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #fde68a;
+}
+
+@property --page-error {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #b91c1c;
+}
+
+@property --page-error-border {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #fecaca;
+}
+
+:root {
+  --page-theme-duration: 720ms;
+  --page-theme-ease: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-animate {
+    transition:
+      --page-bg var(--page-theme-duration) var(--page-theme-ease),
+      --page-bg-accent var(--page-theme-duration) var(--page-theme-ease),
+      --page-fg var(--page-theme-duration) var(--page-theme-ease),
+      --page-muted var(--page-theme-duration) var(--page-theme-ease),
+      --page-accent var(--page-theme-duration) var(--page-theme-ease),
+      --page-on-accent var(--page-theme-duration) var(--page-theme-ease),
+      --page-card var(--page-theme-duration) var(--page-theme-ease),
+      --page-border var(--page-theme-duration) var(--page-theme-ease),
+      --page-shadow var(--page-theme-duration) var(--page-theme-ease),
+      --page-success var(--page-theme-duration) var(--page-theme-ease),
+      --page-success-border var(--page-theme-duration) var(--page-theme-ease),
+      --page-warning var(--page-theme-duration) var(--page-theme-ease),
+      --page-warning-border var(--page-theme-duration) var(--page-theme-ease),
+      --page-error var(--page-theme-duration) var(--page-theme-ease),
+      --page-error-border var(--page-theme-duration) var(--page-theme-ease);
+  }
+
+  html.theme-animate.theme-transitioning {
+    transition-duration: var(--page-theme-duration);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-animate {
+    transition: none;
+  }
+
+  body {
+    transition: none;
+  }
+}

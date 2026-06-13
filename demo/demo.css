@@ -35,6 +35,9 @@ body {
     var(--page-bg);
   color: var(--page-fg);
   line-height: 1.6;
+  transition:
+    color var(--page-theme-duration, 720ms) var(--page-theme-ease, ease),
+    background-color var(--page-theme-duration, 720ms) var(--page-theme-ease, ease);
 }
 
 .skip-link {
@@ -48,7 +51,6 @@ body {
   color: var(--page-on-accent);
   font-weight: 700;
   text-decoration: none;
-  transition: top 160ms ease;
 }
 
 .skip-link:focus {
@@ -74,19 +76,6 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--page-muted);
-}
-
-.theme-bar select {
-  min-width: min(100%, 18rem);
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--page-border);
-  border-radius: 0.5rem;
-  background: var(--page-card);
-  color: var(--page-fg);
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
 }
 
 .theme-bar select:focus-visible {
@@ -149,15 +138,11 @@ body {
   box-shadow: 0 1px 2px var(--page-shadow);
   font-size: 0.82rem;
   font-weight: 600;
-  transition:
-    border-color 160ms ease,
-    transform 160ms ease;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .hero-badges span:hover {
     border-color: color-mix(in srgb, var(--page-accent) 45%, var(--page-border));
-    transform: translateY(-1px);
   }
 }
 
@@ -345,9 +330,6 @@ main {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    background 160ms ease,
-    border-color 160ms ease;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -456,7 +438,6 @@ main {
   color: var(--page-accent);
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.18em;
-  transition: color 160ms ease;
 }
 
 .footer a:hover {
@@ -486,9 +467,6 @@ feature-cards:not(:defined) a {
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 1px 3px var(--page-shadow);
-  transition:
-    border-color 160ms ease,
-    transform 160ms ease;
 }
 
 feature-cards:not(:defined) a:focus-visible {
@@ -499,7 +477,6 @@ feature-cards:not(:defined) a:focus-visible {
 @media (prefers-reduced-motion: no-preference) {
   feature-cards:not(:defined) a:hover {
     border-color: color-mix(in srgb, var(--page-accent) 45%, var(--page-border));
-    transform: translateY(-1px);
   }
 }
 

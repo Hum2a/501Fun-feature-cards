@@ -15,4 +15,4 @@ globs: src/styles.ts
   attribute only caps the track count.
 - Fluid type via `clamp()`.
 - All motion is wrapped in `@media (prefers-reduced-motion: no-preference)`
-  or disabled under `reduce`.
+  or disabled under `reduce`. See `.cursor/rules/48-page-motion.mdc`.

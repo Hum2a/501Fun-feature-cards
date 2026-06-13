@@ -9,6 +9,11 @@
 import '@src/index.js';
 import { safeParseFeatureCardsData } from '@src/schema.js';
 import { initPageThemes } from './themes/page-theme-controller.js';
+import {
+  flashSchemaValidation,
+  initPageMotion,
+  pulseResizeReadout,
+} from './motion/page-motion.js';
 
 const LOCAL_CMS =
   import.meta.env.VITE_FC_CMS_ENDPOINT ?? 'http://localhost:8787/api/cards';
@@ -138,6 +143,7 @@ function wireResizable(): void {
   const update = (): void => {
     const width = Math.round(box.getBoundingClientRect().width);
     readout.textContent = `Container width: ${width}px`;
+    pulseResizeReadout(readout);
   };
 
   update();
@@ -182,14 +188,17 @@ function wireSchemaPlayground(): void {
         output.textContent = result.issues
           .map((issue) => `${issue.path || '(root)'}: ${issue.message}`)
           .join('\n');
+        flashSchemaValidation(output, 'error');
         return;
       }
       output.dataset.state = 'ok';
       output.textContent = `Valid — ${result.data.cards.length} card(s)`;
       instance.data = result.data;
+      flashSchemaValidation(output, 'ok');
     } catch (error) {
       output.dataset.state = 'error';
       output.textContent = error instanceof Error ? error.message : String(error);
+      flashSchemaValidation(output, 'error');
     }
   };
 
@@ -222,6 +231,7 @@ function shortenUrl(url: string): string {
 
 wireCmsInstance();
 initPageThemes();
+initPageMotion();
 wirePlayground();
 wireSchemaPlayground();
 wireResizable();

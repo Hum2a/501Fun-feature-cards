@@ -13,13 +13,16 @@ alwaysApply: false
 - `demo/demo.css` — layout and structure for page chrome; colours come from
   `demo/themes/page-themes.css` via `--page-*` tokens (see rule 47).
 - `demo/main.ts` — wiring only (CMS endpoint, playground, resize readout,
-  event logging). No DOM templating.
+  event logging, motion). No DOM templating.
+- `demo/motion/` — page motion tokens, keyframes, scroll reveal (rule 48).
 
 ## Required UX affordances
 
 - **Skip link** to `#main-content` as the first focusable element.
 - **Theme picker** (`#page-theme-select`, `#page-theme-hint`) in `.theme-bar`;
   wired by `initPageThemes()` — persists to `localStorage` (`fc-page-theme`).
+- **Scroll reveal** — every `.block` uses `motion-reveal`; `initPageMotion()`
+  in `main.ts` adds `is-revealed` via `IntersectionObserver`.
 - **CMS status pill** (`#cms-status`, `role="status"`, `aria-live="polite"`)
   updated on `featurecards:ready` / `featurecards:error`.
 - **Playground** (`#playground`) drives `#playground-instance` via CSS custom

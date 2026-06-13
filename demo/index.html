@@ -27,7 +27,9 @@
       })();
     </script>
     <link rel="stylesheet" href="/themes/page-themes.css" />
+    <link rel="stylesheet" href="/themes/page-theme-transitions.css" />
     <link rel="stylesheet" href="/demo.css" />
+    <link rel="stylesheet" href="/motion/page-motion.css" />
     <script type="module" src="/main.ts"></script>
   </head>
   <body>
@@ -35,9 +37,11 @@
 
     <div class="theme-bar" role="region" aria-label="Page vibe">
       <label for="page-theme-select">Vibe check</label>
-      <select id="page-theme-select" name="page-theme" aria-describedby="page-theme-hint">
-        <option value="corporate-daydream">Corporate Daydream™</option>
-      </select>
+      <div class="theme-picker">
+        <select id="page-theme-select" name="page-theme" aria-describedby="page-theme-hint">
+          <option value="corporate-daydream">Corporate Daydream™</option>
+        </select>
+      </div>
       <p id="page-theme-hint">Pick a parody theme — tokens only, no shortcuts.</p>
     </div>
 
@@ -58,7 +62,7 @@
     </header>
 
     <main id="main-content">
-      <section class="block" aria-labelledby="mode-1-title">
+      <section class="block motion-reveal" aria-labelledby="mode-1-title">
         <h2 id="mode-1-title">1 · Declarative inline JSON</h2>
         <p class="block-note">
           The three original 501-style coloured cards, authored as a JSON child of the
@@ -114,7 +118,7 @@
         </feature-cards>
       </section>
 
-      <section class="block" aria-labelledby="mode-2-title">
+      <section class="block motion-reveal" aria-labelledby="mode-2-title">
         <h2 id="mode-2-title">2 · Progressive enhancement</h2>
         <p class="block-note">
           Plain light-DOM links that work with JavaScript disabled — the component
@@ -155,7 +159,7 @@
         </feature-cards>
       </section>
 
-      <section class="block" aria-labelledby="mode-3-title">
+      <section class="block motion-reveal" aria-labelledby="mode-3-title">
         <h2 id="mode-3-title">3 · Fetched from a headless CMS</h2>
         <p class="block-note">
           This instance fetches JSON over HTTP — locally from the mock Cloudflare Worker
@@ -174,7 +178,7 @@
         ></feature-cards>
       </section>
 
-      <section class="block" aria-labelledby="before-after-title">
+      <section class="block motion-reveal" aria-labelledby="before-after-title">
         <h2 id="before-after-title">Before / after</h2>
         <div class="before-after">
           <div>
@@ -196,7 +200,7 @@
         </div>
       </section>
 
-      <section class="block" aria-labelledby="playground-title">
+      <section class="block motion-reveal" aria-labelledby="playground-title">
         <h2 id="playground-title">Theming playground</h2>
         <p class="block-note">
           Theming is just CSS custom properties — tweak the controls and watch the
@@ -265,7 +269,7 @@
         </feature-cards>
       </section>
 
-      <section class="block" aria-labelledby="schema-playground-title">
+      <section class="block motion-reveal" aria-labelledby="schema-playground-title">
         <h2 id="schema-playground-title">Schema playground</h2>
         <p class="block-note">
           Edit canonical JSON below — Zod validates live and the preview re-renders.
@@ -280,7 +284,7 @@
         </div>
       </section>
 
-      <section class="block resize-block" aria-labelledby="resize-title">
+      <section class="block motion-reveal resize-block" aria-labelledby="resize-title">
         <h2 id="resize-title">Container-driven responsiveness</h2>
         <p class="block-note">
           Drag the bottom-right corner — the component responds to its <em>container</em>,
