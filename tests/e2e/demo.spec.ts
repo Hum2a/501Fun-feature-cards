@@ -117,4 +117,19 @@ test.describe('reduced motion', () => {
     });
     expect(duration).toBe('0s');
   });
+
+  test('page chrome skips theme animation under prefers-reduced-motion', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+
+    const motionState = await page.evaluate(() => ({
+      motion: document.documentElement.dataset.motion,
+      themeAnimate: document.documentElement.classList.contains('theme-animate'),
+    }));
+
+    expect(motionState.motion).toBe('reduce');
+    expect(motionState.themeAnimate).toBe(false);
+  });
 });
