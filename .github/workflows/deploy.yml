@@ -73,11 +73,14 @@ jobs:
 
       - name: Post-deploy smoke (production)
         if: github.ref == format('refs/heads/{0}', steps.site.outputs.branch)
-        continue-on-error: true
         run: |
-          node scripts/validate-cms-json.mjs "${{ steps.site.outputs.cms }}"
-          npm run canary:verify -- "${{ steps.site.outputs.origin }}" || \
-            npm run canary:verify -- "https://feature-cards.pages.dev"
+          set -euo pipefail
+          ORIGIN="${{ steps.site.outputs.origin }}"
+          CMS="${{ steps.site.outputs.cms }}"
+          echo "Validating CMS JSON at ${CMS}"
+          node scripts/validate-cms-json.mjs "${CMS}"
+          echo "Canary verify ${ORIGIN}"
+          npm run canary:verify -- "${ORIGIN}" || npm run canary:verify -- "https://feature-cards.pages.dev"
 
       - name: Comment deployment URL on PR
         if: github.event_name == 'pull_request'
