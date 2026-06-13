@@ -1,0 +1,10 @@
+<!--
+  feature-cards favicon  simplified three-card mark
+  Copyright © 2026 Humza Butt. SPDX-License-Identifier: AGPL-3.0-only
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="6" fill="#0a0a0a" />
+  <rect x="3" y="9" width="7" height="16" rx="1.2" fill="#c6f135" transform="rotate(-4 6.5 17)" />
+  <rect x="12.5" y="7" width="7" height="18" rx="1.2" fill="#e91e8c" />
+  <rect x="22" y="10" width="7" height="15" rx="1.2" fill="#29b6f6" transform="rotate(5 25.5 17.5)" />
+</svg>
