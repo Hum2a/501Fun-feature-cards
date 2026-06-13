@@ -30,8 +30,11 @@ npm run dev      # demo at http://localhost:5173
    the same gate CI runs.
 2. New public behaviour needs unit tests; rendered-markup changes must keep
    `npm run test:a11y` green and update visual baselines intentionally
-   (`npx playwright test tests/visual --update-snapshots`).
-3. Update the README API table and JSDoc for any public API change.
+   (`npx playwright test tests/visual --update-snapshots` on **Chromium** —
+   visual tests skip WebKit).
+3. Demo page UI (theme picker, motion) must follow `.cursor/rules/47-page-themes.mdc`
+   and `48-page-motion.mdc`.
+4. Update the README API table and JSDoc for any public API change.
 
 ## Releasing
 
