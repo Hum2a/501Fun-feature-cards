@@ -1,0 +1,21 @@
+<!--
+  feature-cards logo — three 501-style stat cards (horizontal)
+  Copyright © 2026 Humza Butt. SPDX-License-Identifier: AGPL-3.0-only
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 48" fill="none" role="img" aria-labelledby="fc-logo-title">
+  <title id="fc-logo-title">feature-cards</title>
+  <g stroke="#0a0a0a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="rotate(-4 14 28)">
+      <rect x="2" y="10" width="18" height="32" rx="2" fill="#c6f135" />
+      <path d="M6 17h10M6 24h7M6 30h9" />
+    </g>
+    <g transform="rotate(2 40 26)">
+      <rect x="28" y="6" width="18" height="36" rx="2" fill="#e91e8c" />
+      <path d="M32 13h10M32 22h6M32 29h8" />
+    </g>
+    <g transform="rotate(6 66 28)">
+      <rect x="54" y="12" width="18" height="30" rx="2" fill="#29b6f6" />
+      <path d="M58 19h10M58 27h7" />
+    </g>
+  </g>
+</svg>

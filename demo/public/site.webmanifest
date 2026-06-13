@@ -1,0 +1,23 @@
+{
+  "name": "feature-cards — 501 stat card module",
+  "short_name": "feature-cards",
+  "description": "CMS-agnostic, accessible feature cards Web Component demo.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#c6f135",
+  "icons": [
+    {
+      "src": "/brand/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

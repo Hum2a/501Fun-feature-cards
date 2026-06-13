@@ -17,6 +17,12 @@
       content="https://cms.501fun.humza-butt.space/api/cards"
     />
     <title>&lt;feature-cards&gt; — CMS-agnostic feature cards Web Component</title>
+    <link rel="icon" href="/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/brand/mark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/brand/mark.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#c6f135" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
     <script>
       /* FOUC guard — KEY, LIGHT, and DARK must stay in sync with demo/themes/page-theme-tokens.ts */
       (function () {
@@ -41,6 +47,12 @@
       <a class="skip-link" href="#main-content">Skip to demo content</a>
     </nav>
 
+    <nav class="site-nav" aria-label="Site">
+      <a class="site-mark" href="/" aria-label="feature-cards home">
+        <img src="/brand/mark.svg" alt="" width="36" height="36" decoding="async" />
+      </a>
+    </nav>
+
     <div class="theme-bar" role="region" aria-label="Page vibe">
       <label for="page-theme-select">Vibe check</label>
       <div class="theme-picker">
@@ -56,6 +68,14 @@
     </div>
 
     <header class="hero">
+      <img
+        class="hero-logo"
+        src="/brand/logo.svg"
+        alt=""
+        width="160"
+        height="96"
+        decoding="async"
+      />
       <p class="hero-eyebrow">A Web Component, not a widget</p>
       <h1>&lt;feature-cards&gt;</h1>
       <p class="hero-sub">
@@ -548,6 +568,10 @@ Waiting for input…</pre
     </main>
 
     <footer class="footer">
+      <p class="footer-brand">
+        <img src="/brand/mark.svg" alt="" width="28" height="28" decoding="async" />
+        <span>feature-cards</span>
+      </p>
       <p>
         © 2026 Humza Butt · Licensed
         <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL-3.0-only</a>
