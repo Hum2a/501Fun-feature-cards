@@ -178,6 +178,18 @@ The mock CMS Worker exposes an OpenAPI description at
 [`/openapi.json`](https://cms.501fun.humza-butt.space/openapi.json)
 (source: [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json)).
 
+## Demo page themes and motion
+
+The live demo includes a **Vibe check** theme picker with twelve parody-named
+page themes (Corporate Daydream™, Pager Duty Noir, …). Themes swap via
+`--page-*` CSS custom properties with an animated crossfade; the choice
+persists in `localStorage` (`fc-page-theme`).
+
+Scroll reveals, hero stagger, schema validation flashes, and component
+enter/hover animations live in `demo/motion/`. Both layers honour
+`prefers-reduced-motion`. See `.cursor/rules/47-page-themes.mdc` and
+`48-page-motion.mdc` for contributor rules.
+
 ## Accessibility
 
 Semantic section/heading/list/link structure, configurable heading levels,
