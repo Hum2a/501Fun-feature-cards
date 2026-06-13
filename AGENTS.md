@@ -90,11 +90,12 @@ Do not edit the mirrored `.md` files directly — they are regenerated.
 - `src/` — the element (`feature-cards.ts`), styles, schema, adapters,
   watermark, imperative API (`create-feature-cards.ts`), errors
   (`errors.ts`), optional React wrapper (`react/`).
-- `demo/` — the example landing page served by Vite (includes schema playground).
+- `demo/` — the example landing page served by Vite (schema playground,
+  `themes/` page-theme tokens + picker, `motion/` scroll/transition layer).
 - `worker/` — mock Cloudflare Worker CMS endpoint (`/api/cards`, `/openapi.json`).
 - `tests/` — `unit/`, `contracts/`, `bench/`, `browser/`, `a11y/`, `e2e/`, `visual/`.
 - `scripts/` — Node utility scripts (size, doctor, canary, banner, stats…).
-- `docs/adr/` — Architecture Decision Records: the methodology record.
+- `docs/adr/` — Architecture Decision Records (0001–0006).
 - `docs/cookbook/` — CMS integration walkthroughs.
 - `docs/openapi/` — OpenAPI schema for the mock CMS Worker.
 - `custom-elements.json` — Custom Elements Manifest (CEM).
