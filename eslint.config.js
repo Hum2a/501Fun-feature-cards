@@ -20,6 +20,7 @@ export default tseslint.config(
       'node_modules/**',
       '.wrangler/**',
       'worker/.wrangler/**',
+      'docs/api/**',
     ],
   },
   js.configs.recommended,
@@ -50,6 +51,18 @@ export default tseslint.config(
         setInterval: 'readonly',
         clearInterval: 'readonly',
         Buffer: 'readonly',
+      },
+    },
+  },
+  {
+    files: ['tests/browser/**/*.js'],
+    languageOptions: {
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        document: 'readonly',
+        customElements: 'readonly',
+        requestAnimationFrame: 'readonly',
       },
     },
   },

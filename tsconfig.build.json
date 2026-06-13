@@ -7,6 +7,7 @@
     "declarationMap": true,
     "outDir": "dist/types",
     "rootDir": "src",
+    "jsx": "react-jsx",
     "types": []
   },
   "include": ["src"]

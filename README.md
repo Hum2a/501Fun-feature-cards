@@ -65,6 +65,30 @@ el.data = { cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' }
 <feature-cards src="https://cms.example.com/api/cards" adapter="wordpress"></feature-cards>
 ```
 
+**Imperative mount (WordPress themes, static embeds):**
+
+```js
+import { createFeatureCards } from '@humza/feature-cards';
+
+createFeatureCards({
+  target: '#cards-host',
+  src: 'https://cms.example.com/api/cards',
+  adapter: 'wordpress',
+  onReady: ({ count }) => console.log(`Rendered ${count} cards`),
+});
+```
+
+**React (optional peer dependency):**
+
+```tsx
+import { FeatureCards } from '@humza/feature-cards/react';
+
+<FeatureCards
+  data={{ cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' } }] }}
+  onCardClick={({ id }) => console.log(id)}
+/>
+```
+
 ## Public API
 
 ### Attributes
@@ -90,7 +114,7 @@ el.data = { cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' }
 | Event | `detail` | Fired when |
 | --- | --- | --- |
 | `featurecards:ready` | `{ count }` | A render completed |
-| `featurecards:error` | `{ issues: { path, message }[] }` | Data was invalid or fetching failed (the component fails safe — no throw, light DOM preserved) |
+| `featurecards:error` | `{ issues: { path, message }[], problem: ProblemDetail }` | Data was invalid or fetching failed (the component fails safe — no throw, light DOM preserved) |
 | `featurecards:cardclick` | `{ id, card }` | A card was activated |
 
 ### Slots
@@ -147,6 +171,13 @@ payloads into it. Built-ins:
 A new CMS is one small pure function — see `src/adapters/wordpress.ts`
 (~40 lines) and register it in `src/adapters/index.ts`.
 
+Cookbook walkthroughs: [WordPress](docs/cookbook/wordpress.md),
+[Contentful](docs/cookbook/contentful.md), [Sanity](docs/cookbook/sanity.md).
+
+The mock CMS Worker exposes an OpenAPI description at
+[`/openapi.json`](https://cms.501fun.humza-butt.space/openapi.json)
+(source: [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json)).
+
 ## Accessibility
 
 Semantic section/heading/list/link structure, configurable heading levels,
@@ -172,7 +203,20 @@ npm run dev        # demo at http://localhost:5173
 npm run serve:cms  # mock CMS Worker at http://localhost:8787/api/cards
 npm run check      # typecheck + lint + full test chain + size budget
 npm run doctor     # verify your toolchain
+npm run docs:api   # TypeDoc → docs/api/
+npm run cem        # regenerate custom-elements.json (CEM)
+npm run sri        # Subresource-Integrity hash for the IIFE bundle
+npm run validate:cms -- https://cms.501fun.humza-butt.space/api/cards
 ```
+
+### Tooling extras
+
+| Artifact | Purpose |
+| --- | --- |
+| [`custom-elements.json`](custom-elements.json) | Custom Elements Manifest — VS Code / IDE autocomplete |
+| [`.vscode/html-custom-data.json`](.vscode/html-custom-data.json) | VS Code HTML tag hints for `<feature-cards>` |
+| [`docs/api/`](docs/api/) | Generated TypeDoc reference — run `npm run docs:api` |
+| [`docs/openapi/cms-api.json`](docs/openapi/cms-api.json) | CMS Worker OpenAPI schema |
 
 The full script deck (including `stats`, `whoami`, `ship-it`, and other
 indulgences) is in `package.json`.

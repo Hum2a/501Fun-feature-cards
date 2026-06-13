@@ -36,7 +36,11 @@ schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
 | `npm run serve:cms` | Run the mock Cloudflare Worker CMS locally |
 | `npm run typecheck` / `lint` / `format` | Static checks |
 | `npm run test:unit` | Vitest unit tests |
-| `npm run test:a11y` / `test:e2e` / `test:visual` | Playwright suites |
+| `npm run test:fuzz` | fast-check property tests for the schema |
+| `npm run test:contracts` | MSW contract tests for CMS adapters |
+| `npm run test:bench` | Render benchmark (100 cards) |
+| `npm run test:browser` | Web Test Runner (real browser, no Playwright) |
+| `npm run test:a11y` / `test:e2e` / `test:visual` | Playwright suites (visual baselines are Chromium-only) |
 | `npm run test:ci` | Full test chain as CI runs it |
 | `npm run check` | The everything gate: typecheck + lint + tests + size |
 | `npm run size` | Bundle size vs budget |
@@ -48,6 +52,10 @@ schema (`src/schema.ts`); CMS payloads are mapped onto it by small adapters
 | `npm run release:package` | Build, test, and publish to npm (tagged HEAD) |
 | `npm run rules:sync` | Mirror `.cursor/rules/` → `.claude/rules/` and `.agents/rules/` |
 | `npm run rules:sync:check` | Fail if agent rule mirrors are stale (CI) |
+| `npm run docs:api` | Generate TypeDoc reference under `docs/api/` |
+| `npm run cem` | Regenerate `custom-elements.json` (runs in `build:lib`) |
+| `npm run sri` | Print SRI hash for the IIFE bundle |
+| `npm run validate:cms` | Smoke-validate a CMS JSON endpoint |
 
 ## Agent rules
 
@@ -80,9 +88,13 @@ Do not edit the mirrored `.md` files directly — they are regenerated.
 ## Repository map
 
 - `src/` — the element (`feature-cards.ts`), styles, schema, adapters,
-  watermark.
-- `demo/` — the example landing page served by Vite.
-- `worker/` — mock Cloudflare Worker CMS endpoint (`/api/cards`).
-- `tests/` — `unit/`, `a11y/`, `e2e/`, `visual/`.
+  watermark, imperative API (`create-feature-cards.ts`), errors
+  (`errors.ts`), optional React wrapper (`react/`).
+- `demo/` — the example landing page served by Vite (includes schema playground).
+- `worker/` — mock Cloudflare Worker CMS endpoint (`/api/cards`, `/openapi.json`).
+- `tests/` — `unit/`, `contracts/`, `bench/`, `browser/`, `a11y/`, `e2e/`, `visual/`.
 - `scripts/` — Node utility scripts (size, doctor, canary, banner, stats…).
 - `docs/adr/` — Architecture Decision Records: the methodology record.
+- `docs/cookbook/` — CMS integration walkthroughs.
+- `docs/openapi/` — OpenAPI schema for the mock CMS Worker.
+- `custom-elements.json` — Custom Elements Manifest (CEM).

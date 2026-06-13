@@ -1,0 +1,24 @@
+name: Lighthouse
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * 1'
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read site origin
+        id: site
+        run: echo "origin=$(node -p "require('./config/site.json').origin")" >> "$GITHUB_OUTPUT"
+
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            ${{ steps.site.outputs.origin }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true

@@ -31,6 +31,7 @@ jobs:
         id: site
         run: |
           echo "host=$(node -p "require('./config/site.json').host")" >> "$GITHUB_OUTPUT"
+          echo "cms=$(node -p "require('./config/site.json').cmsEndpoint")" >> "$GITHUB_OUTPUT"
           echo "pages=$(node -p "require('./config/site.json').pagesProject")" >> "$GITHUB_OUTPUT"
           echo "origin=$(node -p "require('./config/site.json').origin")" >> "$GITHUB_OUTPUT"
           echo "branch=$(node -p "require('./config/site.json').productionBranch")" >> "$GITHUB_OUTPUT"
@@ -69,6 +70,14 @@ jobs:
         if: github.ref == format('refs/heads/{0}', steps.site.outputs.branch)
         continue-on-error: true
         run: node scripts/attach-worker-domain.mjs
+
+      - name: Post-deploy smoke (production)
+        if: github.ref == format('refs/heads/{0}', steps.site.outputs.branch)
+        continue-on-error: true
+        run: |
+          node scripts/validate-cms-json.mjs "${{ steps.site.outputs.cms }}"
+          npm run canary:verify -- "${{ steps.site.outputs.origin }}" || \
+            npm run canary:verify -- "https://feature-cards.pages.dev"
 
       - name: Comment deployment URL on PR
         if: github.event_name == 'pull_request'

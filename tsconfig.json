@@ -15,6 +15,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "noEmit": true,
+    "jsx": "react-jsx",
     "types": ["vite/client"],
     "paths": {
       "@src/*": ["./src/*"]

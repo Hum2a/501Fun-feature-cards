@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "tags": [
+    {
+      "name": "feature-cards",
+      "description": "CMS-agnostic accessible feature cards Web Component.",
+      "attributes": [
+        { "name": "src", "description": "URL of a JSON endpoint." },
+        {
+          "name": "adapter",
+          "values": [
+            { "name": "generic" },
+            { "name": "wordpress" },
+            { "name": "contentful" },
+            { "name": "sanity" }
+          ]
+        },
+        { "name": "columns", "valueSet": "n", "description": "Cap grid columns (1–6)." },
+        { "name": "heading", "description": "Section heading text." },
+        { "name": "heading-level", "valueSet": "n", "description": "Heading level 1–6." },
+        {
+          "name": "theme",
+          "values": [
+            { "name": "brand-blue" },
+            { "name": "brand-green" },
+            { "name": "brand-amber" }
+          ]
+        }
+      ],
+      "events": [
+        { "name": "featurecards:ready", "description": "Fired after successful render." },
+        { "name": "featurecards:error", "description": "Validation or fetch failure (RFC 7807 detail)." },
+        { "name": "featurecards:cardclick", "description": "Card link activated." }
+      ],
+      "references": [
+        {
+          "name": "Custom Elements Manifest",
+          "url": "./custom-elements.json"
+        }
+      ]
+    }
+  ]
+}

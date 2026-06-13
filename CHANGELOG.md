@@ -6,8 +6,24 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Imperative `createFeatureCards()` API for non-SPA hosts.
+- Optional React wrapper export (`@humza/feature-cards/react`).
+- RFC 7807-style `ProblemDetail` on `featurecards:error` (`{ issues, problem }`).
+- Custom Elements Manifest (`custom-elements.json`) + VS Code HTML custom data.
+- Demo schema playground (edit JSON, live preview).
+- CMS cookbook docs (WordPress, Contentful, Sanity) and OpenAPI schema for the mock Worker.
+- TypeDoc API reference (`npm run docs:api`).
+- MSW contract tests, fast-check fuzz tests, Web Test Runner browser suite, render benchmark.
+- CI hardening: CodeQL, Lighthouse workflow, WebKit e2e/a11y, post-deploy CMS smoke, npm provenance.
+- Scripts: `validate:cms`, `sri`, `cem`, `rules:sync:check`.
+
+### Changed
+
+- Visual regression baselines are pinned to Chromium; WebKit skips visual tests.
+
 ## [1.0.1] - 2026-06-12
-## [1.0.0] - 2026-06-12
 
 ### Added
 

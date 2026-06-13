@@ -95,5 +95,5 @@ if (dryRun) {
   process.exit(0);
 }
 
-run('npm publish --access public');
+run('npm publish --access public --provenance');
 console.log(`\nPublished ${pkg.name}@${version} to npm.`);

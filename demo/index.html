@@ -244,6 +244,21 @@
         </feature-cards>
       </section>
 
+      <section class="block" aria-labelledby="schema-playground-title">
+        <h2 id="schema-playground-title">Schema playground</h2>
+        <p class="block-note">
+          Edit canonical JSON below — Zod validates live and the preview re-renders.
+          Invalid payloads show structured issues (same shape as
+          <code>featurecards:error</code>).
+        </p>
+        <div class="schema-playground">
+          <label class="schema-editor" for="schema-input">Canonical JSON</label>
+          <textarea id="schema-input" spellcheck="false" aria-describedby="schema-validation"></textarea>
+          <pre id="schema-validation" role="status" aria-live="polite">Waiting for input…</pre>
+          <feature-cards id="schema-instance" heading="Schema preview" heading-level="3"></feature-cards>
+        </div>
+      </section>
+
       <section class="block resize-block" aria-labelledby="resize-title">
         <h2 id="resize-title">Container-driven responsiveness</h2>
         <p class="block-note">

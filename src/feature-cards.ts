@@ -15,6 +15,7 @@ import {
   type ValidationIssue,
 } from './schema.js';
 import { adoptStyles } from './styles.js';
+import { buildProblemDetail, type FeatureCardsErrorDetail } from './errors.js';
 import { applyWatermark, PROVENANCE } from './watermark.js';
 
 /**
@@ -42,8 +43,8 @@ import { applyWatermark, PROVENANCE } from './watermark.js';
  * - `featurecards:ready` — fired after a successful render;
  *   `detail: { count: number }`.
  * - `featurecards:error` — fired when data is invalid or fetching fails;
- *   `detail: { issues: ValidationIssue[] }`. The component fails safe:
- *   existing light-DOM content keeps rendering, nothing is destroyed.
+ *   `detail: { issues: ValidationIssue[]; problem: ProblemDetail }` (RFC 7807-style).
+ *   The component fails safe: existing light-DOM content keeps rendering.
  * - `featurecards:cardclick` — fired when a card is activated;
  *   `detail: { id: string; card: Card }`.
  *
@@ -188,7 +189,11 @@ export class FeatureCardsElement extends HTMLElement {
     try {
       const response = await fetch(src, { signal: controller.signal });
       if (!response.ok) {
-        throw new Error(`request failed with HTTP ${response.status}`);
+        this.#emitError(
+          [{ path: 'src', message: `request failed with HTTP ${response.status}` }],
+          { status: response.status },
+        );
+        return;
       }
       const payload: unknown = await response.json();
       const adapter = getAdapter(this.getAttribute('adapter'));
@@ -413,12 +418,20 @@ export class FeatureCardsElement extends HTMLElement {
   }
 
   /** Fail safe: emit structured issues, keep fallback content when present. */
-  #emitError(issues: ValidationIssue[]): void {
+  #emitError(issues: ValidationIssue[], context: { status?: number } = {}): void {
+    const src = this.getAttribute('src') ?? undefined;
+    const detail: FeatureCardsErrorDetail = {
+      issues,
+      problem: buildProblemDetail(issues, {
+        ...(context.status !== undefined ? { status: context.status } : {}),
+        ...(src ? { instance: src } : {}),
+      }),
+    };
     this.dispatchEvent(
       new CustomEvent('featurecards:error', {
         bubbles: true,
         composed: true,
-        detail: { issues },
+        detail,
       }),
     );
     if (this.#renderedData === undefined && this.#hasFallbackContent() === false) {

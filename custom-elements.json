@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/webcomponents/custom-elements-manifest/master/schema.json",
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/feature-cards.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "FeatureCardsElement",
+          "tagName": "feature-cards",
+          "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "feature-cards",
+          "declaration": {
+            "name": "FeatureCardsElement",
+            "module": "dist/feature-cards.js"
+          }
+        }
+      ]
+    }
+  ]
+}
