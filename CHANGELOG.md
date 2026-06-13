@@ -6,6 +6,34 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-06-13
+
+### Added
+- Enhance 501 stat card editor with icon size functionality.
+- Implement 501 stat card editor and update documentation.
+- Add setup scripts for new contributors.
+- Enhance theme transitions and animations for improved user experience.
+- Integrate motion effects and transitions across demo components.
+- Implement page theme system with dynamic theme selection.
+- Schema playground for people who edit JSON for fun.
+- Mock CMS Worker now speaks OpenAPI.
+- Custom Elements Manifest for IDE autocompletion enthusiasts.
+- Optional React wrapper (peer dependency, not our problem).
+- CreateFeatureCards() for WordPress themes that fear JSX.
+- Apologise in RFC 7807 when your cards are wrong.
+- Add agent rules synchronization script and update documentation for new rules structure.
+- Enhance demo styles and functionality with new CSS variables, skip link, and CMS status updates.
+- Enhance README and scripts for custom domain attachment, including DNS management and error handling.
+- Implement custom domain attachment for CMS Worker and enhance deployment scripts with new commands.
+- Add lines-of-code reporting tool and update AGENTS documentation with new commands.
+- Enhance deployment process with custom domain attachment and support for master branch.
+- Add production environment configuration and update deployment process.
+### Changed
+- Run prettier to satisfy format:check in CI.
+- Remove unused imports in run-wrangler script to streamline code.
+- Streamline deployment scripts and enhance environment variable loading for Cloudflare integration.
+### Fixed
+- Update CMS endpoint URLs to use the new custom domain for production and demo environments.
 ## [1.2.0] - 2026-06-13
 
 ### Added
@@ -72,8 +100,10 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 - CI/CD: GitHub Actions for checks, Cloudflare Pages/Worker deployment,
   tag-based npm releases via `scripts/release.sh`.
 
-[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.0.2...HEAD
 [1.2.0]: https://github.com/Hum2a/feature-cards/compare/v1.0.1...v1.2.0
 [1.0.1]: https://github.com/Hum2a/feature-cards/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Hum2a/feature-cards/releases/tag/v1.0.0
 [0.0.1]: https://github.com/Hum2a/feature-cards/compare/v0.0.0...v0.0.1
+
+[1.0.2]: https://github.com/Hum2a/feature-cards/compare/v1.0.1...v1.0.2
