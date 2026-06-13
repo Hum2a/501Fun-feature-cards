@@ -9,9 +9,9 @@ Embed `<feature-cards>` in a classic theme or block theme without a JavaScript f
 add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script(
     'feature-cards',
-    'https://cdn.jsdelivr.net/npm/@humza/feature-cards@1/dist/feature-cards.iife.js',
+    'https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/dist/feature-cards.iife.js',
     [],
-    '1.0.1',
+    '1.2.0',
     true
   );
 });
@@ -43,7 +43,7 @@ fields mapped in `src/adapters/wordpress.ts`.
 ```html
 <div id="cards"></div>
 <script type="module">
-  import { createFeatureCards } from 'https://cdn.jsdelivr.net/npm/@humza/feature-cards@1/+esm';
+  import { createFeatureCards } from 'https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/+esm';
   createFeatureCards({
     target: '#cards',
     src: '/wp-json/custom/v1/cards',
