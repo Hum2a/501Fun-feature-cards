@@ -6,7 +6,7 @@ org setup, see **[NPM-PUBLISH.md](NPM-PUBLISH.md)** (maintainers only).
 | | |
 | --- | --- |
 | **Package** | [`@techystuff/feature-cards`](https://www.npmjs.com/package/@techystuff/feature-cards) |
-| **Current version** | `1.1.0` (pin this in production) |
+| **Current version** | `1.1.1` (pin this in production) |
 | **Licence** | [AGPL-3.0-only](../LICENSE) |
 | **Live demo** | [501fun.humza-butt.space](https://501fun.humza-butt.space) |
 | **Source** | [github.com/Hum2a/feature-cards](https://github.com/Hum2a/feature-cards) |
@@ -52,7 +52,7 @@ npm install @techystuff/feature-cards
 Pin an exact version in production:
 
 ```sh
-npm install @techystuff/feature-cards@1.1.0
+npm install @techystuff/feature-cards@1.1.1
 ```
 
 ### Option B — CDN (no build step)
@@ -61,13 +61,13 @@ Works in WordPress, static HTML, or any CMS that allows a `<script>` tag:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.0/dist/feature-cards.iife.js"
+  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.1/dist/feature-cards.iife.js"
   defer
 ></script>
 ```
 
 [jsDelivr](https://www.jsdelivr.com/package/npm/@techystuff/feature-cards) and
-[unpkg](https://unpkg.com/@techystuff/feature-cards@1.1.0/) mirror npm automatically.
+[unpkg](https://unpkg.com/@techystuff/feature-cards@1.1.1/) mirror npm automatically.
 
 For Subresource Integrity hashes, run `npm run sri` in the repo or see the
 [WordPress cookbook](cookbook/wordpress.md).
@@ -92,7 +92,7 @@ Load the IIFE script, then put JSON inside the element:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.0/dist/feature-cards.iife.js"
+  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.1/dist/feature-cards.iife.js"
   defer
 ></script>
 
@@ -208,7 +208,7 @@ overrides AGPL for their scope.
 ```sh
 mkdir my-fc-test && cd my-fc-test
 npm init -y
-npm install @techystuff/feature-cards@1.1.0
+npm install @techystuff/feature-cards@1.1.1
 node -e "console.log(require.resolve('@techystuff/feature-cards'))"
 ```
 

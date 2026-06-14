@@ -31,7 +31,7 @@ flowchart LR
 add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script(
     'feature-cards',
-    'https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.0/dist/feature-cards.iife.js',
+    'https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.1/dist/feature-cards.iife.js',
     [],
     '1.2.0',
     true // footer
@@ -56,7 +56,7 @@ Add the hash to your enqueue or inline script tag:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.0/dist/feature-cards.iife.js"
+  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.1/dist/feature-cards.iife.js"
   integrity="sha384-…"
   crossorigin="anonymous"
   defer
@@ -131,7 +131,7 @@ Useful when the host element is rendered by PHP but options are dynamic:
 ```html
 <div id="cards"></div>
 <script type="module">
-  import { createFeatureCards } from 'https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.0/+esm';
+  import { createFeatureCards } from 'https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.1/+esm';
 
   createFeatureCards({
     target: '#cards',

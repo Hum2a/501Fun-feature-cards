@@ -5,10 +5,10 @@
 [![npm version](https://img.shields.io/npm/v/@techystuff/feature-cards.svg)](https://www.npmjs.com/package/@techystuff/feature-cards)
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~25%20KiB-brightgreen.svg)](scripts/size.mjs)
 
-**Package version:** `1.1.0`
+**Package version:** `1.1.1`
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
-**Package:** `@techystuff/feature-cards` · **Version:** `1.1.0`  
+**Package:** `@techystuff/feature-cards` · **Version:** `1.1.1`  
 **Install guide:** [docs/INSTALL.md](docs/INSTALL.md) · **Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)  
 **Documentation hub:** [docs/README.md](docs/README.md)
 
@@ -57,7 +57,7 @@ zero-framework vanilla JS (~25 KiB gzip).
 ### Script tag (any CMS, no build step)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.0/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.1/dist/feature-cards.iife.js" defer></script>
 
 <feature-cards heading="Why teams choose us">
   <script type="application/json">
@@ -83,7 +83,7 @@ Pin versions and add SRI — see [WordPress cookbook](docs/cookbook/wordpress.md
 **Full guide:** **[docs/INSTALL.md](docs/INSTALL.md)** — npm vs CDN, all usage patterns, exports, licence, smoke test.
 
 ```sh
-npm install @techystuff/feature-cards@1.1.0
+npm install @techystuff/feature-cards@1.1.1
 ```
 
 | Entry | Import |
