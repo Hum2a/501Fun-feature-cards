@@ -46,9 +46,9 @@ npm run npm:preflight   # doctor + pack:verify + publish dry-run (when tagged)
 Use dedicated scripts (Windows-safe — do not use `npm run release --minor` without `--`):
 
 ```sh
-npm run release:patch    # 1.0.8 → 1.0.9
-npm run release:minor    # 1.0.8 → 1.1.0
-npm run release:major    # 1.0.8 → 2.0.0
+npm run release:patch    # 1.1.0 → 1.1.1
+npm run release:minor    # 1.1.0 → 1.2.0
+npm run release:major    # 1.1.0 → 2.0.0
 ```
 
 See [RELEASE.md](RELEASE.md) for CHANGELOG, automatic version-pin sync, and SRI.
@@ -81,7 +81,7 @@ signed grant — see [COMMERCIAL-LICENSING.md](../COMMERCIAL-LICENSING.md).
 | `ENEEDAUTH` | `npm login` or `NPM_TOKEN` |
 | `403` + **Two-factor authentication… required** | Enable 2FA; publish with `--otp=CODE` |
 | `403` (other) | Not in `@techystuff` org, or token lacks publish |
-| Tag ≠ package.json | Align `v1.0.8` with `"version": "1.0.8"` |
+| Tag ≠ package.json | Align `v1.1.0` with `"version": "1.1.0"` |
 | `dist/demo` in tarball | `npm run pack:verify` runs clean + `build:lib` |
 | `provenance… provider: null` | Expected locally — script omits `--provenance` |
 

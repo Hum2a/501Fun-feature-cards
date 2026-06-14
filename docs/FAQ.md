@@ -35,7 +35,7 @@ and `light-dark()`. The no-JS fallback (plain links) works everywhere links work
 Yes. Load the IIFE bundle:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.8/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.1.0/dist/feature-cards.iife.js" defer></script>
 ```
 
 Pin a version and add SRI from `npm run sri`. See [WordPress cookbook](cookbook/wordpress.md).

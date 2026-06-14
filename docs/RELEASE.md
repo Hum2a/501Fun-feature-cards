@@ -44,9 +44,9 @@ Uses `scripts/run-release.mjs` (Node) wrapping version bump logic:
 npm run release:current
 
 # Bump + changelog + commit + tag + push (use dedicated scripts on Windows)
-npm run release:patch    # 1.0.8 → 1.0.9
-npm run release:minor    # 1.0.8 → 1.1.0
-npm run release:major    # 1.0.8 → 2.0.0
+npm run release:patch    # 1.1.0 → 1.1.1
+npm run release:minor    # 1.1.0 → 1.2.0
+npm run release:major    # 1.1.0 → 2.0.0
 
 # Alternative: flags after `--` (npm run release --minor does NOT work)
 npm run release -- --minor

@@ -95,4 +95,4 @@ public site yet.
 
 ---
 
-**Package:** `@techystuff/feature-cards@1.0.8` · **Licence:** AGPL-3.0-only
+**Package:** `@techystuff/feature-cards@1.1.0` · **Licence:** AGPL-3.0-only

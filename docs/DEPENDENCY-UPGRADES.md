@@ -3,7 +3,7 @@
 Living document for **deferred major upgrades** and **security audit** notes.
 Routine patch/minor bumps land via Dependabot or manual `npm update`.
 
-Last reviewed: **2026-06-13** · Package version: **1.0.8**
+Last reviewed: **2026-06-13** · Package version: **1.1.0**
 
 ## Status dashboard
 

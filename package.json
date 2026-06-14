@@ -1,6 +1,6 @@
 {
   "name": "@techystuff/feature-cards",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
   "type": "module",
   "license": "AGPL-3.0-only",
