@@ -52,9 +52,8 @@ and `src/watermark.ts` `PROVENANCE.repo` (GitHub URL only — not the npm name).
 When bumping version or preparing a release:
 
 1. **`CHANGELOG.md`** — dated section for the new version
-2. **`package.json`** `version` — semver aligned with change type
-3. **CDN / cookbook pins** — `@techystuff/feature-cards@x.y.z` in `docs/INSTALL.md`, README, `docs/FAQ.md`,
-   `docs/cookbook/*.md`
+2. **`package.json`** `version` — semver aligned with change type (release script syncs doc pins via `scripts/sync-version-pins.mjs`)
+3. **CDN / cookbook pins** — updated automatically on release; CI enforces with `npm run version:sync:check`
 4. **`npm run sri`** — if IIFE hash changed, update cookbook SRI snippets
 5. **`npm run cem:check`** — if public custom-element API changed
 6. **`npm run pack:verify`** — tarball clean before publish

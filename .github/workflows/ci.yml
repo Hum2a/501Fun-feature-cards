@@ -26,6 +26,9 @@ jobs:
       - name: Agent rules mirror check
         run: npm run rules:sync:check
 
+      - name: Version pin check
+        run: npm run version:sync:check
+
       - name: Typecheck
         run: npm run typecheck
 

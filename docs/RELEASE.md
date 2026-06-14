@@ -32,7 +32,7 @@ Before tagging:
 
 1. **`CHANGELOG.md`** — move `[Unreleased]` entries into a dated version section
 2. **`custom-elements.json`** — matches generator (`npm run cem:check`)
-3. **CDN / cookbook pins** — update `@techystuff/feature-cards@x.y.z` in [INSTALL.md](INSTALL.md), README, cookbooks, FAQ; run SRI if IIFE changed
+3. **Version pins** — `npm run release:patch|minor|major` updates `package.json` and all doc pins automatically (`scripts/sync-version-pins.mjs`); run `npm run sri` if the IIFE hash changed
 4. **Visual baselines** — updated if markup changed (`tests/visual/`)
 
 ## Release commands
@@ -44,9 +44,9 @@ Uses `scripts/run-release.mjs` (Node) wrapping version bump logic:
 npm run release:current
 
 # Bump + changelog + commit + tag + push (use dedicated scripts on Windows)
-npm run release:patch    # 1.0.7 → 1.0.8
-npm run release:minor    # 1.0.7 → 1.1.0
-npm run release:major    # 1.0.7 → 2.0.0
+npm run release:patch    # 1.0.8 → 1.0.9
+npm run release:minor    # 1.0.8 → 1.1.0
+npm run release:major    # 1.0.8 → 2.0.0
 
 # Alternative: flags after `--` (npm run release --minor does NOT work)
 npm run release -- --minor
@@ -105,7 +105,7 @@ Secrets required: **`NPM_TOKEN`**.
 | Verify npm | `npm view @techystuff/feature-cards version` |
 | Verify tarball | `npm run pack:verify` |
 | Verify demo | `npm run canary:verify -- https://501fun.humza-butt.space` |
-| Update CDN docs | WordPress cookbook SRI + version query |
+| SRI (if IIFE changed) | `npm run sri` — cookbook hash snippets only |
 | GitHub Release notes | Auto from tag; add highlights if needed |
 | Dependabot | Triage major bumps per [DEPENDENCY-UPGRADES.md](DEPENDENCY-UPGRADES.md) |
 

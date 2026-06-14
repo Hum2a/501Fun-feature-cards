@@ -51,7 +51,7 @@ npm run release:minor    # 1.0.8 → 1.1.0
 npm run release:major    # 1.0.8 → 2.0.0
 ```
 
-See [RELEASE.md](RELEASE.md) for CHANGELOG, CDN pin updates, and SRI.
+See [RELEASE.md](RELEASE.md) for CHANGELOG, automatic version-pin sync, and SRI.
 
 ### Publish
 
@@ -67,7 +67,7 @@ Verify: `npm view @techystuff/feature-cards version`
 
 ### After publish
 
-Update version pins in [INSTALL.md](INSTALL.md), README, cookbooks, and FAQ.
+Version pins in docs are committed by the release script. Run `npm run sri` if the IIFE bundle changed.
 
 ## Dual licensing on npm
 

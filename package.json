@@ -126,6 +126,8 @@
     "party": "node scripts/party.mjs",
     "rules:sync": "node scripts/sync-agent-rules.mjs",
     "rules:sync:check": "node scripts/sync-agent-rules.mjs --check",
+    "version:sync": "node scripts/sync-version-pins.mjs",
+    "version:sync:check": "node scripts/sync-version-pins.mjs --check",
     "license:check": "node scripts/check-license-headers.mjs",
     "icons:sync": "node scripts/sync-lucide-icons.mjs",
     "docs:api": "typedoc",
