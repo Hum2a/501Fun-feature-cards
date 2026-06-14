@@ -386,7 +386,7 @@ npm run release:minor              # 1.0.x → 1.1.0
 npm run release:patch -- --publish # tag + npm publish (use --otp= for 2FA)
 ```
 
-Playbook: **[docs/RELEASE.md](docs/RELEASE.md)** · Stable `v*.*.*` tags publish to npm when `NPM_TOKEN` is set.
+Playbook: **[docs/RELEASE.md](docs/RELEASE.md)** · Stable `v*.*.*` tags publish to npm via [`publish-npm.yml`](.github/workflows/publish-npm.yml) (trusted publishing or `NPM_TOKEN`).
 
 ## Deployment
 

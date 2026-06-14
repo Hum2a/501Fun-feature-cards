@@ -88,15 +88,16 @@ npm run release:package -- --allow-prerelease   # manual npm pre-release
 
 ## Automated CI publish
 
-Pushing a stable **`v*.*.*`** tag to GitHub triggers the release workflow when
-`NPM_TOKEN` is configured:
+Pushing a stable **`v*.*.*`** tag triggers [`.github/workflows/publish-npm.yml`](../.github/workflows/publish-npm.yml) when
+npm **trusted publishing** or **`NPM_TOKEN`** is configured:
 
-1. Build library (`build:lib`)
-2. Run tests
-3. Publish to npm with provenance
-4. Create GitHub Release from tag notes
+1. Verify tag ↔ `package.json` ↔ `repository.url`
+2. Build library, run tests
+3. Publish to npm with provenance (links package to this repo)
+4. [`.github/workflows/release.yml`](../.github/workflows/release.yml) creates the GitHub Release
 
-Secrets required: **`NPM_TOKEN`**.
+**Recommended:** npm trusted publisher → workflow `publish-npm.yml` (no long-lived token).  
+**Fallback:** GitHub secret **`NPM_TOKEN`** (granular publish token).
 
 ## Post-release
 

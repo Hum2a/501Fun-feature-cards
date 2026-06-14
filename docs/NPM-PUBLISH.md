@@ -30,8 +30,43 @@ npm org ls techystuff   # must list your user
 ```
 
 1. **2FA** — npm → Settings → Enable 2FA → Authorization and publishing (required to publish).
-2. **CI token** — GitHub secret `NPM_TOKEN` = granular token with publish on `@techystuff/feature-cards`.
-3. **Provenance** — CI release workflow uses `--provenance`; local publish skips it automatically.
+2. **Trusted publishing (recommended)** — links npm ↔ GitHub and removes long-lived tokens (see below).
+3. **CI token (fallback)** — GitHub secret `NPM_TOKEN` = granular token with publish on `@techystuff/feature-cards` if trusted publishing is not configured yet.
+4. **Provenance** — enabled in `publishConfig` and CI (`publish-npm.yml`); local publish skips it automatically.
+
+## Link npm package to this GitHub repo
+
+GitHub shows `@techystuff/feature-cards` in the repository sidebar when the package is
+published from CI with a matching `repository` field in `package.json` (already set to
+`Hum2a/feature-cards`).
+
+### Step 1 — Configure npm trusted publisher
+
+1. Open [package access settings](https://www.npmjs.com/package/@techystuff/feature-cards/access).
+2. **Trusted publishing** → **GitHub Actions**.
+3. Set:
+   - **Organization or user:** `Hum2a`
+   - **Repository:** `feature-cards`
+   - **Workflow filename:** `publish-npm.yml` (exact name, including `.yml`)
+4. Save. Optionally set **Publishing access** → *Require 2FA and disallow tokens* after verifying CI works.
+
+### Step 2 — Push a release tag
+
+Pushing a stable tag (`v1.1.0`) runs [`.github/workflows/publish-npm.yml`](../.github/workflows/publish-npm.yml), which:
+
+- Verifies `package.json` version and `repository.url` match the repo
+- Runs tests and `npm publish --provenance --access public`
+- Attaches provenance on [npmjs.com](https://www.npmjs.com/package/@techystuff/feature-cards) (green checkmark → source commit link)
+
+```sh
+npm run release:patch   # bump, commit, tag, push → CI publishes
+```
+
+Within a few minutes, the repo sidebar should show the npm package. If it does not appear after the first CI publish, confirm the `repository.url` in `package.json` and republish a patch from CI (local publishes do not establish the link).
+
+### Manual re-run
+
+Actions → **Publish npm package** → **Run workflow** → enter an existing tag (e.g. `v1.1.0`) if a publish failed but the tag is already pushed.
 
 ## Publishing workflow
 
@@ -78,7 +113,8 @@ signed grant — see [COMMERCIAL-LICENSING.md](../COMMERCIAL-LICENSING.md).
 
 | Error | Fix |
 | --- | --- |
-| `ENEEDAUTH` | `npm login` or `NPM_TOKEN` |
+| `ENEEDAUTH` | Configure [trusted publishing](#link-npm-package-to-this-github-repo) or set `NPM_TOKEN` |
+| Trusted publish fails | Workflow filename must be exactly `publish-npm.yml`; repo name case-sensitive |
 | `403` + **Two-factor authentication… required** | Enable 2FA; publish with `--otp=CODE` |
 | `403` (other) | Not in `@techystuff` org, or token lacks publish |
 | Tag ≠ package.json | Align `v1.1.0` with `"version": "1.1.0"` |

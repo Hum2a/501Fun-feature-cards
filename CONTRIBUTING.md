@@ -135,7 +135,7 @@ Before tagging:
 2. `npm run sri` — update cookbook if IIFE changed
 3. `npm run check`
 
-Stable `v*.*.*` tags → npm publish when `NPM_TOKEN` is set.
+Stable `v*.*.*` tags → npm publish via `publish-npm.yml` (trusted publishing or `NPM_TOKEN`).
 
 ## Documentation contributions
 

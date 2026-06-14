@@ -57,7 +57,7 @@ When bumping version or preparing a release:
 4. **`npm run sri`** — if IIFE hash changed, update cookbook SRI snippets
 5. **`npm run cem:check`** — if public custom-element API changed
 6. **`npm run pack:verify`** — tarball clean before publish
-7. **Tag** `vX.Y.Z` on the release commit → `npm run release:package` or CI (`NPM_TOKEN`)
+7. **Tag** `vX.Y.Z` on the release commit → CI [`publish-npm.yml`](../.github/workflows/publish-npm.yml) or `npm run release:package` locally
 
 Use **`npm run release:patch|minor|major`** — not `npm run release --minor` (npm swallows flags).
 Local publish requires npm **2FA**: `node scripts/publish-package.mjs --skip-check --otp=CODE`.

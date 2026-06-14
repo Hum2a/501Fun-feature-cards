@@ -98,7 +98,7 @@ Full matrix: [TESTING.md](TESTING.md).
 | --- | --- | --- |
 | Pages deploy OK, domain pending | DNS CNAME missing | Cloudflare token needs Zone DNS Edit — see README § Deployment |
 | Canary NO MATCH | Old bundle cached | Hard refresh; verify script URL/version |
-| npm publish skipped | Missing `NPM_TOKEN` | Set GitHub secret or run `npm run release:package` locally |
+| npm publish skipped | Configure [trusted publishing](NPM-PUBLISH.md#link-npm-package-to-this-github-repo) or `NPM_TOKEN` | Set up `publish-npm.yml` on npm or GitHub secret |
 
 See [RELEASE.md](RELEASE.md).
 

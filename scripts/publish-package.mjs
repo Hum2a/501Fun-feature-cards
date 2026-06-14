@@ -107,7 +107,7 @@ if (dryRun) {
   process.exit(0);
 }
 
-// Provenance attestation only works in supported CI (e.g. GitHub Actions with OIDC).
+// Provenance attestation only works in supported CI (publish-npm.yml with OIDC).
 // Local `npm publish --provenance` fails with "provider: null".
 const useProvenance =
   process.argv.includes('--provenance') ||

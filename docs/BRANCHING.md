@@ -9,7 +9,7 @@ How git branches map to CI, previews, production deploys, and npm releases.
 | **`master`** | Production source of truth | Pages + Worker on merge | Tags only (`v*.*.*`) |
 | **`main`** | Optional alias | Same CI as `master` if present | — |
 | **Feature branches** | Short-lived work | PR preview (`*.pages.dev`) | Never |
-| **Tags `v*.*.*`** | Released versions | Does not auto-deploy demo | Yes (with `NPM_TOKEN`) |
+| **Tags `v*.*.*`** | Released versions | Does not auto-deploy demo | Yes (`publish-npm.yml`) |
 
 Production branch name is configured in [`config/site.json`](../config/site.json)
 (`productionBranch`, currently **`master`**).
