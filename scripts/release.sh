@@ -140,9 +140,19 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Default to patch if no version option specified (and not dry-run preview)
-if [[ -z "$INCREMENT" && "$SHOW_CURRENT" == false && "$DRY_RUN" == false ]]; then
-  INCREMENT="patch"
+# Require an explicit bump — `npm run release --minor` does NOT pass flags to the
+# script (npm consumes them). Use npm run release:minor or npm run release -- --minor.
+if [[ -z "$INCREMENT" && "$SHOW_CURRENT" == false ]]; then
+  echo "Error: No version bump specified (--major, --minor, --patch, or --set-tag)."
+  echo ""
+  echo "Use dedicated npm scripts (recommended on Windows):"
+  echo "  npm run release:patch"
+  echo "  npm run release:minor"
+  echo "  npm run release:major"
+  echo ""
+  echo "Or pass flags after --:"
+  echo "  npm run release -- --minor"
+  exit 1
 fi
 
 # Always sync with remote tags first
@@ -222,6 +232,7 @@ else
 
   # Construct new tag
   NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+  echo "Version bump: ${INCREMENT} (${LATEST_TAG} → ${NEW_TAG})"
 
   # Append custom name if provided
   if [[ -n "$NAME" ]]; then

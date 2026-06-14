@@ -10,7 +10,8 @@
 // Usage:
 //   npm run release:package
 //   npm run release:package:dry
-//   node scripts/publish-package.mjs --allow-prerelease
+//   node scripts/publish-package.mjs --skip-check
+//   node scripts/publish-package.mjs --otp=123456   # npm 2FA (local publish)
 
 import { readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
@@ -21,6 +22,13 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const dryRun = process.argv.includes('--dry-run');
 const allowPrerelease = process.argv.includes('--allow-prerelease');
 const skipCheck = process.argv.includes('--skip-check');
+
+/** npm publish --otp= when 2FA is enabled on the account */
+function readOtp() {
+  const arg = process.argv.find((a) => a.startsWith('--otp='));
+  if (arg) return arg.slice('--otp='.length);
+  return process.env.NPM_OTP ?? '';
+}
 
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 const version = pkg.version;
@@ -104,12 +112,21 @@ if (dryRun) {
 const useProvenance =
   process.argv.includes('--provenance') ||
   (process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'true');
-const publishCmd = useProvenance
+const otp = readOtp();
+let publishCmd = useProvenance
   ? 'npm publish --access public --provenance'
   : 'npm publish --access public';
+if (otp) {
+  publishCmd += ` --otp=${otp}`;
+}
 
 if (!useProvenance) {
-  console.log('Publishing without provenance (local). CI uses --provenance automatically.\n');
+  console.log('Publishing without provenance (local). CI uses --provenance automatically.');
+}
+if (!otp && process.env.GITHUB_ACTIONS !== 'true') {
+  console.log(
+    'Tip: npm requires 2FA for publish — use --otp=CODE from your authenticator app.\n',
+  );
 }
 
 run(publishCmd);

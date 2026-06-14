@@ -43,16 +43,20 @@ Uses `scripts/run-release.mjs` (Node) wrapping version bump logic:
 # Inspect state
 npm run release:current
 
-# Bump + changelog + commit + tag + push (pick one)
-npm run release -- --patch
+# Bump + changelog + commit + tag + push (use dedicated scripts on Windows)
+npm run release:patch    # 1.0.7 → 1.0.8
+npm run release:minor    # 1.0.7 → 1.1.0
+npm run release:major    # 1.0.7 → 2.0.0
+
+# Alternative: flags after `--` (npm run release --minor does NOT work)
 npm run release -- --minor
-npm run release -- --major
 
 # Dry run (no git writes)
 npm run release:dry-run
+npm run release:dry-run:minor
 
-# Tag + npm publish in one step (requires NPM_TOKEN locally or CI)
-npm run release -- --minor --publish
+# Tag + npm publish in one step (requires npm login + 2FA OTP locally)
+npm run release:patch -- --publish
 ```
 
 ### Preflight (before every publish)
@@ -69,6 +73,8 @@ When HEAD already matches a pushed tag:
 
 ```sh
 npm run release:package
+# Local publish with 2FA:
+node scripts/publish-package.mjs --skip-check --otp=123456
 npm run release:package:dry   # validation only
 ```
 

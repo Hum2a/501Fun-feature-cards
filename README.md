@@ -381,8 +381,9 @@ Full matrix: **[docs/TESTING.md](docs/TESTING.md)**
 
 ```sh
 npm run release:current
-npm run release -- --patch              # bump + changelog + tag
-npm run release -- --minor --publish    # tag + npm publish
+npm run release:patch              # bump + changelog + tag
+npm run release:minor              # 1.0.x → 1.1.0
+npm run release:patch -- --publish # tag + npm publish (use --otp= for 2FA)
 ```
 
 Playbook: **[docs/RELEASE.md](docs/RELEASE.md)** · Stable `v*.*.*` tags publish to npm when `NPM_TOKEN` is set.

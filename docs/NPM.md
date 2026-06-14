@@ -178,7 +178,8 @@ Full sales playbook: [COMMERCIAL-LICENSING.md](../COMMERCIAL-LICENSING.md).
 | Error | Fix |
 | --- | --- |
 | `ENEEDAUTH` | `npm login` or set `NPM_TOKEN` |
-| `403 Forbidden` | Not in `@techystuff` org, or token lacks publish permission; 2FA token mismatch |
+| `403 Forbidden` + **Two-factor authentication… is required to publish** | Enable [2FA](https://www.npmjs.com/settings) on npm, then publish with a one-time code: `node scripts/publish-package.mjs --skip-check --otp=123456` (from authenticator app). Or use a granular access token with publish + bypass 2FA for CI only. |
+| `403 Forbidden` (other) | Not in `@techystuff` org, or token lacks publish permission |
 | Tag ≠ package.json version | Align `v1.0.6` tag with `"version": "1.0.6"` |
 | `dist/demo` in tarball | Run `npm run clean && npm run build:lib` — demo build must not run before pack |
 | `Automatic provenance generation not supported for provider: null` | **Local publish** — fixed: script skips `--provenance` locally; CI still uses it |
