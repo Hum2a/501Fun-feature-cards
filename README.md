@@ -2,13 +2,14 @@
 
 [![CI](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@techystuff/feature-cards.svg)](https://www.npmjs.com/package/@techystuff/feature-cards)
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~25%20KiB-brightgreen.svg)](scripts/size.mjs)
 
-**Package version:** `1.0.4`
+**Package version:** `1.0.8`
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
-**Package:** `@humza/feature-cards` · **Version:** `1.2.0`  
-**Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)  
+**Package:** `@techystuff/feature-cards` · **Version:** `1.0.8`  
+**Install guide:** [docs/INSTALL.md](docs/INSTALL.md) · **Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)  
 **Documentation hub:** [docs/README.md](docs/README.md)
 
 One **accessible, responsive, CMS-agnostic Web Component** that replaces hard-coded
@@ -22,6 +23,7 @@ zero-framework vanilla JS (~25 KiB gzip).
 
 - [Why this exists](#why-this-exists)
 - [Quick start](#quick-start)
+- [Install from npm](#install-from-npm)
 - [Data model](#data-model)
 - [Public API](#public-api)
 - [CMS integration](#cms-integration)
@@ -55,7 +57,7 @@ zero-framework vanilla JS (~25 KiB gzip).
 ### Script tag (any CMS, no build step)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.8/dist/feature-cards.iife.js" defer></script>
 
 <feature-cards heading="Why teams choose us">
   <script type="application/json">
@@ -76,10 +78,28 @@ zero-framework vanilla JS (~25 KiB gzip).
 
 Pin versions and add SRI — see [WordPress cookbook](docs/cookbook/wordpress.md).
 
+## Install from npm
+
+**Full guide:** **[docs/INSTALL.md](docs/INSTALL.md)** — npm vs CDN, all usage patterns, exports, licence, smoke test.
+
+```sh
+npm install @techystuff/feature-cards@1.0.8
+```
+
+| Entry | Import |
+| --- | --- |
+| Web Component | `import '@techystuff/feature-cards'` |
+| Imperative API | `import { createFeatureCards } from '@techystuff/feature-cards'` |
+| React wrapper | `import { FeatureCards } from '@techystuff/feature-cards/react'` |
+| CDN (no build) | See [INSTALL.md § CDN](docs/INSTALL.md#option-b--cdn-no-build-step) |
+
+AGPL-3.0-only — [commercial licence](COMMERCIAL-LICENSING.md) for closed-source use.  
+Maintainers: [docs/NPM-PUBLISH.md](docs/NPM-PUBLISH.md).
+
 ### ESM
 
 ```js
-import '@humza/feature-cards';
+import '@techystuff/feature-cards';
 
 const el = document.querySelector('feature-cards');
 el.data = {
@@ -106,7 +126,7 @@ el.data = {
 ### Imperative mount
 
 ```js
-import { createFeatureCards } from '@humza/feature-cards';
+import { createFeatureCards } from '@techystuff/feature-cards';
 
 createFeatureCards({
   target: '#cards-host',
@@ -119,7 +139,7 @@ createFeatureCards({
 ### React (optional peer)
 
 ```tsx
-import { FeatureCards } from '@humza/feature-cards/react';
+import { FeatureCards } from '@techystuff/feature-cards/react';
 
 <FeatureCards
   data={{ cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' } }] }}
@@ -361,8 +381,9 @@ Full matrix: **[docs/TESTING.md](docs/TESTING.md)**
 
 ```sh
 npm run release:current
-npm run release -- --patch              # bump + changelog + tag
-npm run release -- --minor --publish    # tag + npm publish
+npm run release:patch              # bump + changelog + tag
+npm run release:minor              # 1.0.x → 1.1.0
+npm run release:patch -- --publish # tag + npm publish (use --otp= for 2FA)
 ```
 
 Playbook: **[docs/RELEASE.md](docs/RELEASE.md)** · Stable `v*.*.*` tags publish to npm when `NPM_TOKEN` is set.

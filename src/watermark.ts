@@ -1,5 +1,5 @@
 /*!
- * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * @techystuff/feature-cards — CMS-agnostic <feature-cards> Web Component
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  *
@@ -26,7 +26,7 @@ export const CANARY_UUID = 'bb7de617-0a1c-49f2-a4c2-a131bf1528ea';
 /** Frozen provenance record, referenced by the element so bundlers keep it. */
 export const PROVENANCE = Object.freeze({
   uuid: CANARY_UUID,
-  repo: 'https://github.com/humza/feature-cards',
+  repo: 'https://github.com/Hum2a/feature-cards',
   author: 'Humza Butt',
   created: '2026-06-12T20:45:12.492Z',
   spdx: 'AGPL-3.0-only',

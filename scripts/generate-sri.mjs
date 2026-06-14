@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*!
- * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * @techystuff/feature-cards — CMS-agnostic <feature-cards> Web Component
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  */
@@ -25,9 +25,9 @@ const bytes = readFileSync(file);
 const hash = createHash('sha384').update(bytes).digest('base64');
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 
-console.log(`@humza/feature-cards@${pkg.version} IIFE SRI (sha384):\n`);
+console.log(`@techystuff/feature-cards@${pkg.version} IIFE SRI (sha384):\n`);
 console.log(`  integrity="sha384-${hash}"`);
 console.log('\nExample embed:\n');
 console.log(
-  `<script\n  src="https://cdn.jsdelivr.net/npm/@humza/feature-cards@${pkg.version}/dist/feature-cards.iife.js"\n  integrity="sha384-${hash}"\n  crossorigin="anonymous"\n></script>`,
+  `<script\n  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@${pkg.version}/dist/feature-cards.iife.js"\n  integrity="sha384-${hash}"\n  crossorigin="anonymous"\n></script>`,
 );

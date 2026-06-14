@@ -14,7 +14,7 @@ that replaces hard-coded feature-card images with a reusable custom element.
 | Shipped runtime | Zero-framework vanilla JS (ESM + IIFE) |
 | Bundled deps | Zod only |
 | Validation | `src/schema.ts` + adapters in `src/adapters/` |
-| Optional | React wrapper `@humza/feature-cards/react` |
+| Optional | React wrapper `@techystuff/feature-cards/react` |
 | Demo | Vite landing page — themes/motion **not** in npm API |
 | Licence | AGPL-3.0-only + inert canary watermark |
 
@@ -193,6 +193,9 @@ Precedence is **top wins**. Never assume `src` is used if `data` is also set.
 | [ACCESSIBILITY.md](ACCESSIBILITY.md) | a11y requirements |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | PR workflow |
 | [docs/RELEASE.md](docs/RELEASE.md) | Shipping versions |
+| [docs/NPM.md](docs/NPM.md) | npm doc index (INSTALL + NPM-PUBLISH) |
+| [docs/INSTALL.md](docs/INSTALL.md) | Consumer install: npm, CDN, patterns, licence |
+| Rule `50-npm-package` | Agent invariants for `@techystuff/feature-cards` |
 
 ## Live URLs
 
@@ -200,7 +203,7 @@ Precedence is **top wins**. Never assume `src` is used if `data` is also set.
 | --- | --- |
 | Demo | https://501fun.humza-butt.space |
 | Mock CMS | https://cms.501fun.humza-butt.space/api/cards |
-| npm | `@humza/feature-cards` |
+| npm | `@techystuff/feature-cards` |
 
 ---
 

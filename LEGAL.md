@@ -8,7 +8,7 @@
 
 | Field | Value |
 | --- | --- |
-| **Work** | *feature-cards* — `@humza/feature-cards` Web Component, demo, tooling |
+| **Work** | *feature-cards* — `@techystuff/feature-cards` Web Component, demo, tooling |
 | **Author & copyright holder** | **Humza Butt** |
 | **Contact** | Humzab1711@hotmail.com |
 | **Repository** | https://github.com/Hum2a/feature-cards |

@@ -1,6 +1,6 @@
 # Release playbook
 
-Step-by-step guide for shipping `@humza/feature-cards` to GitHub, npm, and
+Step-by-step guide for shipping `@techystuff/feature-cards` to GitHub, npm, and
 production. Read [CONTRIBUTING.md](../CONTRIBUTING.md) for contributor context;
 [BRANCHING.md](BRANCHING.md) for branch policy.
 
@@ -32,7 +32,7 @@ Before tagging:
 
 1. **`CHANGELOG.md`** — move `[Unreleased]` entries into a dated version section
 2. **`custom-elements.json`** — matches generator (`npm run cem:check`)
-3. **Cookbook CDN pins** — update `@humza/feature-cards@x.y` and SRI if IIFE changed
+3. **Version pins** — `npm run release:patch|minor|major` updates `package.json` and all doc pins automatically (`scripts/sync-version-pins.mjs`); run `npm run sri` if the IIFE hash changed
 4. **Visual baselines** — updated if markup changed (`tests/visual/`)
 
 ## Release commands
@@ -43,17 +43,29 @@ Uses `scripts/run-release.mjs` (Node) wrapping version bump logic:
 # Inspect state
 npm run release:current
 
-# Bump + changelog + commit + tag + push (pick one)
-npm run release -- --patch
+# Bump + changelog + commit + tag + push (use dedicated scripts on Windows)
+npm run release:patch    # 1.0.8 → 1.0.9
+npm run release:minor    # 1.0.8 → 1.1.0
+npm run release:major    # 1.0.8 → 2.0.0
+
+# Alternative: flags after `--` (npm run release --minor does NOT work)
 npm run release -- --minor
-npm run release -- --major
 
 # Dry run (no git writes)
 npm run release:dry-run
+npm run release:dry-run:minor
 
-# Tag + npm publish in one step (requires NPM_TOKEN locally or CI)
-npm run release -- --minor --publish
+# Tag + npm publish in one step (requires npm login + 2FA OTP locally)
+npm run release:patch -- --publish
 ```
+
+### Preflight (before every publish)
+
+```sh
+npm run npm:preflight   # doctor + pack:verify + publish dry-run (when tagged)
+```
+
+See **[NPM.md](NPM.md)** for first-time npm account setup and commercial dual-licensing.
 
 ### Publish an existing tag
 
@@ -61,6 +73,8 @@ When HEAD already matches a pushed tag:
 
 ```sh
 npm run release:package
+# Local publish with 2FA:
+node scripts/publish-package.mjs --skip-check --otp=123456
 npm run release:package:dry   # validation only
 ```
 
@@ -88,9 +102,10 @@ Secrets required: **`NPM_TOKEN`**.
 
 | Task | Command / action |
 | --- | --- |
-| Verify npm | `npm view @humza/feature-cards version` |
+| Verify npm | `npm view @techystuff/feature-cards version` |
+| Verify tarball | `npm run pack:verify` |
 | Verify demo | `npm run canary:verify -- https://501fun.humza-butt.space` |
-| Update CDN docs | WordPress cookbook SRI + version query |
+| SRI (if IIFE changed) | `npm run sri` — cookbook hash snippets only |
 | GitHub Release notes | Auto from tag; add highlights if needed |
 | Dependabot | Triage major bumps per [DEPENDENCY-UPGRADES.md](DEPENDENCY-UPGRADES.md) |
 

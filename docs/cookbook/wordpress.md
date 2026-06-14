@@ -31,7 +31,7 @@ flowchart LR
 add_action('wp_enqueue_scripts', function () {
   wp_enqueue_script(
     'feature-cards',
-    'https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/dist/feature-cards.iife.js',
+    'https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.8/dist/feature-cards.iife.js',
     [],
     '1.2.0',
     true // footer
@@ -56,14 +56,14 @@ Add the hash to your enqueue or inline script tag:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/dist/feature-cards.iife.js"
+  src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.8/dist/feature-cards.iife.js"
   integrity="sha384-…"
   crossorigin="anonymous"
   defer
 ></script>
 ```
 
-Update cookbook pins when bumping `@humza/feature-cards` versions.
+Update cookbook pins when bumping `@techystuff/feature-cards` versions.
 
 ## 2. Render the element
 
@@ -131,7 +131,7 @@ Useful when the host element is rendered by PHP but options are dynamic:
 ```html
 <div id="cards"></div>
 <script type="module">
-  import { createFeatureCards } from 'https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/+esm';
+  import { createFeatureCards } from 'https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.8/+esm';
 
   createFeatureCards({
     target: '#cards',

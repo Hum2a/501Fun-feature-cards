@@ -1,17 +1,17 @@
 {
-  "name": "@humza/feature-cards",
-  "version": "1.0.4",
+  "name": "@techystuff/feature-cards",
+  "version": "1.0.8",
   "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
   "type": "module",
   "license": "AGPL-3.0-only",
   "author": "Humza Butt <Humzab1711@hotmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/humza/feature-cards.git"
+    "url": "git+https://github.com/Hum2a/feature-cards.git"
   },
   "homepage": "https://501fun.humza-butt.space",
   "bugs": {
-    "url": "https://github.com/humza/feature-cards/issues"
+    "url": "https://github.com/Hum2a/feature-cards/issues"
   },
   "keywords": [
     "web-component",
@@ -99,9 +99,15 @@
     "deploy:preview": "node scripts/run-wrangler.mjs pages deploy dist/demo --project-name feature-cards --branch preview",
     "release": "node scripts/run-release.mjs",
     "release:current": "node scripts/run-release.mjs --current",
+    "release:patch": "node scripts/run-release.mjs --patch",
+    "release:minor": "node scripts/run-release.mjs --minor",
+    "release:major": "node scripts/run-release.mjs --major",
     "release:package": "node scripts/publish-package.mjs",
     "release:package:dry": "node scripts/publish-package.mjs --dry-run",
+    "pack:verify": "node scripts/pack-verify.mjs",
+    "npm:preflight": "npm run doctor && npm run pack:verify && npm run release:package:dry",
     "release:dry-run": "node scripts/run-release.mjs --dry-run --patch",
+    "release:dry-run:minor": "node scripts/run-release.mjs --dry-run --minor",
     "release:full": "node scripts/run-release.mjs --patch --publish",
     "check": "npm run typecheck && npm run lint && npm run test:ci && npm run size",
     "clean": "node scripts/clean.mjs",
@@ -120,6 +126,8 @@
     "party": "node scripts/party.mjs",
     "rules:sync": "node scripts/sync-agent-rules.mjs",
     "rules:sync:check": "node scripts/sync-agent-rules.mjs --check",
+    "version:sync": "node scripts/sync-version-pins.mjs",
+    "version:sync:check": "node scripts/sync-version-pins.mjs --check",
     "license:check": "node scripts/check-license-headers.mjs",
     "icons:sync": "node scripts/sync-lucide-icons.mjs",
     "docs:api": "typedoc",
@@ -128,7 +136,7 @@
     "sri": "node scripts/generate-sri.mjs",
     "validate:cms": "node scripts/validate-cms-json.mjs",
     "postinstall": "node scripts/banner.mjs --quiet",
-    "prepublishOnly": "npm run build:lib"
+    "prepublishOnly": "npm run pack:verify"
   },
   "dependencies": {
     "zod": "^3.24.1"

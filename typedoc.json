@@ -5,7 +5,7 @@
   "readme": "none",
   "excludePrivate": true,
   "excludeInternal": true,
-  "name": "@humza/feature-cards API",
+  "name": "@techystuff/feature-cards API",
   "includeVersion": true,
   "sort": ["source-order"]
 }

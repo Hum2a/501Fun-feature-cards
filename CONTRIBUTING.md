@@ -29,7 +29,7 @@ npm run serve:cms # mock CMS → http://localhost:8787/api/cards (second termina
 `npm run setup:quick` skips Playwright browsers and `build:lib` when you only need
 deps and env files. Run full `npm run setup` before `npm run check`.
 
-Requires **Node 22.13+** (see `.nvmrc`).
+Requires **Node 22.12+** (see `.nvmrc`).
 
 ## Development workflow
 

@@ -76,7 +76,7 @@ A **native Custom Element**:
 - Upgrades existing HTML (`<feature-cards>` already in the document)
 - Degrades to plain links when JS is absent or fails
 
-Optional `@humza/feature-cards/react` exists for teams that *want* React — the
+Optional `@techystuff/feature-cards/react` exists for teams that *want* React — the
 core does not *require* it. (ADR-0001)
 
 ## Why Shadow DOM
@@ -204,7 +204,7 @@ editor mistake). The component:
 | --- | --- | --- |
 | Demo | `501fun.humza-butt.space` | push to `master` |
 | Mock CMS | `cms.501fun.humza-butt.space` | push to `master` |
-| npm | `@humza/feature-cards` | tag `v*.*.*` |
+| npm | `@techystuff/feature-cards` | tag `v*.*.*` |
 
 Size budget enforced by `npm run size` (25 KiB gzip ESM ceiling).
 

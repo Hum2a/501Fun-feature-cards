@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*!
- * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * @techystuff/feature-cards — CMS-agnostic <feature-cards> Web Component
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  */
@@ -92,6 +92,26 @@ checks.push({
   name: 'wrangler login (deploys only)',
   pass: loggedIn,
   detail: loggedIn ? 'authenticated' : 'run `npx wrangler login` before deploying',
+  optional: true,
+});
+
+// npm login (optional — only needed for npm publish)
+const npmUser = tryExec('npm whoami');
+checks.push({
+  name: 'npm login (publish only)',
+  pass: npmUser !== null,
+  detail: npmUser ? `@${npmUser}` : 'run `npm login` before `npm run release:package`',
+  optional: true,
+});
+
+// npm org membership (optional — publish only)
+const orgMembers = tryExec('npm org ls techystuff');
+checks.push({
+  name: 'npm org @techystuff (publish only)',
+  pass: orgMembers !== null && orgMembers.length > 0,
+  detail: orgMembers
+    ? 'member of @techystuff org'
+    : 'join npmjs.com/org/techystuff or run `npm org ls techystuff` after login',
   optional: true,
 });
 

@@ -71,7 +71,7 @@ flowchart TB
   end
 
   subgraph npmreg["npm"]
-    PKG["@humza/feature-cards"]
+    PKG["@techystuff/feature-cards"]
   end
 
   PR -->|preview deploy| PAGES

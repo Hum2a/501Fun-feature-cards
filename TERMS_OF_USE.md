@@ -9,7 +9,7 @@
 
 ## 1. Purpose
 
-The demo showcases the `@humza/feature-cards` Web Component. It is provided for
+The demo showcases the `@techystuff/feature-cards` Web Component. It is provided for
 **evaluation, education, and portfolio review** — not as a production CMS or
 guaranteed-availability service.
 

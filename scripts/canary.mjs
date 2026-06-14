@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*!
- * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * @techystuff/feature-cards — CMS-agnostic <feature-cards> Web Component
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  */
@@ -134,7 +134,7 @@ if (matched > 0) {
   }
   console.log(bold(green(`MATCH — ${matched}/${checks.length} markers present.`)));
   console.log(
-    `\nThis code originates from https://github.com/humza/feature-cards (commit ${commit}).`,
+    `\nThis code originates from https://github.com/Hum2a/feature-cards (commit ${commit}).`,
   );
   console.log(
     'It is licensed AGPL-3.0-only: serving it to users over a network obligates the',

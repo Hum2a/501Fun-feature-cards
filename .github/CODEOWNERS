@@ -1,13 +1,13 @@
 # Default owner for everything in the repo.
-* @humza
+* @Hum2a
 
 # The watermark and licensing files require explicit owner review.
-/src/watermark.ts @humza
-/LICENSE @humza
-/NOTICE @humza
-/COPYRIGHT @humza
-/LEGAL.md @humza
-/TRADEMARK.md @humza
-/COMMERCIAL-LICENSING.md @humza
-/TERMS_OF_USE.md @humza
-/scripts/check-license-headers.mjs @humza
+/src/watermark.ts @Hum2a
+/LICENSE @Hum2a
+/NOTICE @Hum2a
+/COPYRIGHT @Hum2a
+/LEGAL.md @Hum2a
+/TRADEMARK.md @Hum2a
+/COMMERCIAL-LICENSING.md @Hum2a
+/TERMS_OF_USE.md @Hum2a
+/scripts/check-license-headers.mjs @Hum2a

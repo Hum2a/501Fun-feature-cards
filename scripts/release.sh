@@ -23,7 +23,7 @@ DRY_RUN=false
 show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo "Manage release tags with semantic versioning"
-  echo "Updates package.json version and README **Package version:** on every release;"
+  echo "Updates package.json and version pins across docs on every release;"
   echo "updates CHANGELOG.md for stable releases (no --name)."
   echo ""
   echo "Options:"
@@ -140,9 +140,19 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Default to patch if no version option specified (and not dry-run preview)
-if [[ -z "$INCREMENT" && "$SHOW_CURRENT" == false && "$DRY_RUN" == false ]]; then
-  INCREMENT="patch"
+# Require an explicit bump — `npm run release --minor` does NOT pass flags to the
+# script (npm consumes them). Use npm run release:minor or npm run release -- --minor.
+if [[ -z "$INCREMENT" && "$SHOW_CURRENT" == false ]]; then
+  echo "Error: No version bump specified (--major, --minor, --patch, or --set-tag)."
+  echo ""
+  echo "Use dedicated npm scripts (recommended on Windows):"
+  echo "  npm run release:patch"
+  echo "  npm run release:minor"
+  echo "  npm run release:major"
+  echo ""
+  echo "Or pass flags after --:"
+  echo "  npm run release -- --minor"
+  exit 1
 fi
 
 # Always sync with remote tags first
@@ -222,6 +232,7 @@ else
 
   # Construct new tag
   NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+  echo "Version bump: ${INCREMENT} (${LATEST_TAG} → ${NEW_TAG})"
 
   # Append custom name if provided
   if [[ -n "$NAME" ]]; then
@@ -466,7 +477,7 @@ ${removed}"
   echo "$changelog_content"
 }
 
-# Bump "version" in package.json and README.md (semver without leading v)
+# Bump package.json version and sync version pins across docs (semver without leading v)
 update_package_json_version() {
   [[ -f package.json ]] || return 0
   export VERSION_SEMVER
@@ -479,27 +490,10 @@ fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n');
 NODEJS
 }
 
-update_readme_version() {
-  [[ -f README.md ]] || return 0
+sync_version_pins() {
   export VERSION_SEMVER
-  node <<'NODEJS'
-const fs = require('fs');
-const v = process.env.VERSION_SEMVER;
-const path = 'README.md';
-let t = fs.readFileSync(path, 'utf8');
-const line = `**Package version:** \`${v}\``;
-const re = /(\*\*Package version:\*\* `)[^`]+(`)/;
-if (re.test(t)) {
-  fs.writeFileSync(path, t.replace(re, (_, a, b) => a + v + b));
-} else {
-  const insertAfter = /(\[!\[Bundle size\][^\n]+\n)/;
-  if (insertAfter.test(t)) {
-    fs.writeFileSync(path, t.replace(insertAfter, `$1\n${line}\n`));
-  } else {
-    fs.writeFileSync(path, t.replace(/^(# .+\n\n)/, `$1${line}\n\n`));
-  }
-}
-NODEJS
+  echo "Syncing version pins in docs and examples..."
+  node scripts/sync-version-pins.mjs
 }
 
 update_changelog_compare_links() {
@@ -534,9 +528,9 @@ if [[ "$NEW_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+- ]]; then
   VERSION_SEMVER=$(echo "$NEW_TAG" | sed -E 's/^v([0-9]+\.[0-9]+\.[0-9]+)-(.+)$/\1-\2/')
 fi
 
-echo "Updating package.json and README.md to version ${VERSION_SEMVER}..."
+echo "Updating package.json and version pins to ${VERSION_SEMVER}..."
 update_package_json_version
-update_readme_version
+sync_version_pins
 
 # Update CHANGELOG.md if this is a release (not a pre-release with --name)
 CHANGELOG_FILE="CHANGELOG.md"
@@ -657,18 +651,32 @@ if [[ -z "$NAME" && -f "$CHANGELOG_FILE" ]]; then
   update_changelog_compare_links
 fi
 
-# One commit for CHANGELOG (if any) + package.json + README.md
+# One commit for CHANGELOG (if any) + package.json + version-pinned docs
+VERSION_PIN_FILES=(
+  README.md
+  docs/INSTALL.md
+  docs/README.md
+  docs/FAQ.md
+  docs/cookbook/wordpress.md
+  docs/NPM-PUBLISH.md
+  docs/RELEASE.md
+  SECURITY.md
+  docs/DEPENDENCY-UPGRADES.md
+)
+
 [[ "$CHANGELOG_UPDATED" == true ]] && git add "$CHANGELOG_FILE"
 [[ -f package.json ]] && git add package.json
-[[ -f README.md ]] && git add README.md
+for f in "${VERSION_PIN_FILES[@]}"; do
+  [[ -f "$f" ]] && git add "$f"
+done
 
 if ! git diff --cached --quiet; then
   if [[ "$CHANGELOG_UPDATED" == true ]]; then
     COMMIT_MSG="chore: update CHANGELOG and bump version for ${NEW_TAG}"
-    echo "Committing CHANGELOG.md, package.json, and README.md for version ${VERSION_SEMVER}..."
+    echo "Committing CHANGELOG, package.json, and version pins for ${VERSION_SEMVER}..."
   else
     COMMIT_MSG="chore: bump version to ${VERSION_SEMVER} (${NEW_TAG})"
-    echo "Committing package.json and README.md for version ${VERSION_SEMVER}..."
+    echo "Committing package.json and version pins for ${VERSION_SEMVER}..."
   fi
   git commit -m "$COMMIT_MSG" >/dev/null 2>&1
   git push origin HEAD >/dev/null 2>&1 || true
@@ -682,7 +690,7 @@ git tag -a "$NEW_TAG" -m "Release ${NEW_TAG}" && git push origin "$NEW_TAG"
 
 if [[ $? -eq 0 ]]; then
   echo "Successfully created release tag: $NEW_TAG"
-  REMOTE_URL=$(git remote get-url origin 2>/dev/null | sed -E 's/.*[:/]([^/]+\/[^/]+)\.git.*/\1/' || echo "humza/feature-cards")
+  REMOTE_URL=$(git remote get-url origin 2>/dev/null | sed -E 's/.*[:/]([^/]+\/[^/]+)\.git.*/\1/' || echo "Hum2a/feature-cards")
   echo "Tag URL: https://github.com/${REMOTE_URL}/releases/tag/$NEW_TAG"
 else
   echo "Error: Failed to create tag"
@@ -691,7 +699,7 @@ fi
 
 if [[ "$PUBLISH" == true ]]; then
   echo ""
-  echo "Publishing @humza/feature-cards@${VERSION_SEMVER} to npm..."
+  echo "Publishing @techystuff/feature-cards@${VERSION_SEMVER} to npm..."
   if [[ -n "$NAME" ]]; then
     node scripts/publish-package.mjs --allow-prerelease
   else

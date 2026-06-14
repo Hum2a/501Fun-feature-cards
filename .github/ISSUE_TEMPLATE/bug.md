@@ -46,7 +46,7 @@ labels: bug
 | --- | --- |
 | **Browser + version** | |
 | **OS** | |
-| **`@humza/feature-cards` version** | |
+| **`@techystuff/feature-cards` version** | |
 | **Integration** | WordPress / Contentful / Sanity / other |
 
 ## Diagnostics

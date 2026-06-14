@@ -8,7 +8,7 @@ use this page as the map.
 
 | You are… | Start here | Then read |
 | --- | --- | --- |
-| **Integrator** (drop into a CMS page) | [README § Quick start](../README.md#quick-start) | [Cookbooks](#cms-cookbooks), [Schema reference](SCHEMA.md), [FAQ](FAQ.md) |
+| **Integrator** (drop into a CMS page) | [INSTALL.md](INSTALL.md) | [Cookbooks](#cms-cookbooks), [Schema reference](SCHEMA.md), [FAQ](FAQ.md) |
 | **Designer / themer** | [README § Theming](../README.md#public-api) | [Demo themes guide](DEMO.md#page-themes-vibe-check), [ACCESSIBILITY](../ACCESSIBILITY.md) |
 | **Contributor** | [CONTRIBUTING](../CONTRIBUTING.md) | [AGENTS](../AGENTS.md), [Testing guide](TESTING.md), [Branching](BRANCHING.md) |
 | **Maintainer / releaser** | [Release playbook](RELEASE.md) | [DEPENDENCY-UPGRADES](DEPENDENCY-UPGRADES.md), [SECURITY](../SECURITY.md) |
@@ -19,12 +19,16 @@ use this page as the map.
 
 | Document | What it covers |
 | --- | --- |
+| [INSTALL.md](INSTALL.md) | **npm & CDN install** — usage patterns, exports, licence, smoke test |
 | [SCHEMA.md](SCHEMA.md) | Canonical `Card` / `FeatureCardsData` JSON — every field, validation rule, example payloads |
 | [FAQ.md](FAQ.md) | Common questions: frameworks, SSR, SEO, bundle size, licensing |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Symptom → cause → fix for integration and dev issues |
 | [TESTING.md](TESTING.md) | Full test matrix: unit, fuzz, contracts, a11y, e2e, visual, browser bench |
 | [DEMO.md](DEMO.md) | Live demo page: themes, motion, schema playground, mock CMS |
 | [RELEASE.md](RELEASE.md) | Version bumps, changelog, tags, npm publish, SRI, CEM checklist |
+| [NPM.md](NPM.md) | npm doc index (links INSTALL + NPM-PUBLISH) |
+| [NPM-PUBLISH.md](NPM-PUBLISH.md) | Maintainer publish playbook (`@techystuff` org, 2FA, tarball) |
+| Rule **50-npm-package** (`.cursor/rules/`) | npm identity & release consistency invariants |
 
 ## Architecture & decisions
 
@@ -87,8 +91,8 @@ public site yet.
 | Demo (Pages) | [501fun.humza-butt.space](https://501fun.humza-butt.space) |
 | Mock CMS | [cms.501fun.humza-butt.space/api/cards](https://cms.501fun.humza-butt.space/api/cards) |
 | OpenAPI | [cms.501fun.humza-butt.space/openapi.json](https://cms.501fun.humza-butt.space/openapi.json) |
+| npm package | [@techystuff/feature-cards](https://www.npmjs.com/package/@techystuff/feature-cards) |
 
 ---
 
-**Package:** `@humza/feature-cards` · **Version:** see [README](../README.md) ·
-**Licence:** AGPL-3.0-only
+**Package:** `@techystuff/feature-cards@1.0.8` · **Licence:** AGPL-3.0-only

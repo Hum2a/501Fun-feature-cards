@@ -1,5 +1,5 @@
 /*!
- * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * @techystuff/feature-cards — CMS-agnostic <feature-cards> Web Component
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  */
@@ -7,7 +7,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 const BANNER = `/*!
- * @humza/feature-cards/react — React wrapper
+ * @techystuff/feature-cards/react — React wrapper
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  */`;

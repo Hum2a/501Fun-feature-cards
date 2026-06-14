@@ -6,6 +6,25 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.8] - 2026-06-14
+
+### Changed
+- Various updates and improvements.
+## [1.0.7] - 2026-06-14
+
+### Changed
+- Various updates and improvements.
+## [1.0.6] - 2026-06-14
+
+### Changed
+- Various updates and improvements.
+## [1.0.5] - 2026-06-14
+
+### Added
+- Add legal and licensing documentation.
+- Enhance demo with new branding and navigation elements.
+### Changed
+- Improve code formatting and readability across multiple files.
 ## [1.0.4] - 2026-06-13
 
 ### Fixed
@@ -47,7 +66,7 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Imperative `createFeatureCards()` API for non-SPA hosts.
-- Optional React wrapper export (`@humza/feature-cards/react`).
+- Optional React wrapper export (`@techystuff/feature-cards/react`).
 - RFC 7807-style `ProblemDetail` on `featurecards:error` (`{ issues, problem }`).
 - Custom Elements Manifest (`custom-elements.json`) + VS Code HTML custom data.
 - Demo schema playground (edit JSON, live preview).
@@ -74,7 +93,7 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 - Lighthouse workflow falls back to `pages.dev` when the production origin is unreachable.
 - Post-deploy smoke validates CMS JSON and canary markers without swallowing failures.
 - README documents the vibe picker, motion layer, and `master` as the production branch.
-- Cookbook CDN examples pin `@humza/feature-cards@1.2`.
+- Cookbook CDN examples pin `@techystuff/feature-cards@1.2`.
 - Node toolchain pinned to 22.13+ via `.nvmrc`.
 
 ## [1.0.1] - 2026-06-12
@@ -108,7 +127,7 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 - CI/CD: GitHub Actions for checks, Cloudflare Pages/Worker deployment,
   tag-based npm releases via `scripts/release.sh`.
 
-[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.0.8...HEAD
 [1.2.0]: https://github.com/Hum2a/feature-cards/compare/v1.0.1...v1.2.0
 [1.0.1]: https://github.com/Hum2a/feature-cards/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Hum2a/feature-cards/releases/tag/v1.0.0
@@ -119,3 +138,11 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 [1.0.3]: https://github.com/Hum2a/feature-cards/compare/v1.0.2...v1.0.3
 
 [1.0.4]: https://github.com/Hum2a/feature-cards/compare/v1.0.3...v1.0.4
+
+[1.0.5]: https://github.com/Hum2a/feature-cards/compare/v1.0.4...v1.0.5
+
+[1.0.6]: https://github.com/Hum2a/feature-cards/compare/v1.0.5...v1.0.6
+
+[1.0.7]: https://github.com/Hum2a/feature-cards/compare/v1.0.6...v1.0.7
+
+[1.0.8]: https://github.com/Hum2a/feature-cards/compare/v1.0.7...v1.0.8
