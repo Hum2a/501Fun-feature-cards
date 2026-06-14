@@ -16,7 +16,7 @@ from plain `<a>` children. One component, any page that can load JavaScript.
 Because "CMS-agnostic" includes WordPress PHP themes, static HTML, and legacy
 portals that will never adopt a SPA framework. A Web Component loads with one
 `<script>` tag. Optional React wrapper ships separately
-(`@humza/feature-cards/react`). See [ADR-0001](adr/0001-web-component-over-framework.md).
+(`@techystuff/feature-cards/react`). See [ADR-0001](adr/0001-web-component-over-framework.md).
 
 ### What's the bundle size?
 
@@ -35,7 +35,7 @@ and `light-dark()`. The no-JS fallback (plain links) works everywhere links work
 Yes. Load the IIFE bundle:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.2/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.5/dist/feature-cards.iife.js" defer></script>
 ```
 
 Pin a version and add SRI from `npm run sri`. See [WordPress cookbook](cookbook/wordpress.md).

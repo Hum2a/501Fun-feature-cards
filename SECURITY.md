@@ -57,7 +57,7 @@ flowchart TB
 
 - Serve CMS JSON from origins you trust
 - Use **SRI** when loading the IIFE from CDN (`npm run sri`)
-- Pin package versions (`@humza/feature-cards@1.2.x`)
+- Pin package versions (`@techystuff/feature-cards@1.0.x`)
 - Apply **Content-Security-Policy** appropriate to your site
 
 ## Mock CMS Worker

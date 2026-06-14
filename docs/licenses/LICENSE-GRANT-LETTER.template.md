@@ -9,7 +9,7 @@
 
 **To:** `[Licensee company]`  
 **Attn:** `[Contact name]`  
-**Re:** Commercial licence — `@humza/feature-cards` `[version]`
+**Re:** Commercial licence — `@techystuff/feature-cards` `[version]`
 
 Dear `[Contact]`,
 
@@ -19,7 +19,7 @@ Agreement dated `[agreement date]` between Humza Butt ("Licensor") and
 
 ## Granted rights
 
-Licensee is authorised to use **`@humza/feature-cards@`[x.y.z]** within the
+Licensee is authorised to use **`@techystuff/feature-cards@`[x.y.z]** within the
 following scope:
 
 - **Tier:** `[Internal | SaaS | OEM]`
@@ -33,7 +33,7 @@ For this scope, **AGPL-3.0-only obligations do not apply** to Licensee.
 Install the licensed version from the public npm registry:
 
 ```sh
-npm install @humza/feature-cards@[x.y.z]
+npm install @techystuff/feature-cards@[x.y.z]
 ```
 
 Pin this version in production. Upgrades outside `[x.y.z]` require a new licence
@@ -51,4 +51,4 @@ Questions: Humzab1711@hotmail.com
 Yours sincerely,
 
 **Humza Butt**  
-Copyright holder, `@humza/feature-cards`
+Copyright holder, `@techystuff/feature-cards`

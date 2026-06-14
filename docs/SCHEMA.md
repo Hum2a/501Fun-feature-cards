@@ -240,8 +240,8 @@ No JSON required — plain anchors with `data-*` hints:
 ## TypeScript consumers
 
 ```ts
-import type { Card, FeatureCardsData } from '@humza/feature-cards';
-import { safeParseFeatureCardsData } from '@humza/feature-cards';
+import type { Card, FeatureCardsData } from '@techystuff/feature-cards';
+import { safeParseFeatureCardsData } from '@techystuff/feature-cards';
 
 const result = safeParseFeatureCardsData(raw);
 if (!result.success) {

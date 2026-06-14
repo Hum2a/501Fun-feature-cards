@@ -2,13 +2,13 @@
 
 [![CI](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
-[![npm version](https://img.shields.io/npm/v/@humza/feature-cards.svg)](https://www.npmjs.com/package/@humza/feature-cards)
+[![npm version](https://img.shields.io/npm/v/@techystuff/feature-cards.svg)](https://www.npmjs.com/package/@techystuff/feature-cards)
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~25%20KiB-brightgreen.svg)](scripts/size.mjs)
 
 **Package version:** `1.0.5`
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
-**Package:** `@humza/feature-cards` · **Version:** `1.0.4`  
+**Package:** `@techystuff/feature-cards` · **Version:** `1.0.5`  
 **Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space) · **npm guide:** [docs/NPM.md](docs/NPM.md)  
 **Documentation hub:** [docs/README.md](docs/README.md)
 
@@ -57,7 +57,7 @@ zero-framework vanilla JS (~25 KiB gzip).
 ### Script tag (any CMS, no build step)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.0.4/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.5/dist/feature-cards.iife.js" defer></script>
 
 <feature-cards heading="Why teams choose us">
   <script type="application/json">
@@ -81,15 +81,15 @@ Pin versions and add SRI — see [WordPress cookbook](docs/cookbook/wordpress.md
 ## Install from npm
 
 ```sh
-npm install @humza/feature-cards
+npm install @techystuff/feature-cards
 ```
 
 | Entry | Import |
 | --- | --- |
-| Web Component | `import '@humza/feature-cards'` |
-| Imperative API | `import { createFeatureCards } from '@humza/feature-cards'` |
-| React wrapper | `import { FeatureCards } from '@humza/feature-cards/react'` |
-| Script tag (no build) | `@humza/feature-cards/iife` via CDN — see above |
+| Web Component | `import '@techystuff/feature-cards'` |
+| Imperative API | `import { createFeatureCards } from '@techystuff/feature-cards'` |
+| React wrapper | `import { FeatureCards } from '@techystuff/feature-cards/react'` |
+| Script tag (no build) | `@techystuff/feature-cards/iife` via CDN — see above |
 
 **Licence:** [AGPL-3.0-only](LICENSE) — free for open/copyleft use. Closed-source
 commercial deployment requires a [commercial licence](COMMERCIAL-LICENSING.md).
@@ -99,7 +99,7 @@ Publishing and dual-licensing setup: **[docs/NPM.md](docs/NPM.md)**.
 ### ESM
 
 ```js
-import '@humza/feature-cards';
+import '@techystuff/feature-cards';
 
 const el = document.querySelector('feature-cards');
 el.data = {
@@ -126,7 +126,7 @@ el.data = {
 ### Imperative mount
 
 ```js
-import { createFeatureCards } from '@humza/feature-cards';
+import { createFeatureCards } from '@techystuff/feature-cards';
 
 createFeatureCards({
   target: '#cards-host',
@@ -139,7 +139,7 @@ createFeatureCards({
 ### React (optional peer)
 
 ```tsx
-import { FeatureCards } from '@humza/feature-cards/react';
+import { FeatureCards } from '@techystuff/feature-cards/react';
 
 <FeatureCards
   data={{ cards: [{ id: 'a', title: 'Hello', cta: { label: 'Go', href: '/go' } }] }}

@@ -91,5 +91,5 @@ public site yet.
 
 ---
 
-**Package:** `@humza/feature-cards` · **Version:** see [README](../README.md) ·
+**Package:** `@techystuff/feature-cards` · **Version:** see [README](../README.md) ·
 **Licence:** AGPL-3.0-only

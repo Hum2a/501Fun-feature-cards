@@ -7,7 +7,7 @@ most likely cause first.
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| Empty shadow, no error | Forgot to register the element | Load ESM (`import '@humza/feature-cards'`) or IIFE bundle before use |
+| Empty shadow, no error | Forgot to register the element | Load ESM (`import '@techystuff/feature-cards'`) or IIFE bundle before use |
 | Empty shadow, no error | Invalid JSON in inline `<script>` | Validate against [SCHEMA.md](SCHEMA.md); listen for `featurecards:error` |
 | Empty shadow | `cards` array empty or missing | Schema requires `cards.length >= 1` |
 | Old content visible | Higher-precedence source | Check `el.data`, inline JSON, then `src` — see precedence in [SCHEMA.md](SCHEMA.md) |

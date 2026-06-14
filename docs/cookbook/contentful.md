@@ -105,7 +105,7 @@ Build script pseudo-code:
 
 ```js
 import { writeFileSync } from 'node:fs';
-import { toFeatureCardsData } from '@humza/feature-cards/adapters/contentful'; // illustrative
+import { toFeatureCardsData } from '@techystuff/feature-cards/adapters/contentful'; // illustrative
 
 const res = await fetch(CONTENTFUL_URL, { headers: { Authorization: `Bearer ${SECRET}` } });
 const payload = await res.json();

@@ -32,7 +32,7 @@ Build a native **Custom Element** (`<feature-cards>`):
 - Authored in **strict TypeScript**
 - Shipped as **vanilla ESM** + **self-registering IIFE**
 - **Zero framework runtime** in the published bundle
-- Optional **`@humza/feature-cards/react`** wrapper for teams that want JSX ergonomics
+- Optional **`@techystuff/feature-cards/react`** wrapper for teams that want JSX ergonomics
 
 Registration via `customElements.define`; lifecycle via standard callbacks;
 rendering via DOM APIs and constructable stylesheets.

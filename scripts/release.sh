@@ -682,7 +682,7 @@ git tag -a "$NEW_TAG" -m "Release ${NEW_TAG}" && git push origin "$NEW_TAG"
 
 if [[ $? -eq 0 ]]; then
   echo "Successfully created release tag: $NEW_TAG"
-  REMOTE_URL=$(git remote get-url origin 2>/dev/null | sed -E 's/.*[:/]([^/]+\/[^/]+)\.git.*/\1/' || echo "humza/feature-cards")
+  REMOTE_URL=$(git remote get-url origin 2>/dev/null | sed -E 's/.*[:/]([^/]+\/[^/]+)\.git.*/\1/' || echo "Hum2a/feature-cards")
   echo "Tag URL: https://github.com/${REMOTE_URL}/releases/tag/$NEW_TAG"
 else
   echo "Error: Failed to create tag"
@@ -691,7 +691,7 @@ fi
 
 if [[ "$PUBLISH" == true ]]; then
   echo ""
-  echo "Publishing @humza/feature-cards@${VERSION_SEMVER} to npm..."
+  echo "Publishing @techystuff/feature-cards@${VERSION_SEMVER} to npm..."
   if [[ -n "$NAME" ]]; then
     node scripts/publish-package.mjs --allow-prerelease
   else

@@ -11,7 +11,7 @@ and demo, and are **not** generic descriptors for any card UI:
 | Mark | Usage |
 | --- | --- |
 | **feature-cards** | Project name, custom element tag, documentation |
-| **@humza/feature-cards** | npm package scope and name |
+| **@techystuff/feature-cards** | npm package scope and name |
 | **501fun** / demo branding | Live demo identity at 501fun.humza-butt.space |
 | **Logo / mark SVG** | Files under `demo/public/brand/` |
 

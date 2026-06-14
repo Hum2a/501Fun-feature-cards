@@ -1,4 +1,4 @@
-# npm package experiment — `@humza/feature-cards`
+# npm package experiment — `@techystuff/feature-cards`
 
 Playbook for publishing the library to npm under **AGPL-3.0-only**, with an optional
 **commercial licence** path for closed-source buyers. The demo site and editor are
@@ -31,16 +31,25 @@ npm login
 npm whoami
 ```
 
-Your account must own the **`@humza` scope** (npm organisation or user scope).
-If `@humza` is taken, pick another scope and update `package.json` `name` before
-the first publish — renaming after consumers install is painful.
+Your npm user (e.g. **`hum2a`**) must be a **member** of the
+**[@techystuff](https://www.npmjs.com/org/techystuff)** organisation with permission
+to publish packages.
+
+```sh
+npm login
+npm whoami          # your user, e.g. hum2a
+npm org ls techystuff   # confirm you are listed
+```
+
+The package name in `package.json` is **`@techystuff/feature-cards`** — the scope
+must match the org. Renaming after consumers install is painful.
 
 ### 2. Enable 2FA (recommended)
 
 npm → Account → **Enable 2FA** → Authorization and publishing.
 
 For CI, use a **Granular Access Token** with **Publish** permission on
-`@humza/feature-cards` only.
+`@techystuff/feature-cards` only.
 
 ### 3. GitHub secret for automated publish
 
@@ -48,14 +57,14 @@ Repository → Settings → Secrets → Actions:
 
 | Secret | Value |
 | --- | --- |
-| `NPM_TOKEN` | Granular token with publish access to `@humza/feature-cards` |
+| `NPM_TOKEN` | Granular token with publish access to `@techystuff/feature-cards` |
 
 The [release workflow](../.github/workflows/release.yml) publishes stable `v*.*.*`
 tags with [npm provenance](https://docs.npmjs.com/generating-provenance-statements).
 
 ### 4. npm package page (after first publish)
 
-On [npmjs.com/package/@humza/feature-cards](https://www.npmjs.com/package/@humza/feature-cards):
+On [npmjs.com/package/@techystuff/feature-cards](https://www.npmjs.com/package/@techystuff/feature-cards):
 
 - **Description** — pulled from `package.json`
 - **Homepage** — demo URL
@@ -68,20 +77,20 @@ for proprietary use.
 ## Install (for consumers)
 
 ```sh
-npm install @humza/feature-cards
+npm install @techystuff/feature-cards
 ```
 
 ```js
-import '@humza/feature-cards';
+import '@techystuff/feature-cards';
 // or
-import { createFeatureCards } from '@humza/feature-cards';
-import { FeatureCards } from '@humza/feature-cards/react';
+import { createFeatureCards } from '@techystuff/feature-cards';
+import { FeatureCards } from '@techystuff/feature-cards/react';
 ```
 
 Script tag via jsDelivr/unpkg:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@humza/feature-cards@1.0.4/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.5/dist/feature-cards.iife.js" defer></script>
 ```
 
 Pin versions in production. Run `npm run sri` after IIFE changes for integrity hashes.
@@ -110,7 +119,7 @@ flowchart LR
 
 **Important:** There is no separate “commercial npm package” in this experiment.
 Paying customers get a **signed licence** that overrides AGPL for their scope; they
-still install `@humza/feature-cards` from the public registry.
+still install `@techystuff/feature-cards` from the public registry.
 
 ## Publishing workflow
 
@@ -137,8 +146,8 @@ git push origin v1.0.4
 npm run release:package
 
 # 4. Verify
-npm view @humza/feature-cards version
-npm view @humza/feature-cards dist-tags
+npm view @techystuff/feature-cards version
+npm view @techystuff/feature-cards dist-tags
 ```
 
 ### Ongoing releases
@@ -155,7 +164,7 @@ See [RELEASE.md](RELEASE.md) for the full checklist.
 
 When a customer pays for closed-source use:
 
-1. They still `npm install @humza/feature-cards@x.y.z` (pin the licensed version).
+1. They still `npm install @techystuff/feature-cards@x.y.z` (pin the licensed version).
 2. You send a [License Grant Letter](licenses/LICENSE-GRANT-LETTER.template.md)
    referencing the signed [Commercial Agreement](licenses/COMMERCIAL-LICENSE.template.md).
 3. No license keys or private registry required at this stage.
@@ -169,7 +178,8 @@ Full sales playbook: [COMMERCIAL-LICENSING.md](../COMMERCIAL-LICENSING.md).
 | Error | Fix |
 | --- | --- |
 | `ENEEDAUTH` | `npm login` or set `NPM_TOKEN` |
-| `402 Payment Required` | Scope `@humza` may need npm org; or use unscoped name |
+| `403 Forbidden` | Not in `@techystuff` org, or token lacks publish permission |
+| `402 Payment Required` | Rare for public org packages — confirm org is on free public tier |
 | `403 Forbidden` | Token lacks publish permission; 2FA token type mismatch |
 | Tag ≠ package.json version | Align `v1.0.4` tag with `"version": "1.0.4"` |
 | `dist/demo` in tarball | Run `npm run clean && npm run build:lib` — demo build must not run before pack |

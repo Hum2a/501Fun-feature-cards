@@ -1,5 +1,5 @@
 {
-  "name": "@humza/feature-cards",
+  "name": "@techystuff/feature-cards",
   "version": "1.0.5",
   "description": "A CMS-agnostic, accessible, responsive <feature-cards> Web Component with a schema-first adapter layer.",
   "type": "module",

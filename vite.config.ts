@@ -1,5 +1,5 @@
 /*!
- * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * @techystuff/feature-cards — CMS-agnostic <feature-cards> Web Component
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
  *
@@ -11,10 +11,10 @@ import { defineConfig, type PluginOption } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 const BANNER = `/*!
- * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * @techystuff/feature-cards — CMS-agnostic <feature-cards> Web Component
  * Copyright © 2026 Humza Butt. All rights reserved.
  * SPDX-License-Identifier: AGPL-3.0-only
- * https://github.com/humza/feature-cards
+ * https://github.com/Hum2a/feature-cards
  *
  * Licensed under the GNU Affero General Public License v3.0 only.
  * Commercial/network use requires source disclosure under the AGPL.

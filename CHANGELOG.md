@@ -6,6 +6,9 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- npm package scope renamed to **`@techystuff/feature-cards`** (org: `@techystuff`).
+
 ## [1.0.5] - 2026-06-14
 
 ### Added
@@ -54,7 +57,7 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Imperative `createFeatureCards()` API for non-SPA hosts.
-- Optional React wrapper export (`@humza/feature-cards/react`).
+- Optional React wrapper export (`@techystuff/feature-cards/react`).
 - RFC 7807-style `ProblemDetail` on `featurecards:error` (`{ issues, problem }`).
 - Custom Elements Manifest (`custom-elements.json`) + VS Code HTML custom data.
 - Demo schema playground (edit JSON, live preview).
@@ -81,7 +84,7 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 - Lighthouse workflow falls back to `pages.dev` when the production origin is unreachable.
 - Post-deploy smoke validates CMS JSON and canary markers without swallowing failures.
 - README documents the vibe picker, motion layer, and `master` as the production branch.
-- Cookbook CDN examples pin `@humza/feature-cards@1.2`.
+- Cookbook CDN examples pin `@techystuff/feature-cards@1.2`.
 - Node toolchain pinned to 22.13+ via `.nvmrc`.
 
 ## [1.0.1] - 2026-06-12

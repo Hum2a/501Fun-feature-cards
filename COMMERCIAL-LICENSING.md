@@ -1,6 +1,6 @@
 # Commercial licensing
 
-The *feature-cards* npm package (`@humza/feature-cards`) is published under
+The *feature-cards* npm package (`@techystuff/feature-cards`) is published under
 **[AGPL-3.0-only](LICENSE)**. That works for open evaluation and copyleft
 deployments, but **not** for organisations that need closed-source use.
 
@@ -11,7 +11,7 @@ keys or private registry in v1 — see [docs/NPM.md](docs/NPM.md).
 
 | Use case | Licence path | Cost |
 | --- | --- | --- |
-| OSS / can publish source | **AGPL-3.0-only** — `npm install @humza/feature-cards` | Free |
+| OSS / can publish source | **AGPL-3.0-only** — `npm install @techystuff/feature-cards` | Free |
 | Evaluation / portfolio review | AGPL — clone repo, run demo | Free |
 | Internal proprietary tool | **Commercial — Internal tier** | Quote |
 | SaaS / public site (no source offer) | **Commercial — SaaS tier** | Quote |
@@ -64,7 +64,7 @@ sequenceDiagram
   Y->>B: Scope call + written quote
   B->>Y: Signed agreement + payment
   Y->>B: License Grant Letter + version pin
-  B->>N: npm install @humza/feature-cards@x.y.z
+  B->>N: npm install @techystuff/feature-cards@x.y.z
 ```
 
 1. **Enquiry** — buyer sends checklist
@@ -72,7 +72,7 @@ sequenceDiagram
 3. **Quote** — fixed fee in writing (email is fine pre-template)
 4. **Contract** — solicitor-reviewed agreement ([DRAFT template](docs/licenses/COMMERCIAL-LICENSE.template.md))
 5. **Payment** — invoice (Stripe, bank transfer)
-6. **Grant** — [License Grant Letter](docs/licenses/LICENSE-GRANT-LETTER.template.md) with `@humza/feature-cards@x.y.z`
+6. **Grant** — [License Grant Letter](docs/licenses/LICENSE-GRANT-LETTER.template.md) with `@techystuff/feature-cards@x.y.z`
 
 **Never** grant commercial rights before payment and signature.
 

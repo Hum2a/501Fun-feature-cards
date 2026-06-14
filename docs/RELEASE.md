@@ -1,6 +1,6 @@
 # Release playbook
 
-Step-by-step guide for shipping `@humza/feature-cards` to GitHub, npm, and
+Step-by-step guide for shipping `@techystuff/feature-cards` to GitHub, npm, and
 production. Read [CONTRIBUTING.md](../CONTRIBUTING.md) for contributor context;
 [BRANCHING.md](BRANCHING.md) for branch policy.
 
@@ -32,7 +32,7 @@ Before tagging:
 
 1. **`CHANGELOG.md`** — move `[Unreleased]` entries into a dated version section
 2. **`custom-elements.json`** — matches generator (`npm run cem:check`)
-3. **Cookbook CDN pins** — update `@humza/feature-cards@x.y` and SRI if IIFE changed
+3. **Cookbook CDN pins** — update `@techystuff/feature-cards@x.y` and SRI if IIFE changed
 4. **Visual baselines** — updated if markup changed (`tests/visual/`)
 
 ## Release commands
@@ -96,7 +96,7 @@ Secrets required: **`NPM_TOKEN`**.
 
 | Task | Command / action |
 | --- | --- |
-| Verify npm | `npm view @humza/feature-cards version` |
+| Verify npm | `npm view @techystuff/feature-cards version` |
 | Verify tarball | `npm run pack:verify` |
 | Verify demo | `npm run canary:verify -- https://501fun.humza-butt.space` |
 | Update CDN docs | WordPress cookbook SRI + version query |

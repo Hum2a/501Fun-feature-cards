@@ -16,7 +16,7 @@
 
 ## Definitions
 
-- **Software:** `@humza/feature-cards` version `[x.y.z]` (git tag `v[x.y.z]`), including
+- **Software:** `@techystuff/feature-cards` version `[x.y.z]` (git tag `v[x.y.z]`), including
   compiled bundles and TypeScript types as published on npm.
 - **Scope:** `[describe permitted use — see tier below]`
 - **Documentation:** README, SCHEMA, and API docs as of the Licensed Version.
