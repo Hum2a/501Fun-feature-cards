@@ -63,12 +63,18 @@ function applyVersionPins(version, text) {
 
   let out = text;
 
-  out = out.replace(/@techystuff\/feature-cards@\d+\.\d+\.\d+/g, `@techystuff/feature-cards@${version}`);
+  out = out.replace(
+    /@techystuff\/feature-cards@\d+\.\d+\.\d+/g,
+    `@techystuff/feature-cards@${version}`,
+  );
   out = out.replace(
     /unpkg\.com\/@techystuff\/feature-cards@\d+\.\d+\.\d+/g,
     `unpkg.com/@techystuff/feature-cards@${version}`,
   );
-  out = out.replace(/\*\*Package version:\*\* `\d+\.\d+\.\d+`/g, `**Package version:** \`${version}\``);
+  out = out.replace(
+    /\*\*Package version:\*\* `\d+\.\d+\.\d+`/g,
+    `**Package version:** \`${version}\``,
+  );
   out = out.replace(
     /\*\*Package:\*\* `@techystuff\/feature-cards` · \*\*Version:\*\* `\d+\.\d+\.\d+`/g,
     `**Package:** \`@techystuff/feature-cards\` · **Version:** \`${version}\``,
@@ -157,7 +163,9 @@ if (checkOnly) {
     }
     process.exit(1);
   }
-  console.log(`Version pins OK (${VERSION_FILES.length} files checked, package.json ${version}).`);
+  console.log(
+    `Version pins OK (${VERSION_FILES.length} files checked, package.json ${version}).`,
+  );
   process.exit(0);
 }
 

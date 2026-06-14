@@ -13,9 +13,9 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -83,33 +83,36 @@ jobs:
 
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
+          if-no-files-found: ignore
 
       - name: Upload coverage
-        if: always()
-        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        uses: actions/upload-artifact@v5
         with:
           name: coverage
           path: coverage/
           retention-days: 14
+          if-no-files-found: ignore
 
       - name: Upload TypeDoc API reference
-        if: always()
-        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        uses: actions/upload-artifact@v5
         with:
           name: typedoc-api
           path: docs/api/
           retention-days: 14
+          if-no-files-found: ignore
 
   benchmark:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm

@@ -85,12 +85,16 @@ if (!dryRun) {
 
 try {
   if (dryRun) {
-    console.log(`[dry-run] would publish ${GITHUB_PACKAGE_NAME}@${version} to ${GITHUB_REGISTRY}`);
+    console.log(
+      `[dry-run] would publish ${GITHUB_PACKAGE_NAME}@${version} to ${GITHUB_REGISTRY}`,
+    );
     run('npm publish --access public --dry-run --registry=https://npm.pkg.github.com');
   } else {
     run('npm publish --access public');
     console.log(`\nPublished ${GITHUB_PACKAGE_NAME}@${version} to GitHub Packages.`);
-    console.log('Install (GitHub Packages): npm install @hum2a/feature-cards --registry=https://npm.pkg.github.com');
+    console.log(
+      'Install (GitHub Packages): npm install @hum2a/feature-cards --registry=https://npm.pkg.github.com',
+    );
     console.log('Consumers should use npm: npm install @techystuff/feature-cards');
   }
 } finally {
