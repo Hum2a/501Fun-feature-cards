@@ -8,8 +8,8 @@
 **Package version:** `1.0.8`
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
-**Package:** `@techystuff/feature-cards` · **Version:** `1.0.5`  
-**Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space) · **npm guide:** [docs/NPM.md](docs/NPM.md)  
+**Package:** `@techystuff/feature-cards` · **Version:** `1.0.8`  
+**Install guide:** [docs/INSTALL.md](docs/INSTALL.md) · **Live demo:** [501fun.humza-butt.space](https://501fun.humza-butt.space)  
 **Documentation hub:** [docs/README.md](docs/README.md)
 
 One **accessible, responsive, CMS-agnostic Web Component** that replaces hard-coded
@@ -57,7 +57,7 @@ zero-framework vanilla JS (~25 KiB gzip).
 ### Script tag (any CMS, no build step)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.5/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.8/dist/feature-cards.iife.js" defer></script>
 
 <feature-cards heading="Why teams choose us">
   <script type="application/json">
@@ -80,8 +80,10 @@ Pin versions and add SRI — see [WordPress cookbook](docs/cookbook/wordpress.md
 
 ## Install from npm
 
+**Full guide:** **[docs/INSTALL.md](docs/INSTALL.md)** — npm vs CDN, all usage patterns, exports, licence, smoke test.
+
 ```sh
-npm install @techystuff/feature-cards
+npm install @techystuff/feature-cards@1.0.8
 ```
 
 | Entry | Import |
@@ -89,12 +91,10 @@ npm install @techystuff/feature-cards
 | Web Component | `import '@techystuff/feature-cards'` |
 | Imperative API | `import { createFeatureCards } from '@techystuff/feature-cards'` |
 | React wrapper | `import { FeatureCards } from '@techystuff/feature-cards/react'` |
-| Script tag (no build) | `@techystuff/feature-cards/iife` via CDN — see above |
+| CDN (no build) | See [INSTALL.md § CDN](docs/INSTALL.md#option-b--cdn-no-build-step) |
 
-**Licence:** [AGPL-3.0-only](LICENSE) — free for open/copyleft use. Closed-source
-commercial deployment requires a [commercial licence](COMMERCIAL-LICENSING.md).
-
-Publishing and dual-licensing setup: **[docs/NPM.md](docs/NPM.md)**.
+AGPL-3.0-only — [commercial licence](COMMERCIAL-LICENSING.md) for closed-source use.  
+Maintainers: [docs/NPM-PUBLISH.md](docs/NPM-PUBLISH.md).
 
 ### ESM
 

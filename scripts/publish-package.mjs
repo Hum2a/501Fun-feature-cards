@@ -121,7 +121,9 @@ if (otp) {
 }
 
 if (!useProvenance) {
-  console.log('Publishing without provenance (local). CI uses --provenance automatically.');
+  console.log(
+    'Publishing without provenance (local). CI uses --provenance automatically.',
+  );
 }
 if (!otp && process.env.GITHUB_ACTIONS !== 'true') {
   console.log(

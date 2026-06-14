@@ -32,7 +32,7 @@ Before tagging:
 
 1. **`CHANGELOG.md`** — move `[Unreleased]` entries into a dated version section
 2. **`custom-elements.json`** — matches generator (`npm run cem:check`)
-3. **Cookbook CDN pins** — update `@techystuff/feature-cards@x.y` and SRI if IIFE changed
+3. **CDN / cookbook pins** — update `@techystuff/feature-cards@x.y.z` in [INSTALL.md](INSTALL.md), README, cookbooks, FAQ; run SRI if IIFE changed
 4. **Visual baselines** — updated if markup changed (`tests/visual/`)
 
 ## Release commands

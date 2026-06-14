@@ -35,7 +35,7 @@ and `light-dark()`. The no-JS fallback (plain links) works everywhere links work
 Yes. Load the IIFE bundle:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.5/dist/feature-cards.iife.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@techystuff/feature-cards@1.0.8/dist/feature-cards.iife.js" defer></script>
 ```
 
 Pin a version and add SRI from `npm run sri`. See [WordPress cookbook](cookbook/wordpress.md).
@@ -102,7 +102,9 @@ page motion follows the same rule.
 
 ### What licence is this?
 
-**AGPL-3.0-only.** You may read and evaluate freely. Network deployment of
+**AGPL-3.0-only.** Install and licence overview: **[INSTALL.md](INSTALL.md)**.
+
+You may read and evaluate freely. Network deployment of
 modified versions requires offering corresponding source to users. Commercial
 closed-source use needs a separate licence from the author.
 

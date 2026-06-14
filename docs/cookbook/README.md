@@ -3,6 +3,8 @@
 Copy-paste integration guides for common headless CMS platforms. All paths
 normalise to the same canonical schema — see [SCHEMA.md](../SCHEMA.md).
 
+**Install first:** [INSTALL.md](../INSTALL.md) (npm, CDN, script tag).
+
 | Platform | Guide | Adapter attribute | Typical `src` |
 | --- | --- | --- | --- |
 | **WordPress** | [wordpress.md](wordpress.md) | `wordpress` | `/wp-json/wp/v2/posts?_embed` |
