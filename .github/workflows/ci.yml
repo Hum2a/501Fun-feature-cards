@@ -35,6 +35,9 @@ jobs:
       - name: Format check
         run: npm run format:check
 
+      - name: Licence header check
+        run: npm run license:check
+
       - name: Unit tests + coverage
         run: npm run coverage
 

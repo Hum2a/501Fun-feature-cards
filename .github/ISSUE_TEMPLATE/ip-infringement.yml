@@ -1,0 +1,82 @@
+name: IP / licence infringement report
+description: Document suspected unauthorised use of feature-cards code, branding, or npm package
+title: '[IP] '
+labels: ['legal', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to **track** suspected infringement of *feature-cards*.
+        For urgent takedowns, also email **Humzab1711@hotmail.com** (subject: `IP: feature-cards`).
+
+        See [LEGAL.md](../LEGAL.md) for the full enforcement guide. **Do not paste secrets or unrelated personal data.**
+
+  - type: input
+    id: reporter
+    attributes:
+      label: Your name / relationship to the project
+      placeholder: e.g. Copyright holder, contributor, third-party witness
+    validations:
+      required: true
+
+  - type: input
+    id: discovered
+    attributes:
+      label: Date first discovered (YYYY-MM-DD)
+    validations:
+      required: true
+
+  - type: textarea
+    id: urls
+    attributes:
+      label: URLs where infringing material appears
+      description: Sites, GitHub repos, npm packages, job portfolios, etc.
+      placeholder: https://...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: violation_type
+    attributes:
+      label: Type of violation
+      options:
+        - Copied source without licence notices
+        - AGPL network use without source offer
+        - Removed canary watermark / copyright banners
+        - Republished npm package
+        - False authorship / portfolio plagiarism
+        - Trade mark / branding misuse
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence collected
+      description: Screenshots, archive.org links, canary:verify output, commit SHAs, diffs
+    validations:
+      required: true
+
+  - type: textarea
+    id: canary
+    attributes:
+      label: Canary verify output (if applicable)
+      description: Paste output of `npm run canary:verify -- <url>`
+      render: shell
+
+  - type: checkboxes
+    id: actions
+    attributes:
+      label: Actions taken or planned
+      options:
+        - label: Documented with dated screenshots / archives
+        - label: Sent cease-and-desist / compliance notice
+        - label: Filed DMCA with GitHub or host
+        - label: Reported to npm
+        - label: Consulted a solicitor
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes

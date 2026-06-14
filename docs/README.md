@@ -63,6 +63,9 @@ Step-by-step integration guides with copy-paste snippets:
 | --- | --- |
 | [ACCESSIBILITY.md](../ACCESSIBILITY.md) | WCAG mapping, keyboard, screen readers, known limits |
 | [SECURITY.md](../SECURITY.md) | Vulnerability reporting, XSS surface, canary verification |
+| [LEGAL.md](../LEGAL.md) | Copyright enforcement, DMCA, evidence chain, commercial licensing |
+| [TRADEMARK.md](../TRADEMARK.md) | Name and logo usage policy |
+| [TERMS_OF_USE.md](../TERMS_OF_USE.md) | Live demo site terms |
 | [CHANGELOG.md](../CHANGELOG.md) | Version history (Keep a Changelog) |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | PR checklist, commit style, ground rules |
 

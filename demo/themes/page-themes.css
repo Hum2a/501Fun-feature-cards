@@ -1,4 +1,8 @@
 /*!
+ * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * Copyright © 2026 Humza Butt. All rights reserved.
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *
  * Demo page theme token layer — every `[data-page-theme]` block MUST define
  * the full `--page-*` set listed in `.cursor/rules/47-page-themes.mdc`.
  *

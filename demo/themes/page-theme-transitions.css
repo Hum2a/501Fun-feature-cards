@@ -1,4 +1,8 @@
 /*!
+ * @humza/feature-cards — CMS-agnostic <feature-cards> Web Component
+ * Copyright © 2026 Humza Butt. All rights reserved.
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *
  * Interpolates `--page-*` colour tokens when `data-page-theme` changes.
  * Requires `html.theme-animate` (added after first paint in page-theme-controller).
  */

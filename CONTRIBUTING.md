@@ -14,7 +14,7 @@ small, opinionated, and quality-gated — the rules below keep it that way.
 | **Accessibility regressions block release** | axe zero violations; full keyboard operation |
 | **Never throw at consumers** | Emit `featurecards:error`; preserve light DOM |
 | **Canary watermark is load-bearing** | Do not remove or alter `src/watermark.ts` |
-| **AGPL header on every source file** | Legal consistency |
+| **AGPL header on every source file** | Legal consistency — enforced by `npm run license:check` |
 
 ## Getting started
 
@@ -160,4 +160,5 @@ Generated docs (`docs/api/`, `custom-elements.json`) — regenerate, don't hand-
 ## Licence
 
 By contributing you agree your contributions are licensed under **AGPL-3.0-only**,
-the project licence.
+the project licence. See [LEGAL.md](LEGAL.md) for copyright and enforcement policy.
+Do not remove or weaken licence headers, watermarks, or legal files.

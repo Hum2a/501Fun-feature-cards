@@ -53,6 +53,9 @@
     "LICENSE",
     "NOTICE",
     "COPYRIGHT",
+    "LEGAL.md",
+    "TRADEMARK.md",
+    "COMMERCIAL-LICENSING.md",
     "README.md"
   ],
   "publishConfig": {
@@ -117,6 +120,7 @@
     "party": "node scripts/party.mjs",
     "rules:sync": "node scripts/sync-agent-rules.mjs",
     "rules:sync:check": "node scripts/sync-agent-rules.mjs --check",
+    "license:check": "node scripts/check-license-headers.mjs",
     "icons:sync": "node scripts/sync-lucide-icons.mjs",
     "docs:api": "typedoc",
     "cem": "node scripts/generate-cem.mjs",

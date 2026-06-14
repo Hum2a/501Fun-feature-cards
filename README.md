@@ -417,7 +417,13 @@ npm run canary:verify -- https://501fun.humza-butt.space
 
 You may read, run, and evaluate freely. Deploying modified versions as a network
 service requires offering corresponding source under the same licence. Commercial
-closed-source use requires a separate agreement with the author.
+closed-source use requires a [commercial licence](COMMERCIAL-LICENSING.md).
 
-Inert authorship markers are verifiable: `npm run canary:verify -- <url>` —
-details in [SECURITY.md](SECURITY.md).
+| Document | Purpose |
+| --- | --- |
+| [LEGAL.md](LEGAL.md) | Enforcement guide — evidence, takedowns, contacts |
+| [TRADEMARK.md](TRADEMARK.md) | Name and logo usage policy |
+| [TERMS_OF_USE.md](TERMS_OF_USE.md) | Live demo site terms |
+| [SECURITY.md](SECURITY.md) | Canary watermark verification |
+
+Inert authorship markers are verifiable: `npm run canary:verify -- <url>`.
