@@ -178,12 +178,11 @@ Full sales playbook: [COMMERCIAL-LICENSING.md](../COMMERCIAL-LICENSING.md).
 | Error | Fix |
 | --- | --- |
 | `ENEEDAUTH` | `npm login` or set `NPM_TOKEN` |
-| `403 Forbidden` | Not in `@techystuff` org, or token lacks publish permission |
-| `402 Payment Required` | Rare for public org packages — confirm org is on free public tier |
-| `403 Forbidden` | Token lacks publish permission; 2FA token type mismatch |
-| Tag ≠ package.json version | Align `v1.0.4` tag with `"version": "1.0.4"` |
+| `403 Forbidden` | Not in `@techystuff` org, or token lacks publish permission; 2FA token mismatch |
+| Tag ≠ package.json version | Align `v1.0.6` tag with `"version": "1.0.6"` |
 | `dist/demo` in tarball | Run `npm run clean && npm run build:lib` — demo build must not run before pack |
-| Provenance failed | CI needs `id-token: write` (already in release.yml) |
+| `Automatic provenance generation not supported for provider: null` | **Local publish** — fixed: script skips `--provenance` locally; CI still uses it |
+| Provenance failed in CI | Release workflow needs `id-token: write` (already in release.yml) |
 
 ## Related
 

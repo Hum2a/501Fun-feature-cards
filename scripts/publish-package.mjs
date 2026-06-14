@@ -99,5 +99,18 @@ if (dryRun) {
   process.exit(0);
 }
 
-run('npm publish --access public --provenance');
+// Provenance attestation only works in supported CI (e.g. GitHub Actions with OIDC).
+// Local `npm publish --provenance` fails with "provider: null".
+const useProvenance =
+  process.argv.includes('--provenance') ||
+  (process.env.GITHUB_ACTIONS === 'true' && process.env.CI === 'true');
+const publishCmd = useProvenance
+  ? 'npm publish --access public --provenance'
+  : 'npm publish --access public';
+
+if (!useProvenance) {
+  console.log('Publishing without provenance (local). CI uses --provenance automatically.\n');
+}
+
+run(publishCmd);
 console.log(`\nPublished ${pkg.name}@${version} to npm.`);
