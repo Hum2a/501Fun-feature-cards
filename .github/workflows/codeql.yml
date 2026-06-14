@@ -1,5 +1,11 @@
 name: CodeQL
 
+# CodeQL is not deprecated. Uploading results to GitHub's Security tab requires
+# code scanning, which is only available for public repos (or private repos
+# with GitHub Code Security on Team/Enterprise). This repo is private on Free,
+# so we analyze locally and upload SARIF as a workflow artifact instead.
+# To use the Security tab: make the repo public, then set upload: true below.
+
 on:
   push:
     branches: [main, master]
@@ -13,10 +19,30 @@ jobs:
     permissions:
       actions: read
       contents: read
-      security-events: write
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
       - uses: github/codeql-action/init@v3
         with:
           languages: javascript-typescript
+
+      - run: npm run build
+
       - uses: github/codeql-action/analyze@v3
+        with:
+          upload: false
+          output: codeql-results
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: codeql-sarif
+          path: codeql-results/*.sarif
+          retention-days: 14
