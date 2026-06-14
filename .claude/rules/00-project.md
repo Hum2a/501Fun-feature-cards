@@ -22,3 +22,4 @@ alwaysApply: true
   (`eyebrow`, `figure.value`, `figure.label`, `media`), `layout: "stat"`, and
   the demo **card editor**. See `.cursor/rules/49-stat-cards-and-editor.mdc`.
 - Every source file starts with the AGPL-3.0 licence header.
+- npm package identity and release consistency: `.cursor/rules/50-npm-package.mdc`.

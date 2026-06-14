@@ -193,6 +193,8 @@ Precedence is **top wins**. Never assume `src` is used if `data` is also set.
 | [ACCESSIBILITY.md](ACCESSIBILITY.md) | a11y requirements |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | PR workflow |
 | [docs/RELEASE.md](docs/RELEASE.md) | Shipping versions |
+| [docs/NPM.md](docs/NPM.md) | npm org, publish, tarball, dual licensing |
+| Rule `50-npm-package` | Agent invariants for `@techystuff/feature-cards` |
 
 ## Live URLs
 

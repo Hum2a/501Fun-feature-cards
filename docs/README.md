@@ -26,6 +26,7 @@ use this page as the map.
 | [DEMO.md](DEMO.md) | Live demo page: themes, motion, schema playground, mock CMS |
 | [RELEASE.md](RELEASE.md) | Version bumps, changelog, tags, npm publish, SRI, CEM checklist |
 | [NPM.md](NPM.md) | npm scope setup, publish experiment, tarball verification, dual licensing on npm |
+| Rule **50-npm-package** (`.cursor/rules/`) | npm identity & release consistency invariants |
 
 ## Architecture & decisions
 
