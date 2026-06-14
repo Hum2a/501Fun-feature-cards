@@ -36,11 +36,17 @@ npm org ls techystuff   # must list your user
 
 ## Link npm package to this GitHub repo
 
-GitHub shows `@techystuff/feature-cards` in the repository sidebar when the package is
-published from CI with a matching `repository` field in `package.json` (already set to
-`Hum2a/feature-cards`).
+There are **two registries** involved:
 
-### Step 1 — Configure npm trusted publisher
+| Registry | Package name | Purpose |
+| --- | --- | --- |
+| [npmjs.com](https://www.npmjs.com/package/@techystuff/feature-cards) | `@techystuff/feature-cards` | **Consumer installs** (`npm install …`) |
+| [GitHub Packages](https://github.com/users/Hum2a/packages) | `@hum2a/feature-cards` | **Repo sidebar** “Packages” section |
+
+The repo sidebar only lists packages on **GitHub Packages** (`npm.pkg.github.com`), not npmjs.com.
+The workflow publishes to both on every stable tag.
+
+### Step 1 — Configure npm trusted publisher (for npmjs.com)
 
 1. Open [package access settings](https://www.npmjs.com/package/@techystuff/feature-cards/access).
 2. **Trusted publishing** → **GitHub Actions**.
@@ -50,23 +56,20 @@ published from CI with a matching `repository` field in `package.json` (already 
    - **Workflow filename:** `publish-npm.yml` (exact name, including `.yml`)
 4. Save. Optionally set **Publishing access** → *Require 2FA and disallow tokens* after verifying CI works.
 
-### Step 2 — Push a release tag
+### Step 2 — Push a release tag (or re-run workflow)
 
-Pushing a stable tag (`v1.1.0`) runs [`.github/workflows/publish-npm.yml`](../.github/workflows/publish-npm.yml), which:
+Pushing a stable tag (`v1.1.1`) runs [`.github/workflows/publish-npm.yml`](../.github/workflows/publish-npm.yml), which:
 
-- Verifies `package.json` version and `repository.url` match the repo
-- Runs tests and `npm publish --provenance --access public`
-- Attaches provenance on [npmjs.com](https://www.npmjs.com/package/@techystuff/feature-cards) (green checkmark → source commit link)
+- Publishes `@techystuff/feature-cards` to npm with provenance
+- Publishes `@hum2a/feature-cards` to GitHub Packages (populates repo sidebar)
 
 ```sh
-npm run release:patch   # bump, commit, tag, push → CI publishes
+npm run release:patch   # bump, commit, tag, push → CI publishes both
 ```
 
-Within a few minutes, the repo sidebar should show the npm package. If it does not appear after the first CI publish, confirm the `repository.url` in `package.json` and republish a patch from CI (local publishes do not establish the link).
+**Re-publish v1.1.1 now:** Actions → **Publish npm package** → Run workflow → tag `v1.1.1`
 
-### Manual re-run
-
-Actions → **Publish npm package** → **Run workflow** → enter an existing tag (e.g. `v1.1.0`) if a publish failed but the tag is already pushed.
+GitHub Packages appears in the sidebar within a few minutes. npm provenance shows on npmjs.com (green checkmark).
 
 ## Publishing workflow
 
@@ -113,8 +116,9 @@ signed grant — see [COMMERCIAL-LICENSING.md](../COMMERCIAL-LICENSING.md).
 
 | Error | Fix |
 | --- | --- |
-| `ENEEDAUTH` | Configure [trusted publishing](#link-npm-package-to-this-github-repo) or set `NPM_TOKEN` |
-| Trusted publish fails | Workflow filename must be exactly `publish-npm.yml`; repo name case-sensitive |
+| Release created, npm unchanged | npm job failed — check Actions logs; re-run with tag `vX.Y.Z` |
+| Sidebar still empty | GitHub Packages job failed; npmjs.com alone does not fill sidebar |
+| `ENEEDAUTH` on npm job | Configure [trusted publishing](#step-1--configure-npm-trusted-publisher-for-npmjscom) or set `NPM_TOKEN` |
 | `403` + **Two-factor authentication… required** | Enable 2FA; publish with `--otp=CODE` |
 | `403` (other) | Not in `@techystuff` org, or token lacks publish |
 | Tag ≠ package.json | Align `v1.1.1` with `"version": "1.1.1"` |

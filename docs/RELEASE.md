@@ -92,8 +92,8 @@ Pushing a stable **`v*.*.*`** tag triggers [`.github/workflows/publish-npm.yml`]
 npm **trusted publishing** or **`NPM_TOKEN`** is configured:
 
 1. Verify tag ↔ `package.json` ↔ `repository.url`
-2. Build library, run tests
-3. Publish to npm with provenance (links package to this repo)
+2. Publish `@techystuff/feature-cards` to npm with provenance
+3. Publish `@hum2a/feature-cards` to GitHub Packages (repo sidebar)
 4. [`.github/workflows/release.yml`](../.github/workflows/release.yml) creates the GitHub Release
 
 **Recommended:** npm trusted publisher → workflow `publish-npm.yml` (no long-lived token).  
