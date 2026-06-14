@@ -6,6 +6,10 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.8] - 2026-06-14
+
+### Changed
+- Various updates and improvements.
 ## [1.0.7] - 2026-06-14
 
 ### Changed
@@ -123,7 +127,7 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 - CI/CD: GitHub Actions for checks, Cloudflare Pages/Worker deployment,
   tag-based npm releases via `scripts/release.sh`.
 
-[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.0.7...HEAD
+[Unreleased]: https://github.com/Hum2a/feature-cards/compare/v1.0.8...HEAD
 [1.2.0]: https://github.com/Hum2a/feature-cards/compare/v1.0.1...v1.2.0
 [1.0.1]: https://github.com/Hum2a/feature-cards/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Hum2a/feature-cards/releases/tag/v1.0.0
@@ -140,3 +144,5 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 [1.0.6]: https://github.com/Hum2a/feature-cards/compare/v1.0.5...v1.0.6
 
 [1.0.7]: https://github.com/Hum2a/feature-cards/compare/v1.0.6...v1.0.7
+
+[1.0.8]: https://github.com/Hum2a/feature-cards/compare/v1.0.7...v1.0.8
