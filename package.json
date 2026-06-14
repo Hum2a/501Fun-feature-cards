@@ -7,11 +7,11 @@
   "author": "Humza Butt <Humzab1711@hotmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/humza/feature-cards.git"
+    "url": "git+https://github.com/Hum2a/feature-cards.git"
   },
   "homepage": "https://501fun.humza-butt.space",
   "bugs": {
-    "url": "https://github.com/humza/feature-cards/issues"
+    "url": "https://github.com/Hum2a/feature-cards/issues"
   },
   "keywords": [
     "web-component",
@@ -101,6 +101,8 @@
     "release:current": "node scripts/run-release.mjs --current",
     "release:package": "node scripts/publish-package.mjs",
     "release:package:dry": "node scripts/publish-package.mjs --dry-run",
+    "pack:verify": "node scripts/pack-verify.mjs",
+    "npm:preflight": "npm run doctor && npm run pack:verify && npm run release:package:dry",
     "release:dry-run": "node scripts/run-release.mjs --dry-run --patch",
     "release:full": "node scripts/run-release.mjs --patch --publish",
     "check": "npm run typecheck && npm run lint && npm run test:ci && npm run size",
@@ -128,7 +130,7 @@
     "sri": "node scripts/generate-sri.mjs",
     "validate:cms": "node scripts/validate-cms-json.mjs",
     "postinstall": "node scripts/banner.mjs --quiet",
-    "prepublishOnly": "npm run build:lib"
+    "prepublishOnly": "npm run pack:verify"
   },
   "dependencies": {
     "zod": "^3.24.1"

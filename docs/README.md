@@ -25,6 +25,7 @@ use this page as the map.
 | [TESTING.md](TESTING.md) | Full test matrix: unit, fuzz, contracts, a11y, e2e, visual, browser bench |
 | [DEMO.md](DEMO.md) | Live demo page: themes, motion, schema playground, mock CMS |
 | [RELEASE.md](RELEASE.md) | Version bumps, changelog, tags, npm publish, SRI, CEM checklist |
+| [NPM.md](NPM.md) | npm scope setup, publish experiment, tarball verification, dual licensing on npm |
 
 ## Architecture & decisions
 

@@ -82,7 +82,7 @@ console.log(
   `Publishing ${pkg.name}@${version} (tag: ${tag})${dryRun ? ' [dry-run]' : ''}…\n`,
 );
 
-run('npm run build:lib');
+run('npm run pack:verify');
 
 if (!skipCheck) {
   run('npm run typecheck');

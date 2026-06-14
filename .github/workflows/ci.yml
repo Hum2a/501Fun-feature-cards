@@ -63,6 +63,9 @@ jobs:
       - name: Size budget
         run: npm run size
 
+      - name: Verify npm pack contents
+        run: npm run pack:verify
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 

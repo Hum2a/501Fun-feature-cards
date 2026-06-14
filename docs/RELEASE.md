@@ -55,6 +55,14 @@ npm run release:dry-run
 npm run release -- --minor --publish
 ```
 
+### Preflight (before every publish)
+
+```sh
+npm run npm:preflight   # doctor + pack:verify + publish dry-run (when tagged)
+```
+
+See **[NPM.md](NPM.md)** for first-time npm account setup and commercial dual-licensing.
+
 ### Publish an existing tag
 
 When HEAD already matches a pushed tag:
@@ -89,6 +97,7 @@ Secrets required: **`NPM_TOKEN`**.
 | Task | Command / action |
 | --- | --- |
 | Verify npm | `npm view @humza/feature-cards version` |
+| Verify tarball | `npm run pack:verify` |
 | Verify demo | `npm run canary:verify -- https://501fun.humza-butt.space` |
 | Update CDN docs | WordPress cookbook SRI + version query |
 | GitHub Release notes | Auto from tag; add highlights if needed |

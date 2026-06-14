@@ -95,6 +95,15 @@ checks.push({
   optional: true,
 });
 
+// npm login (optional — only needed for npm publish)
+const npmUser = tryExec('npm whoami');
+checks.push({
+  name: 'npm login (publish only)',
+  pass: npmUser !== null,
+  detail: npmUser ? `@${npmUser}` : 'run `npm login` before `npm run release:package`',
+  optional: true,
+});
+
 const width = Math.max(...checks.map((c) => c.name.length)) + 2;
 console.log('\nfeature-cards doctor\n');
 let failed = false;
