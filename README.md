@@ -4,6 +4,8 @@
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/@humza/feature-cards.svg)](https://www.npmjs.com/package/@humza/feature-cards)
 [![Bundle size](https://img.shields.io/badge/ESM%20gzip-~25%20KiB-brightgreen.svg)](scripts/size.mjs)
+
+**Package version:** `1.0.5`
 [![Live demo](https://img.shields.io/badge/demo-501fun.humza--butt.space-2563eb.svg)](https://501fun.humza-butt.space)
 
 **Package:** `@humza/feature-cards` · **Version:** `1.0.4`  
