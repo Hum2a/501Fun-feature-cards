@@ -22,6 +22,7 @@ const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const dryRun = process.argv.includes('--dry-run');
 const allowPrerelease = process.argv.includes('--allow-prerelease');
 const skipCheck = process.argv.includes('--skip-check');
+const skipPack = process.argv.includes('--skip-pack');
 
 /** npm publish --otp= when 2FA is enabled on the account */
 function readOtp() {
@@ -47,6 +48,9 @@ function runCapture(cmd) {
 
 /** Resolve the tag on the current commit, if any. */
 function currentTag() {
+  if (process.env.RELEASE_TAG) {
+    return process.env.RELEASE_TAG;
+  }
   try {
     return runCapture('git describe --tags --exact-match HEAD');
   } catch {
@@ -90,7 +94,9 @@ console.log(
   `Publishing ${pkg.name}@${version} (tag: ${tag})${dryRun ? ' [dry-run]' : ''}…\n`,
 );
 
-run('npm run pack:verify');
+if (!skipPack) {
+  run('npm run pack:verify');
+}
 
 if (!skipCheck) {
   run('npm run typecheck');

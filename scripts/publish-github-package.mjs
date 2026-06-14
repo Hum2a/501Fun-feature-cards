@@ -43,6 +43,9 @@ function runCapture(cmd) {
 }
 
 function currentTag() {
+  if (process.env.RELEASE_TAG) {
+    return process.env.RELEASE_TAG;
+  }
   try {
     return runCapture('git describe --tags --exact-match HEAD');
   } catch {
@@ -90,7 +93,7 @@ try {
     );
     run('npm publish --access public --dry-run --registry=https://npm.pkg.github.com');
   } else {
-    run('npm publish --access public');
+    run(`npm publish --access public --registry=${GITHUB_REGISTRY}`);
     console.log(`\nPublished ${GITHUB_PACKAGE_NAME}@${version} to GitHub Packages.`);
     console.log(
       'Install (GitHub Packages): npm install @hum2a/feature-cards --registry=https://npm.pkg.github.com',
