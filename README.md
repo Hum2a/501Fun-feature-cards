@@ -1,5 +1,7 @@
 # `<feature-cards>`
 
+> **501 technical brief submission:** [SUBMISSION.md](SUBMISSION.md) — problem statement, methodology, live demo, and portfolio links for reviewers.
+
 [![CI](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/Hum2a/feature-cards/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/@techystuff/feature-cards.svg)](https://www.npmjs.com/package/@techystuff/feature-cards)
