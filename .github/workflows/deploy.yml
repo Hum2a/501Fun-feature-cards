@@ -44,7 +44,7 @@ jobs:
 
       - name: Deploy demo to Cloudflare Pages
         id: pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
@@ -60,7 +60,7 @@ jobs:
 
       - name: Deploy mock CMS Worker (production)
         if: github.ref == format('refs/heads/{0}', steps.site.outputs.branch)
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
