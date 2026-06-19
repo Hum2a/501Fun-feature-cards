@@ -83,7 +83,7 @@ jobs:
 
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: playwright-report/
@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload coverage
         if: success() || failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage/
@@ -101,7 +101,7 @@ jobs:
 
       - name: Upload TypeDoc API reference
         if: success() || failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: typedoc-api
           path: docs/api/
