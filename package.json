@@ -140,7 +140,7 @@
     "prepublishOnly": "npm run pack:verify"
   },
   "dependencies": {
-    "zod": "^3.24.1"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
